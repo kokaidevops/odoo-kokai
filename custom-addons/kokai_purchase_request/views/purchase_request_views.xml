@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="view_purchase_request_form_inherit_custom" model="ir.ui.view">
+            <field name="name">purchase.request.view.form.inherit</field>
+            <field name="model">purchase.request</field>
+            <field name="inherit_id" ref="purchase_request.view_purchase_request_form"/>
+            <field name="arch" type="xml">
+                <field name="requested_by" position="after">
+                    <field name="department_id" />
+                    <field name="team_id" attrs="{'readonly': [('state', 'not in', ['draft', 'to_approve', 'need_improvement'])]}" />
+                </field>
+                <xpath expr="//field[@name='assigned_to']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="readonly" value="1">1</attribute>
+                </xpath>
+                <field name="group_id" position="after">
+                    <field name="priority" widget="priority" />
+                    <field name="request_type" />
+                </field>
+                <field name="date_start" position="after">
+                    <field name="due_date" attrs="{'readonly': [('state', 'not in', ['draft', 'to_approve', 'need_improvement'])]}" />
+                </field>
+                <xpath expr="//field[@name='line_ids']//tree//field[@name='name']" position="after">
+                    <field name="link" widget="url" optional="hide" />
+                    <field name="suggested" optional="hide" />
+                    <field name="reason" optional="hide" />
+                    <field name="drawing" optional="hide" />
+                </xpath>
+                <xpath expr="//field[@name='line_ids']//tree//field[@name='product_id']" position="attributes">
+                    <attribute name="options" value="{'no_create': True, 'no_open': True}">{'no_create': True, 'no_open': True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']//tree//field[@name='company_id']" position="attributes">
+                    <attribute name="optional" value="hide">hide</attribute>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']//tree//field[@name='analytic_distribution']" position="attributes">
+                    <attribute name="optional" value="hide">hide</attribute>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']//tree//field[@name='date_required']" position="attributes">
+                    <attribute name="optional" value="hide">hide</attribute>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']//tree//field[@name='estimated_cost']" position="attributes">
+                    <attribute name="optional" value="hide">hide</attribute>
+                </xpath>
+                <field name="description" position="after">
+                    <field name="type" />
+                </field>
+                <xpath expr="//field[@name='description']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//button[5]" position="attributes">
+                    <attribute name="states" value="in_progress">in_progress</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_done']" position="attributes">
+                    <attribute name="states" value="in_progress">in_progress</attribute>
+                </xpath>
+				<xpath expr="//field[@name='line_ids']" position="after">
+					<group colspan="4">
+						<field  colspan="2" name="description" nolabel="1" placeholder="Notes to purchasing..."/>
+					</group>
+				</xpath>
+                <xpath expr="//button[@name='button_in_progress']" position="attributes">
+                    <attribute name="groups"></attribute>
+                    <attribute name="context">{'generate_mail_activity': True}</attribute>
+                </xpath>
+                <xpath expr="//notebook//page[1]//field[@name='line_ids']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state', 'not in', ['draft','need_improvement'])]}</attribute>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page name="file" string="File">
+                        <group>
+                            <field name="attachment_ids" widget="many2many_attachment_preview" />
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase_request_line_form_inherit_form" model="ir.ui.view">
+            <field name="name">purchase.request.line.view.form.inherit</field>
+            <field name="model">purchase.request.line</field>
+            <field name="inherit_id" ref="purchase_request.purchase_request_line_form"/>
+            <field name="arch" type="xml">
+                <field name='date_start' position="after">
+                    <field name="link" widget='url' optional="hide" />
+                    <field name="suggested" optional="hide" />
+                    <field name="reason" optional="hide" />
+                    <field name="drawing" widget="binary_preview" optional="hide" />
+                </field>
+            </field>
+        </record>
+
+        <record id="view_purchase_request_line_details_inherit_custom" model="ir.ui.view">
+            <field name="name">purchase.request.line.view.form.inherit</field>
+            <field name="model">purchase.request.line</field>
+            <field name="inherit_id" ref="purchase_request.view_purchase_request_line_details"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="link" widget="url" />
+                    <field name="suggested" />
+                </field>
+            </field>
+        </record>
+
+        <record id="purchase_request_line_tree_inherit_custom" model="ir.ui.view">
+            <field name="name">purchase.request.line.view.list.inherit</field>
+            <field name="model">purchase.request.line</field>
+            <field name="inherit_id" ref="purchase_request.purchase_request_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='estimated_cost']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='supplier_id']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <menuitem
+            id="configuration_pr_menu"
+            name="Configuration"
+            parent="purchase_request.parent_menu_purchase_request"
+            sequence="10"
+        />
+
+        <record id="purchase_request_type_view_tree" model="ir.ui.view">
+            <field name="name">purchase.request.type.view.tree</field>
+            <field name="model">purchase.request.type</field>
+            <field name="arch" type="xml">
+                <tree string="PR Type" editable="bottom">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="purchase_request_type_action" model="ir.actions.act_window">
+            <field name="name">PR Type</field>
+            <field name="res_model">purchase.request.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            id="pr_type_menu"
+            name="PR Type"
+            action="purchase_request_type_action"
+            parent="configuration_pr_menu"
+            sequence="10"
+        />
+    
+    </data>
+
+</odoo>

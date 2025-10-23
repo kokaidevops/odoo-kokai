@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <function name="write" model="ir.model.data">            
+        <function name="search" model="ir.model.data">                
+            <value
+                eval="[('module', '=', 'documents'), ('name', '=', 'documents_folder_groups_rule')]"    
+            />            
+        </function>
+        <value eval="{'noupdate': False}" />
+    </function>
+
+    <record id="documents.documents_folder_groups_rule" model="ir.rule">
+        <field name="domain_force">[
+            '|', '|',
+                '&amp;',
+                    ('read_department_ids', '=', False),
+                    ('department_ids', '=', False),
+                ('department_ids', 'in', [user.department_id.id]),
+                ('read_department_ids', 'in', [user.department_id.id]),
+            ]</field>
+    </record>
+
+    <function name="write" model="ir.model.data">            
+        <function name="search" model="ir.model.data">                
+            <value
+                eval="[('module', '=', 'documents'), ('name', '=', 'documents_document_readonly_rule')]"    
+            />            
+        </function>
+        <value eval="{'noupdate': False}" />
+    </function>
+
+    <record id="documents.documents_document_readonly_rule" model="ir.rule">
+        <field name="domain_force">[
+            '&amp;',
+                ('folder_id.read_department_ids', 'in', [user.department_id.id]),
+                '|',
+                    ('folder_id.user_specific', '=', False),
+                    ('owner_id', '=', user.id)
+            ]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <function name="write" model="ir.model.data">            
+        <function name="search" model="ir.model.data">                
+            <value
+                eval="[('module', '=', 'documents'), ('name', '=', 'documents_document_write_rule')]"    
+            />            
+        </function>
+        <value eval="{'noupdate': False}" />
+    </function>
+
+    <record id="documents.documents_document_write_rule" model="ir.rule">
+        <field name="domain_force">[
+            '|',
+                '&amp;',
+                    ('folder_id.department_ids', 'in', [user.department_id.id]),
+                    '|',
+                        ('folder_id.user_specific_write', '=', False),
+                        ('owner_id', '=', user.id),
+                '&amp;',
+                    ('folder_id.read_department_ids', '=', False),
+                    ('folder_id.department_ids', '=', False)]
+                </field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit Product Template Form -->
+                            <!-- attrs="{'invisible': ['|', ('category_template_id', '=', False), ('bom_count', '>', 0)]}" -->
+
+    <record id="product_template_form_view_weight_tracking" model="ir.ui.view">
+        <field name="name">product.template.form.weight.tracking</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Add weight tracking fields in inventory tab -->
+            <field name="alias" position="after">
+                <field name="auto_generate_bom" />
+                <field name="raw_type" />
+                <field name="base_code" />
+                <field name="bom_count" invisible="1" />
+                <field name="base_product_id" />
+                <field name="category_template_id" 
+                        options="{'no_create': True}"
+                        placeholder="Select template..."/>
+                <div class="o_row">
+                    <button name="action_generate_bom_from_template" 
+                            string="Generate BOM Finished Goods" 
+                            type="object"
+                            class="btn-link"
+                            icon="fa-magic"
+                            attrs="{'invisible': ['|', ('category_template_id', '=', False), ('bom_count', '>', 0)]}"
+                            help="Generate BOM from template"/>
+                    <!-- <button name="action_generate_bom_above_1" 
+                            string="Generate BOM Above level 1" 
+                            type="object"
+                            class="btn-link"
+                            icon="fa-magic"
+                            help="Generate BOM from template level 1 above"/> -->
+
+                    <!-- <button name="action_generate_bom_above_1" 
+                            string="Generate BOM Above level 1" 
+                            type="action"
+                            class="btn-link"
+                            icon="fa-cog"
+                            context="{'default_product_tmpl_id': active_id, 'default_category_template_id': category_template_id}"
+                            attrs="{'invisible': [('category_template_id', '=', False)]}"
+                            help="Open BOM generation wizard"/> -->
+                </div>                
+            </field>
+
+            <!-- Add computed field -->
+            <xpath expr="//field[@name='categ_id']" position="before">
+                <field name="is_category_locked" invisible="1"/>
+            </xpath>
+            
+            <!-- Modify category field -->
+            <xpath expr="//field[@name='categ_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('is_category_locked', '=', True)]}</attribute>
+                <attribute name="options">{'no_create_edit': True}</attribute>
+            </xpath>
+            
+            <!-- Add warning message when locked -->
+            <!-- <xpath expr="//field[@name='categ_id']" position="after">
+                <div class="alert alert-warning" 
+                     attrs="{'invisible': [('is_category_locked', '=', False)]}"
+                     role="alert">
+                    <i class="fa fa-lock"/> This product is in a protected category. Only administrators can change it.
+                </div>
+            </xpath> -->
+            <xpath expr="//page[@name='inventory']" position="after">
+                <page string="BOM Generator" attrs="{'invisible': [('auto_generate_bom', '=', False)]}">
+                    <group>
+                        <group>
+                            <field name="auto_generate_bom"/>
+                        </group>
+                    </group>
+                    <field name="bom_component_ids">
+                        <tree editable="bottom">
+                            <field name="component_id"/>
+                            <field name="quantity"/>
+                            <field name="attribute_value_ids" widget="many2many_tags"/>
+                        </tree>
+                    </field>
+                    <!-- <footer> -->
+                    <button name="generate_variant_boms" 
+                            string="Generate BOMs" 
+                            type="object" 
+                            class="btn-primary"/>
+                    <!-- </footer> -->
+                </page>
+            </xpath>
+            <xpath expr="//button[@name='action_update_quantity_on_hand']" position="after">
+            <button name="action_recompute_variants" 
+                    type="object" 
+                    string="Recompute Variants" 
+                    class="btn-secondary"
+                    />                
+            </xpath>
+            <xpath expr="//page[@name='inventory']" position="after">
+                <page string="Attribute Values" name="attribute_values">
+                    <field name="attribute_selection_ids" 
+                        context="{'default_product_tmpl_id': active_id}"
+                        domain="[('active', '=', True)]">
+                        <tree string="Attribute Values" 
+                            editable="bottom"
+                            decoration-muted="active == False">
+                            <field name="sequence" widget="handle"/>
+                            <field name="attribute_id" 
+                                placeholder="Select Attribute..."
+                                options="{'no_create': True, 'no_open': True}"/>
+                            <field name="value_id" 
+                                placeholder="Select Value..."
+                                options="{'no_create': True, 'no_open': True}"/>
+                            <field name="name" placeholder="Enter name..."/>
+                            <field name="code" placeholder="Enter code..."/>
+                            <field name="active" widget="boolean_toggle"/>
+                            <!-- <button name="action_duplicate" 
+                                    type="object" 
+                                    icon="fa-copy" 
+                                    title="Duplicate"
+                                    class="btn-sm"/>
+                            <button name="unlink" 
+                                    type="object" 
+                                    icon="fa-trash" 
+                                    title="Delete"
+                                    class="btn-sm text-danger"
+                                    confirm="Are you sure?"/> -->
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+            <xpath expr="//page[@name='inventory']" position="inside">
+                <group string="Weight Tracking Configuration" name="weight_tracking">
+                    <!-- Add invisible field inside the group where it's used -->
+                    <field name="track_weight_by_serial" invisible="1"/>
+
+                    <group>
+                        <field name="valuation_by_actual_weight" 
+                               attrs="{'invisible': [('track_weight_by_serial', '=', False)]}"/>
+                    </group>
+                    <group>
+                        <field name="standard_weight_per_unit" 
+                               attrs="{'required': [('track_weight_by_serial', '=', True)]}"/>
+                        <field name="weight_tolerance" 
+                               attrs="{'invisible': [('track_weight_by_serial', '=', False)]}"/>
+                    </group>
+                </group>
+            </xpath>
+            
+            <!-- Add info message without attrs dependency on tracking field -->
+            <!-- <xpath expr="//field[@name='tracking']" position="after">
+                <div class="alert alert-info">
+                    <p>Note: To enable weight tracking, set product tracking to "By Unique Serial Number" and enable "Track Weight by Serial" option.</p>
+                </div>
+            </xpath> -->
+        </field>
+    </record>
+
+    <!-- Product Variant Form View -->
+    <!-- <record id="product_product_form_view_weight_tracking" model="ir.ui.view">
+        <field name="name">product.product.form.weight.tracking</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml"> -->
+            <!-- Add fields in a group to ensure proper scope -->
+            <!-- <xpath expr="//group[@name='group_standard_price']" position="inside">
+                <field name="track_weight_by_serial" invisible="1"/>
+                <label for="standard_weight_per_unit" 
+                       string="Weight per Unit"
+                       attrs="{'invisible': [('track_weight_by_serial', '=', False)]}"/>
+                <div attrs="{'invisible': [('track_weight_by_serial', '=', False)]}">
+                    <field name="standard_weight_per_unit" 
+                           readonly="1" 
+                           class="oe_inline"/>
+                    <span> kg</span>
+                    <div class="text-muted">
+                        Standard weight used for valuation calculation
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record> -->
+
+    <record id="product_template_form_view_sequence" model="ir.ui.view">
+        <field name="name">product.template.form.sequence</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product_variant_configurator.product_template_no_variant_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Add sequence to attribute lines -->
+            <xpath expr="//field[@name='attribute_line_ids']/tree" position="attributes">
+                <attribute name="default_order">sequence</attribute>
+            </xpath>
+            
+            <xpath expr="//field[@name='attribute_line_ids']/tree/field[@name='attribute_id']" position="before">
+                <field name="sequence" widget="handle"/>
+            </xpath>
+        </field>
+    </record>    
+    
+
+    <record id="action_bom_generator_wizard" model="ir.actions.act_window">
+        <field name="name">BOM Generator</field>
+        <field name="res_model">bom.generator.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+    <menuitem id="menu_bom_generator"
+              name="BOM Generator"
+              parent="mrp.menu_mrp_configuration"
+              action="action_bom_generator_wizard"
+              sequence="50"/>    
+
+
+    <record id="product_template_form_view_bom_series" model="ir.ui.view">
+        <field name="name">product.template.form.bom.series</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='inventory']" position="after">
+                <page string="BOM Series" name="bom_series" 
+                      attrs="{'invisible': [('type', '!=', 'product')]}">
+                    <group>
+                        <group>
+                            <field name="bom_series_count" readonly="1"/>
+                            <field name="max_production_level" readonly="1"/>
+                        </group>
+                        <group>
+                            <button name="generate_bom_series" 
+                                    string="Generate BOM Series" 
+                                    type="object" 
+                                    class="btn-primary"
+                                    confirm="This will regenerate the BOM series. Continue?"/>
+                            <button name="action_view_bom_series" 
+                                    string="View All Series" 
+                                    type="object" 
+                                    class="btn-secondary"
+                                    attrs="{'invisible': [('bom_series_count', '=', 0)]}"/>
+                        </group>
+                    </group>
+                    
+                    <field name="bom_series_ids" context="{'default_product_tmpl_id': active_id}">
+                        <tree decoration-bf="level == 1" decoration-it="level > 1">
+                            <field name="level" string="Level"/>
+                            <field name="sequence" string="Seq"/>
+                            <field name="bom_reference" string="BOM Code"/>
+                            <field name="bom_product_name" string="Product"/>
+                            <field name="bom_type" string="Type"/>
+                            <field name="manufacturing_lead_time" string="Lead Time (days)"/>
+                            <field name="product_variant_id" string="Variant" optional="hide"/>
+                            <button name="action_view_bom" 
+                                    string="View BOM" 
+                                    type="object" 
+                                    icon="fa-list-alt"/>
+                            <button name="action_create_mo" 
+                                    string="Create MO" 
+                                    type="object" 
+                                    icon="fa-cog"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- BOM Series Tree View -->
+    <record id="product_bom_series_tree_view" model="ir.ui.view">
+        <field name="name">product.bom.series.tree</field>
+        <field name="model">product.bom.series</field>
+        <field name="arch" type="xml">
+            <tree decoration-bf="level == 1" decoration-it="level > 1" 
+                  default_order="level,sequence">
+                <field name="level" string="Level"/>
+                <field name="sequence" string="Sequence"/>
+                <field name="bom_reference" string="BOM Reference"/>
+                <field name="bom_product_name" string="Product"/>
+                <field name="bom_type" string="BOM Type"/>
+                <field name="manufacturing_lead_time" string="Lead Time"/>
+                <field name="product_variant_id" string="Variant" optional="hide"/>
+                <button name="action_view_bom" 
+                        string="View BOM" 
+                        type="object" 
+                        icon="fa-list-alt"/>
+                <button name="action_create_mo" 
+                        string="Create MO" 
+                        type="object" 
+                        icon="fa-cog"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- BOM Series Form View -->
+    <record id="product_bom_series_form_view" model="ir.ui.view">
+        <field name="name">product.bom.series.form</field>
+        <field name="model">product.bom.series</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_view_bom" 
+                            string="View BOM" 
+                            type="object" 
+                            class="btn-primary"/>
+                    <button name="action_create_mo" 
+                            string="Create Manufacturing Order" 
+                            type="object" 
+                            class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="product_tmpl_id" readonly="1"/>
+                            <field name="bom_id"/>
+                            <field name="product_variant_id"/>
+                        </group>
+                        <group>
+                            <field name="level"/>
+                            <field name="sequence"/>
+                            <field name="parent_series_id"/>
+                        </group>
+                    </group>
+                    
+                    <group string="BOM Information">
+                        <group>
+                            <field name="bom_reference" readonly="1"/>
+                            <field name="bom_product_name" readonly="1"/>
+                            <field name="bom_type" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="manufacturing_lead_time" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Child Series" name="child_series">
+                            <field name="child_series_ids">
+                                <tree>
+                                    <field name="level"/>
+                                    <field name="bom_reference"/>
+                                    <field name="bom_product_name"/>
+                                    <field name="bom_type"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- BOM Series Search View -->
+    <record id="product_bom_series_search_view" model="ir.ui.view">
+        <field name="name">product.bom.series.search</field>
+        <field name="model">product.bom.series</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="bom_product_name"/>
+                <field name="bom_reference"/>
+                <field name="product_tmpl_id"/>
+                <field name="level"/>
+                
+                <filter string="Level 1 (Final Product)" 
+                        name="level_1" 
+                        domain="[('level', '=', 1)]"/>
+                <filter string="Level 2 (Sub-Assembly)" 
+                        name="level_2" 
+                        domain="[('level', '=', 2)]"/>
+                <filter string="Level 3+" 
+                        name="level_3_plus" 
+                        domain="[('level', '>=', 3)]"/>
+                
+                <separator/>
+                <filter string="Manufacturing BOM" 
+                        name="manufacturing" 
+                        domain="[('bom_type', '=', 'normal')]"/>
+                <filter string="Kit BOM" 
+                        name="kit" 
+                        domain="[('bom_type', '=', 'phantom')]"/>
+                
+                <group expand="1" string="Group By">
+                    <filter string="Level" 
+                            name="group_level" 
+                            context="{'group_by': 'level'}"/>
+                    <filter string="Product Template" 
+                            name="group_product" 
+                            context="{'group_by': 'product_tmpl_id'}"/>
+                    <filter string="BOM Type" 
+                            name="group_bom_type" 
+                            context="{'group_by': 'bom_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- BOM Series Action -->
+    <record id="action_product_bom_series" model="ir.actions.act_window">
+        <field name="name">BOM Series</field>
+        <field name="res_model">product.bom.series</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="product_bom_series_search_view"/>
+        <field name="context">{'group_by': 'level'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first BOM series!
+            </p>
+            <p>
+                BOM series help you organize manufacturing levels and plan production sequences.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem id="menu_product_bom_series" 
+              name="BOM Series" 
+              parent="mrp.menu_mrp_bom" 
+              action="action_product_bom_series" 
+              sequence="15"/>
+
+</odoo>

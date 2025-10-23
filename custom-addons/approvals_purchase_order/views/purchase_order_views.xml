@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="purchase_order_form_inherit_approval" model="ir.ui.view">
+            <field name="name">purchase.order.view.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <!-- <button string="Request Approval" attrs="{'invisible': ['|', ('check_line', '=', True), ('state', 'not in', ['draft','sent','need_improvement'])]}" name="generate_approval_request" type="object" class="oe_highlight"/> -->
+                    <button string="Request Approval" states="draft,sent,need_improvement" name="action_check" context="{'callback_function': 'generate_approval_request'}" type="object" class="oe_highlight"/>
+                    <!-- attrs="{'invisible': ['|', ('check_line', '=', False), ('state', 'not in', ['draft','sent','need_improvement'])]}"  -->
+                </xpath>
+                <xpath expr="//div[@class='oe_button_box']" position="inside">
+                    <button
+                        type="object"
+                        name="action_view_approval_request"
+                        class="oe_stat_button"
+                        attrs="{'invisible':[('approval_count', '=', 0)]}"
+                        icon="fa-list"
+                    >
+                        <field name="approval_count" string="Approval" widget="statinfo" />
+                    </button>
+                </xpath>
+                <xpath expr="//button[@name='button_approve']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

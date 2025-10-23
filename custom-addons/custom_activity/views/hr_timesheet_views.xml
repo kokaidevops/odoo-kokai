@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="timesheet_view_form_inherit_activity" model="ir.ui.view">
+            <field name="name">account.analytic.line.view.form.inherit</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="timesheet_grid.timesheet_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet//group//group[1]" position="inside">
+                    <field name="start_date" />
+                    <field name="end_date" />
+                </xpath>
+                <field name="date" position="after">
+                    <field name="running" invisible="1" />
+                    <field name="is_end" invisible="1" />
+                </field>
+                <xpath expr="//field[@name='project_id']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='task_id']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="timesheet_view_form_so_line_inherit_inherit_activity" model="ir.ui.view">
+            <field name="name">account.analytic.line.view.form.inherit</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="sale_timesheet_enterprise.timesheet_view_form_so_line_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='so_line']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="hr_timesheet_line_tree_inherit_tree" model="ir.ui.view">
+            <field name="name">account.analytic.line.view.list.inherit</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="is_end" invisible="1" />
+                    <field name="running" invisible="1" />
+                    <button icon="fa-play-circle" string="Start" name="action_start_timer" type="object" attrs="{'invisible': ['|', ('running', '=', True), ('is_end', '=', True)]}" />
+                    <button icon="fa-stop-circle" class="text-danger" string="End" name="action_end_timer" type="object" attrs="{'invisible': ['|', ('running', '=', False), ('is_end', '=', True)]}" />
+                </xpath>
+                <xpath expr="//tree" position="attributes">
+                    <!-- <attribute name="editable" value=""></attribute> -->
+                    <attribute name="decoration-success" value="is_end==True">is_end==True</attribute>
+                    <attribute name="decoration-info" value="running==True">running==True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='unit_amount']" position="attributes">
+                    <attribute name="widget" value="timesheet_uom">timesheet_uom</attribute>
+                </xpath>
+                <xpath expr="//field[@name='project_id']" position="attributes">
+                    <attribute name="optional" value="hide">hide</attribute>
+                </xpath>
+                <xpath expr="//field[@name='task_id']" position="attributes">
+                    <attribute name="optional" value="hide">hide</attribute>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    
+    <data>
+    
+        <menuitem
+            id="qhse_program_menu"
+            name="QHSE"
+            sequence="10"
+            web_icon="qhse_program,static/description/icon.png"
+        />
+    
+        <menuitem
+            id="qa_menu"
+            name="Quality Assurance"
+            parent="qhse_program.qhse_program_menu"
+            sequence="100"
+        />
+            <!-- parent="base_menu.quality_base_menu" -->
+    
+        <menuitem
+            id="qc_menu"
+            name="Quality Control"
+            parent="qhse_program.qhse_program_menu"
+            sequence="100"
+        />
+            <!-- parent="base_menu.quality_base_menu" -->
+    
+        <menuitem
+            id="hse_menu"
+            name="Health, Safety, Env"
+            parent="qhse_program.qhse_program_menu"
+            sequence="100"
+        />
+            <!-- parent="base_menu.quality_base_menu" -->
+    
+        <menuitem
+            id="configuration_menu"
+            name="Configuration"
+            parent="qhse_program.qhse_program_menu"
+            sequence="1000"
+        />
+            <!-- parent="base_menu.quality_base_menu" -->
+
+        <record id="qhse_team_action" model="ir.actions.act_window">
+            <field name="name">QHSE Team</field>
+            <field name="res_model">department.team</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_qhse_team': 1}</field>
+        </record>
+    
+        <menuitem
+            id="qhse_team_menu"
+            name="Team"
+            parent="qhse_program.configuration_menu"
+            action='qhse_program.qhse_team_action'
+            sequence="10"
+        />
+
+        <menuitem
+            id="nc_menu"
+            name="Analysis of Data"
+            parent="qhse_program.qhse_program_menu"
+            sequence="10"
+        />
+            <!-- parent="base_menu.quality_base_menu" -->
+
+        <record id="res_config_settings_view_form_inherit_qhse_program" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" data-string="Setting" string="Setting" data-key="qhse_program">
+                        <h2>Settings</h2>
+                        <div class="row mt16 o_settings_container" name="work_activity_query_setting_container">
+                            <div class="col-12 col-lg-6 o_setting_box" id="qhse_manager_id" title="Query Class in Work Activity">
+                                <div class="o_setting_right_pane">
+                                    <div class="content-group">
+                                        <div class="row mt16">
+                                            <label for="qhse_manager_id" class="col-lg-3"/>
+                                            <field name="qhse_manager_id"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="res_config_settings_action" model="ir.actions.act_window">
+            <field name="name">Settings</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="context">{'module': 'qhse_program', 'bin_size': False}</field>
+        </record>
+
+        <menuitem
+            id="res_config_settings_menu"
+            name="Settings"
+            action="res_config_settings_action"
+            groups="base.group_system"
+            parent="qhse_program.configuration_menu"
+            sequence="0"
+        />
+    
+    </data>
+    
+
+</odoo>

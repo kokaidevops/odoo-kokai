@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="nonconforming_product_view_form" model="ir.ui.view">
+            <field name="name">nonconforming.product.view.form</field>
+            <field name="model">nonconforming.product</field>
+            <field name="arch" type="xml">
+                <form string="Nonconforming Product Report">
+                    <header>
+                        <button string="Open" name="action_open" type="object" states="cancel" />
+                        <button string="Waiting" name="action_waiting" type="object" class="oe_highlight" states="open" />
+                        <button string="Cancel" name="action_cancel" type="object" states="open" />
+                        <button string="Closed" name="action_closed" type="object" class="oe_highlight" states="waiting" />
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" readonly="1" /></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="supplier_id" />
+                                <field name="product_ids" widget="many2many_tags" />
+                            </group>
+                            <group>
+                                <field name="process" />
+                                <field name="qty" />
+                            </group>
+                        </group>
+                        <group string="Description">
+                            <field name="description" />
+                            <field name="inspector_id" />
+                            <field name="date_submit_desc" />
+                        </group>
+                        <group string="Reviewed">
+                            <field name="reviewed" />
+                            <field name="owner_id" />
+                            <field name="date_submit_reviewed" />
+                        </group>
+                        <group string="Proposed Action">
+                            <field name="proposed_action" />
+                            <field name="engineering_id" />
+                            <field name="date_submit_proposed" />
+                        </group>
+                        <group string="Result">
+                            <field name="result" />
+                            <field name="head_id" />
+                            <field name="date_submit_result" />
+                        </group>
+                        <group string="Followed Action">
+                            <field name="followed_action" />
+                            <field name="inspector_followed_id" />
+                            <field name="date_submit_followed" />
+                        </group>
+                        <group string="Verify">
+                            <field name="verify_result" />
+                            <field name="inspector_verify_id" />
+                            <field name="date_submit_verify" />
+                        </group>
+                        <group>
+                            <field name="attachment_ids" />
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="nonconforming_product_view_tree" model="ir.ui.view">
+            <field name="name">nonconforming.product.view.tree</field>
+            <field name="model">nonconforming.product</field>
+            <field name="arch" type="xml">
+                <tree string="Nonconforming Product Report">
+                    <field name="name" />
+                    <field name="supplier_id" />
+                    <field name="product_ids" widget="many2many_tags" />
+                    <field name="process" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="nonconforming_product_action" model="ir.actions.act_window">
+            <field name="name">Nonconforming Product</field>
+            <field name="res_model">nonconforming.product</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="nonconforming_product_menu"
+            name="Nonconforming Product"
+            action="nonconforming_product_action"
+            parent="qhse_program.nc_menu"
+            sequence="10"
+        />
+    
+    </data>
+
+</odoo>

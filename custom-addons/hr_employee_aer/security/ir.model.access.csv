@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_employee_aer,access_hr_employee_aer,model_hr_employee_aer,base.group_user,1,1,1,1
+access_average_effective_rate,access_average_effective_rate,model_average_effective_rate,base.group_user,1,1,1,1
+access_aer_range,access_aer_range,model_aer_range,base.group_user,1,1,1,1

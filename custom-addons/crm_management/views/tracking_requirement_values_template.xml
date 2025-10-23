@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="track_requirement_ids">
+        <div>
+            <strong>Requirement Line has been updated.</strong>
+        </div>
+        <ul>
+            <t t-foreach="datum.keys()" t-as="key">
+                <t t-set="data" t-value="datum.get(key)"/>
+                <li>
+                    <t t-esc="line.department_id.name"/>: <t t-esc="data[0]"/> <i class="o_TrackingValue_separator fa fa-long-arrow-right mx-1 text-600" title="Changed" role="img" aria-label="Changed" /> <t t-esc="data[1]"/>
+                </li>
+            </t>
+        </ul>
+    </template>
+
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+    
+        <record id="maintenance_equipment_category_data_building" model="maintenance.equipment.category">
+            <field name="name">Building</field>
+            <field name="technician_user_id" ref="base.user_admin"/>
+        </record>
+    
+    </data>
+
+</odoo>

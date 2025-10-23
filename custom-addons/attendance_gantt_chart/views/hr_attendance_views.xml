@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="hr_attendance_view_gantt" model="ir.ui.view">
+            <field name="name">hr.attendance.view.gantt</field>
+            <field name="model">hr.attendance</field>
+            <field name="arch" type="xml">
+                <gantt string="Attendance" color="color" date_start="check_in" date_stop="check_out" default_group_by='employee_id'>
+                    <field name="color" invisible="1"/>
+                    <field name="employee_id"/>
+                    <field name="name"/>
+                </gantt>
+            </field>
+        </record>
+
+        <record id="hr_attendance.hr_attendance_action" model="ir.actions.act_window">
+            <field name="view_mode">tree,kanban,form,gantt,calendar</field>
+        </record>
+
+    </data>
+</odoo>

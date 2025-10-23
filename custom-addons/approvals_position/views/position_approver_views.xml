@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="position_approver_view_tree" model="ir.ui.view">
+            <field name="name">position.approver.view.tree</field>
+            <field name="model">position.approver</field>
+            <field name="arch" type="xml">
+                <tree string="Position Approver" editable="bottom">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="position_approver_action" model="ir.actions.act_window">
+            <field name="name">Position Approver</field>
+            <field name="res_model">position.approver</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem
+            id="position_approver_menu"
+            name="Position Approver"
+            action="position_approver_action"
+            parent="approvals.approvals_menu_config"
+            sequence="10"
+        />
+    
+    </data>
+
+</odoo>

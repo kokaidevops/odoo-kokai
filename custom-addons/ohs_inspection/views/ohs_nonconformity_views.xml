@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="ohs_nonconformity_view_form" model="ir.ui.view">
+            <field name="name">ohs.nonconformity.view.form</field>
+            <field name="model">ohs.nonconformity</field>
+            <field name="arch" type="xml">
+                <form string="Nonconformity Report">
+                    <header>
+                        <button string="Draft" name="action_draft" type="object" states="cancel" />
+                        <button string="Cancel" name="action_cancel" type="object" states="draft" />
+                        <button string="Open" name="action_open" type="object" class="oe_highlight" states="draft" />
+                        <button string="Request" name="action_request" type="object" class="oe_highlight" states="open,need_improvement" />
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" /></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="user_id" />
+                                <field name="audite_id" />
+                                <field name="category" />
+                            </group>
+                            <group>
+                                <field name="nonconformity_id" />
+                                <field name="date" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="nonconformity" string="Non Conformity">
+                                <field name="nonconformity" />
+                            </page>
+                            <page name="reason" string="Reason">
+                                <field name="reason" />
+                            </page>
+                            <page name="corrective" string="Corrective">
+                                <field name="corrective_ids">
+                                    <form string="Corrective">
+                                        <header>
+                                            <button string="Done" name="action_done" type="object" class="oe_highlight"/>
+                                        </header>
+                                        <sheet>
+                                            <group>
+                                                <field name="name" />
+                                                <field name="ohs_nonconformity_id" />
+                                                <field name="user_id" />
+                                                <field name="due_date" />
+                                                <field name="completion_date" />
+                                                <field name="state" readonly="1" />
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                    <tree>
+                                        <field name="name" />
+                                        <field name="ohs_nonconformity_id" />
+                                        <field name="user_id" />
+                                        <field name="due_date" />
+                                        <field name="completion_date" />
+                                        <field name="state" readonly="1" />
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="preventive" string="Preventive">
+                                <field name="preventive_ids">
+                                    <form string="Preventive">
+                                        <header>
+                                            <button string="Done" name="action_done" type="object" class="oe_highlight"/>
+                                        </header>
+                                        <sheet>
+                                            <group>
+                                                <field name="name" />
+                                                <field name="ohs_nonconformity_id" />
+                                                <field name="user_id" />
+                                                <field name="due_date" />
+                                                <field name="completion_date" />
+                                                <field name="state" readonly="1" />
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                    <tree>
+                                        <field name="name" />
+                                        <field name="ohs_nonconformity_id" />
+                                        <field name="user_id" />
+                                        <field name="due_date" />
+                                        <field name="completion_date" />
+                                        <field name="state" readonly="1" />
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="suggestions" string="Suggestions">
+                                <field name="suggestions" />
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="ohs_nonconformity_view_tree" model="ir.ui.view">
+            <field name="name">ohs.nonconformity.view.tree</field>
+            <field name="model">ohs.nonconformity</field>
+            <field name="arch" type="xml">
+                <tree string="Nonconformity Report">
+                    <field name="name" />
+                    <field name="user_id" />
+                    <field name="audite_id" />
+                    <field name="date" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="ohs_nonconformity_action" model="ir.actions.act_window">
+            <field name="name">Nonconformity Report</field>
+            <field name="res_model">ohs.nonconformity</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+    
+        <menuitem
+            id="patrol_configuration_menu"
+            name="Inspection"
+            action="ohs_nonconformity_action"
+            parent="qhse_program.hse_menu"
+            sequence="10"
+        />
+    
+    </data>
+
+</odoo>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="hr_training_view_form_inherit_note" model="ir.ui.view">
+            <field name="name">hr.training.view.form.inherit</field>
+            <field name="model">hr.training</field>
+            <field name="inherit_id" ref="hr_training.hr_training_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='oe_title']" position="before">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_show_note" type="object" class="oe_stat_button" icon="fa-list">
+                            <field name="note_count" string="Note" widget="statinfo"/>
+                        </button>
+                    </div>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <button string="Generate Note" name="generate_training_note" type="object" class="oe_highlight" states="done" />
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

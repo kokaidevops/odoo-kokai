@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="view_partner_form_inherit_localization" model="ir.ui.view">
+            <field name="name">res.partner.view.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <field name='city' position="replace">
+                    <field name="city" invisible="1" placeholder="City" class="o_address_city" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                    <field name="city_id" placeholder="City" class="o_address_city" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" options="{'no_open': True, 'no_create': True}"/>
+                    <field name="subdistrict_id" placeholder="Subdistrict" class="o_address_city" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" options="{'no_open': True, 'no_create': True}"/>
+                    <field name="ward_id" placeholder="Ward" class="o_address_city" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" options="{'no_open': True, 'no_create': True}"/>
+                </field>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

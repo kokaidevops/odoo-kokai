@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dashboard View -->
+    <!-- <record id="view_rab_dashboard" model="ir.ui.view">
+        <field name="name">rab.dashboard</field>
+        <field name="model">kokai.rab</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <dashboard>
+                <view type="graph"/>
+                <group>
+                    <group>
+                        <aggregate name="total_rab" string="Total RAB" 
+                                  field="id" group_operator="count" measure="__count__"/>
+                        <aggregate name="total_amount" string="Total Amount" 
+                                  field="total_amount" group_operator="sum" widget="monetary"/>
+                    </group>
+                    <group>
+                        <aggregate name="approved_rab" string="Approved" 
+                                  field="id" domain="[('state', '=', 'approved')]" 
+                                  group_operator="count"/>
+                        <aggregate name="pending_rab" string="Pending" 
+                                  field="id" domain="[('state', 'in', ['draft', 'submitted'])]" 
+                                  group_operator="count"/>
+                    </group>
+                </group>
+                <view type="pivot"/>
+            </dashboard>
+        </field>
+    </record> -->
+
+    <!-- Graph View -->
+    <record id="view_project_rab_graph" model="ir.ui.view">
+        <field name="name">project.rab.graph</field>
+        <field name="model">kokai.rab</field>
+        <field name="arch" type="xml">
+            <graph string="RAB Analysis" type="bar" stacked="True">
+                <!-- <field name="project_id" type="row"/> -->
+                <field name="total_amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Pivot View -->
+    <record id="view_project_rab_pivot" model="ir.ui.view">
+        <field name="name">project.rab.pivot</field>
+        <field name="model">kokai.rab</field>
+        <field name="arch" type="xml">
+            <pivot string="RAB Analysis">
+                <!-- <field name="project_id" type="row"/> -->
+                <field name="state" type="col"/>
+                <field name="total_amount" type="measure"/>
+                <field name="margin_amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+</odoo>

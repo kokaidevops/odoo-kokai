@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <menuitem
+            id="assessment_root_menu"
+            name="Assessment"
+            parent="contacts.menu_contacts"
+            sequence="10"
+        />
+
+
+        <record id="survey_survey_view_form_inherit_partner" model="ir.ui.view">
+            <field name="name">survey.survey.view.form.inherit</field>
+            <field name="model">survey.survey</field>
+            <field name="inherit_id" ref="survey.survey_survey_view_form"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                    <field name="partner_id" attrs="{'invisible': [('partner_id', '=', False)]}" />
+                </field>
+            </field>
+        </record>
+
+
+        <record id="partner_assessment_view_form" model="ir.ui.view">
+            <field name="name">partner.assessment.view.form</field>
+            <field name="model">partner.assessment</field>
+            <field name="arch" type="xml">
+                <form string="Partner Assessment">
+                    <header>
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="user_id" />
+                                <field name="survey_id" readonly="1" />
+                                <field name="category" />
+                                <field name="date" readonly="1" />
+                                <field name="issue_date" attrs="{'invisible': [('issue_date', '=', False)], 'readonly': True}" />
+                                <field name="expired_date" attrs="{'invisible': [('expired_date', '=', False)], 'readonly': True}" />
+                            </group>
+                            <group>
+                                <field name="partner_id" />
+                                <field name="product_categ_id" />
+                                <field name="partner_category" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="line_page" string="Check List">
+                                <field name="line_ids">
+                                    <tree>
+                                        <field name="assessment_id" invisible="1" />
+                                        <field name="point_id" />
+                                        <field name="is_check" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <group>
+                            <field name="remarks" />
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="partner_assessment_view_tree" model="ir.ui.view">
+            <field name="name">partner.assessment.view.tree</field>
+            <field name="model">partner.assessment</field>
+            <field name="arch" type="xml">
+                <tree string="Partner Assessment">
+                    <field name="name" />
+                    <field name="partner_id" />
+                    <field name="user_id" optional="hide" />
+                    <field name="date" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="partner_assessment_action" model="ir.actions.act_window">
+            <field name="name">Partner Assessment</field>
+            <field name="res_model">partner.assessment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="partner_assessment_menu"
+            name="Partner Assessment"
+            action="partner_assessment_action"
+            parent="partner_assessment.assessment_root_menu"
+            sequence="10"
+        />
+
+
+        <record id="partner_assessment_point_view_tree" model="ir.ui.view">
+            <field name="name">partner.assessment.point.view.tree</field>
+            <field name="model">partner.assessment.point</field>
+            <field name="arch" type="xml">
+                <tree string="Point" editable="bottom">
+                    <field name="sequence" widget="handle" />
+                    <field name="active" invisible="1" />
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="partner_assessment_point_action" model="ir.actions.act_window">
+            <field name="name">Point</field>
+            <field name="res_model">partner.assessment.point</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="partner_assessment_point_menu"
+            name="Point"
+            action="partner_assessment_point_action"
+            parent="partner_assessment.assessment_root_menu"
+            sequence="20"
+        />
+    
+    </data>
+
+</odoo>

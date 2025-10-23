@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Import Wizard Form -->
+    <record id="view_sale_order_import_wizard_form" model="ir.ui.view">
+        <field name="name">sale.order.import.wizard.form</field>
+        <field name="model">sale.order.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Sales Orders from Excel">
+                <sheet>
+                    <!-- Import Section -->
+                    <group attrs="{'invisible': [('imported_count', '>', 0)]}">
+                        <group string="Import Settings">
+                            <field name="import_type"/>
+                            <field name="skip_validation"/>
+                        </group>
+                        <group string="Excel File">
+                            <field name="file_data" filename="file_name" widget="binary"/>
+                            <field name="file_name" invisible="1"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Results Section -->
+                    <group attrs="{'invisible': [('imported_count', '=', 0)]}">
+                        <group string="Import Results" col="4">
+                            <field name="imported_count" readonly="1" style="font-size: 20px; color: green; font-weight: bold;"/>
+                            <field name="failed_count" readonly="1" style="font-size: 20px; color: red; font-weight: bold;"/>
+                        </group>
+                    </group>
+                    
+                    <group attrs="{'invisible': [('log_text', '=', False)]}" string="Import Log">
+                        <field name="log_text" readonly="1" nolabel="1" widget="text" style="font-family: monospace; background-color: #f5f5f5;"/>
+                    </group>
+                    
+                    <!-- Enhanced Instructions with CSS -->
+                    <div attrs="{'invisible': [('imported_count', '>', 0)]}" style="margin-top: 20px;">
+                        <style>
+                            .import-instructions {
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                border-radius: 15px;
+                                padding: 30px;
+                                margin: 20px 0;
+                                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                            }
+                            .import-instructions h2 {
+                                color: white;
+                                font-size: 28px;
+                                margin-bottom: 25px;
+                                text-align: center;
+                                text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+                            }
+                            .step-container {
+                                background: white;
+                                border-radius: 10px;
+                                padding: 20px;
+                                margin-bottom: 15px;
+                                transition: transform 0.3s;
+                            }
+                            .step-container:hover {
+                                transform: translateX(10px);
+                                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                            }
+                            .step-number {
+                                display: inline-block;
+                                background: #667eea;
+                                color: white;
+                                width: 40px;
+                                height: 40px;
+                                border-radius: 50%;
+                                text-align: center;
+                                line-height: 40px;
+                                font-size: 20px;
+                                font-weight: bold;
+                                margin-right: 15px;
+                            }
+                            .step-title {
+                                font-size: 18px;
+                                font-weight: bold;
+                                color: #333;
+                                display: inline-block;
+                                margin-bottom: 10px;
+                            }
+                            .step-description {
+                                margin-left: 55px;
+                                color: #666;
+                                font-size: 14px;
+                                line-height: 1.6;
+                            }
+                            .important-note {
+                                background: #fff3cd;
+                                border-left: 5px solid #ffc107;
+                                padding: 15px;
+                                margin: 20px 0;
+                                border-radius: 5px;
+                            }
+                            .important-note h4 {
+                                color: #856404;
+                                margin-bottom: 10px;
+                            }
+                            .format-example {
+                                background: #f8f9fa;
+                                border: 1px solid #dee2e6;
+                                border-radius: 5px;
+                                padding: 15px;
+                                margin: 15px 0;
+                                font-family: monospace;
+                            }
+                        </style>
+                        
+                        <div class="import-instructions">
+                            <h2>📊 SALES ORDER IMPORT GUIDE</h2>
+                            
+                            <div class="step-container">
+                                <span class="step-number">1</span>
+                                <span class="step-title">Download Excel Template</span>
+                                <div class="step-description">
+                                    Click the "Download Template" button below to get the pre-formatted Excel file with:
+                                    <ul>
+                                        <li>✓ Order Headers sheet (one row per order)</li>
+                                        <li>✓ Order Lines sheet (multiple rows per order)</li>
+                                        <li>✓ Master Data reference sheet</li>
+                                        <li>✓ Sample data for guidance</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="step-container">
+                                <span class="step-number">2</span>
+                                <span class="step-title">Fill Order Headers</span>
+                                <div class="step-description">
+                                    In the "Order Headers" sheet, enter one row for each sales order:
+                                    <div class="format-example">
+                                        <b>Required fields (marked with *):</b><br/>
+                                        • Order Reference: SO/2025/001<br/>
+                                        • Customer Code: CUST001<br/>
+                                        • Order Date: 2025-01-15
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="step-container">
+                                <span class="step-number">3</span>
+                                <span class="step-title">Fill Order Lines</span>
+                                <div class="step-description">
+                                    In the "Order Lines" sheet, enter products for each order:
+                                    <div class="format-example">
+                                        <b>Multiple lines per order:</b><br/>
+                                        SO/2025/001 | Line 1 | VALVE-001 | 10 units<br/>
+                                        SO/2025/001 | Line 2 | VALVE-002 | 5 units<br/>
+                                        SO/2025/001 | Line 3 | GASKET-001 | 20 units
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="step-container">
+                                <span class="step-number">4</span>
+                                <span class="step-title">Save and Upload</span>
+                                <div class="step-description">
+                                    Save your Excel file and upload it using the file selector above.
+                                    <br/><b>Supported formats:</b> .xls, .xlsx
+                                </div>
+                            </div>
+                            
+                            <div class="step-container">
+                                <span class="step-number">5</span>
+                                <span class="step-title">Import and Review</span>
+                                <div class="step-description">
+                                    Click "Import" to process the file. The system will:
+                                    <ul>
+                                        <li>✓ Validate all data</li>
+                                        <li>✓ Create draft sales orders</li>
+                                        <li>✓ Show detailed import log</li>
+                                        <li>✓ Report any errors found</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="important-note">
+                            <h4>⚠️ Important Notes:</h4>
+                            <ul style="margin-bottom: 0;">
+                                <li><b>One-to-Many Relationship:</b> The system links headers to lines using the Order Reference field</li>
+                                <li><b>Data Validation:</b> Customer codes and product codes must exist in the system</li>
+                                <li><b>Date Format:</b> Use YYYY-MM-DD format for all dates</li>
+                                <li><b>Draft State:</b> All imported orders are created in draft state for review</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Quick Reference Table -->
+                        <div style="margin-top: 20px;">
+                            <h4 style="color: #333; margin-bottom: 10px;">📋 Quick Field Reference</h4>
+                            <table class="table table-sm table-bordered" style="background: white;">
+                                <thead style="background: #f8f9fa;">
+                                    <tr>
+                                        <th>Sheet</th>
+                                        <th>Required Fields</th>
+                                        <th>Optional Fields</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><b>Order Headers</b></td>
+                                        <td>Order Reference, Customer Code, Order Date</td>
+                                        <td>Delivery Date, Payment Terms, Notes, Customer PO</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Order Lines</b></td>
+                                        <td>Order Reference, Line No, Product Code, Quantity, Unit Price</td>
+                                        <td>Description, Discount %, Tax, Analytic Account</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </sheet>
+                <footer>
+                    <button name="download_template" 
+                            string="📥 Download Template" 
+                            type="object" 
+                            class="btn-info"
+                            style="font-size: 16px; padding: 10px 20px;"
+                            attrs="{'invisible': [('imported_count', '>', 0)]}"/>
+                    <button name="action_import" 
+                            string="📤 Import" 
+                            type="object" 
+                            class="btn-primary"
+                            style="font-size: 16px; padding: 10px 20px;"
+                            attrs="{'invisible': [('imported_count', '>', 0)]}"/>
+                    <button string="Close" 
+                            class="btn-secondary" 
+                            special="cancel"
+                            style="font-size: 16px; padding: 10px 20px;"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Action -->
+    <record id="action_sale_order_import_wizard" model="ir.actions.act_window">
+        <field name="name">Import Sales Orders</field>
+        <field name="res_model">sale.order.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+    <!-- Menu -->
+    <menuitem id="menu_sale_order_import"
+              name="Import from Excel"
+              parent="sale.sale_order_menu"
+              action="action_sale_order_import_wizard"
+              sequence="100"/>
+</odoo>

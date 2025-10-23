@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+    
+        <record id="recruitment_request_user" model="ir.rule">
+            <field name="name">User: Own Department Only</field>
+            <field ref="model_recruitment_request" name="model_id"/>
+            <field name="domain_force">[('department_id','=',user.department_id.id)]</field>
+            <field name="groups" eval="[(6,0,[ref('recruitment_request.group_recruitment_request_user')])]"/>
+        </record>
+    
+        <record id="recruitment_request_recruiter" model="ir.rule">
+            <field name="name">Recruiter</field>
+            <field ref="model_recruitment_request" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(6,0,[ref('recruitment_request.group_recruitment_request_recruiter')])]"/>
+        </record>
+    
+        <record id="recruitment_request_manager" model="ir.rule">
+            <field name="name">All Request</field>
+            <field ref="model_recruitment_request" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(6,0,[ref('recruitment_request.group_recruitment_request_manager')])]"/>
+        </record>
+    
+    </data>
+
+</odoo>

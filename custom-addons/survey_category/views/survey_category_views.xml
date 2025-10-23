@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <menuitem
+            id="survey_setting_menu"
+            name="Settings"
+            sequence="1000"
+            parent="survey.menu_surveys"
+        />
+
+
+        <record id="survey_category_view_tree" model="ir.ui.view">
+            <field name="name">survey.category.view.tree</field>
+            <field name="model">survey.category</field>
+            <field name="arch" type="xml">
+                <tree string="Survey Category" editable="bottom">
+                    <field name="active" invisible="1" />
+                    <field name="name" />
+                    <field name="value" />
+                    <field name="range" required="1" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="survey_category_action" model="ir.actions.act_window">
+            <field name="name">Survey Category</field>
+            <field name="res_model">survey.category</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="survey_category_menu"
+            name="Category"
+            action="survey_category_action"
+            parent="survey_category.survey_setting_menu"
+            sequence="10"
+        />
+
+
+        <record id="survey_survey_view_form_inherit_category" model="ir.ui.view">
+            <field name="name">survey.survey.view.form.inherit</field>
+            <field name="model">survey.survey</field>
+            <field name="inherit_id" ref="survey.survey_survey_view_form"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                    <field name="category_id" />
+                </field>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

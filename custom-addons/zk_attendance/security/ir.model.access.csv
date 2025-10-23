@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fingerprint_device,access_fingerprint_device,model_fingerprint_device,base.group_user,1,1,1,1
+access_employee_attendance_wizard,access_employee_attendance_wizard,model_employee_attendance_wizard,base.group_user,1,1,1,1
+access_device_extract_wizard,access_device_extract_wizard,model_device_extract_wizard,base.group_user,1,1,1,1
+access_hr_employee_fingerprint,access_hr_employee_fingerprint,model_hr_employee_fingerprint,base.group_user,1,1,1,1
+access_import_employee_fingerprint,access_import_employee_fingerprint,model_import_employee_fingerprint,base.group_user,1,1,1,1

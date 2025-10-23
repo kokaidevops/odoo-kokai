@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="seq_employee_shift_schedule" model="ir.sequence">
+            <field name="name">Employee Shift Schedule</field>
+            <field name="code">employee.shift.schedule</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name="number_next">1</field>
+            <field name="use_date_range">1</field>
+            <field name="range_reset">monthly</field>
+            <field name="prefix">SHIFTSCH-%(year)s/%(month)s/</field>
+        </record>
+
+    </data>
+
+</odoo>

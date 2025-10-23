@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="folder_view_form_inherit_access" model="ir.ui.view">
+            <field name="name">documents.folder.view.form.inherit</field>
+            <field name="model">documents.folder</field>
+            <field name="inherit_id" ref="documents.folder_view_form"/>
+            <field name="arch" type="xml">
+                <field name="group_ids" position="after">
+                    <field name="department_ids" widget="many2many_tags" />
+                </field>
+                <field name="read_group_ids" position="after">
+                    <field name="read_department_ids" widget="many2many_tags" />
+                </field>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

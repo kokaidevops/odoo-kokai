@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="hr_work_entry_type_data_business_trip" model="hr.work.entry.type">
+            <field name="sequence">100</field>
+            <field name="name">Business Trip</field>
+            <field name="code">WORK150</field>
+            <field name="round_days">NO</field>
+        </record>
+
+        <record id="project_task_data_business_trip" model="project.task">
+            <field name="sequence">100</field>
+            <field name="name">Business Trip</field>
+        </record>
+    
+
+        <record id="hr_leave_type_data_business_trip" model="hr.leave.type">
+            <field name="sequence">100</field>
+            <field name="name">Business Trip</field>
+            <field name="leave_validation_type">no_validation</field>
+            <field name="requires_allocation">no</field>
+            <field name="request_unit">hour</field>
+            <field name="time_type">other</field>
+            <field name="timesheet_task_id" ref="custom_time_off.project_task_data_business_trip" />
+            <field name="work_entry_type_id" ref="custom_time_off.hr_work_entry_type_data_business_trip" />
+        </record>
+        <record id="hr_leave_type_data_sick_time_off_paid" model="hr.leave.type">
+            <field name="sequence">100</field>
+            <field name="name">Sick Time Off (Paid)</field>
+            <field name="leave_validation_type">no_validation</field>
+            <field name="requires_allocation">yes</field>
+            <field name="employee_requests">no</field>
+            <field name="request_unit">day</field>
+            <field name="time_type">leave</field>
+            <field name="support_document">True</field>
+            <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_sick_leave" />
+            <field name="range">1</field>
+            <field name="range_type">year</field>
+            <field name="duration">12</field>
+        </record>
+        <record id="hr_leave_type_data_break_time_off" model="hr.leave.type">
+            <field name="sequence">100</field>
+            <field name="name">Break Time Off</field>
+            <field name="leave_validation_type">no_validation</field>
+            <field name="requires_allocation">no</field>
+            <field name="request_unit">hour</field>
+            <field name="time_type">leave</field>
+            <field name="work_entry_type_id" ref="employee_attendance.hr_work_entry_type_data_break" />
+        </record>
+    
+    </data>
+
+</odoo>

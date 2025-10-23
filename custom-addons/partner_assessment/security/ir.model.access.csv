@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_partner_assessment_point,access_partner_assessment_point,model_partner_assessment_point,base.group_user,1,1,1,1
+access_partner_assessment_line,access_partner_assessment_line,model_partner_assessment_line,base.group_user,1,1,1,1
+access_partner_assessment,access_partner_assessment,model_partner_assessment,base.group_user,1,1,1,1

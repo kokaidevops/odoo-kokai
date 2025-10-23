@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fleet_checked,access_fleet_checked,model_fleet_checked,base.group_user,1,1,1,1
+access_fleet_usage,access_fleet_usage,model_fleet_usage,base.group_user,1,1,1,1
+access_fleet_equipment_usage,access_fleet_equipment_usage,model_fleet_equipment_usage,base.group_user,1,1,1,1
+access_fleet_condition_usage,access_fleet_condition_usage,model_fleet_condition_usage,base.group_user,1,1,1,1
+access_fleet_checked_wizard,access_fleet_checked_wizard,model_fleet_checked_wizard,base.group_user,1,1,1,1

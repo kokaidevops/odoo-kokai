@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="position_approval_data_approved_by" model="position.approver">
+            <field name="name">APPROVED BY</field>
+        </record>
+        <record id="position_approval_data_known_by" model="position.approver">
+            <field name="name">KNOWN BY</field>
+        </record>
+        <record id="position_approval_data_director" model="position.approver">
+            <field name="name">DIRECTOR</field>
+        </record>
+    </data>
+</odoo>

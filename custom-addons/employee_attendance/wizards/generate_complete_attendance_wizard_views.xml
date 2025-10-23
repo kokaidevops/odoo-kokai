@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="generate_complete_attendance_wizard_view_form" model="ir.ui.view">
+            <field name="name">generate.complete.attendance.wizard.view.form</field>
+            <field name="model">generate.complete.attendance.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Complete Attendance">
+                    <sheet>
+                        <group>
+                        <group>
+                            <field name="start_date" />
+                            <field name="end_date" />
+                        </group>
+                        <group>
+                            <field name="employee_type" />
+                            <field name="employee_ids" widget="many2many_tags" attrs="{'invisible': [('employee_type', '!=', 'select')]}" />
+                        </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Generate" data-hotkey='g' name="action_generate" type="object" class="oe_highlight"/>
+                        <button string="Cancel" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="generate_complete_attendance_wizard_action" model="ir.actions.act_window">
+            <field name="name">Complete Attendance</field>
+            <field name="res_model">generate.complete.attendance.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+            id="generate_complete_attendance_wizard_menu"
+            name="Complete Attendance"
+            action="generate_complete_attendance_wizard_action"
+            groups="hr_attendance.group_hr_attendance_user"
+            parent="hr_attendance.menu_hr_attendance_settings"
+            sequence="10"
+        />
+    
+    </data>
+
+</odoo>

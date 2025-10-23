@@ -1,0 +1,1 @@
+from . import generate_report_payslip_wizard

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="crm_case_kanban_view_leads_inherit_no_quick_create" model="ir.ui.view">
+            <field name="name">crm.lead.view.kanban.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban" position="attributes">
+                    <attribute name="on_create"></attribute>
+                    <attribute name="quick_create_view"></attribute>
+                </xpath>
+            </field>
+        </record>
+    
+        <record id="crm_lead_view_form_inherit_crm" model="ir.ui.view">
+            <field name="name">crm.lead.view.form.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='Misc']" position="inside">
+                    <field name="analytic_account_id" readonly="1" />
+                </xpath>
+                <xpath expr="//field[@name='stage_id']" position="attributes">
+                    <attribute name="options" value=""></attribute>
+                </xpath>
+                <xpath expr="//group[@name='opportunity_partner']//field[@name='partner_id']" position="before">
+                    <field name="scope" />
+                </xpath>
+                <field name="tag_ids" position="after">
+                    <field name="salesperson_id" />
+                    <field name="source" required="1" />
+                    <field name="inquiry_number" readonly="1" attrs="{'invisible': [('inquiry_number', '=', 'New')]}"/>
+                    <field name="inquiry_count" invisible="1" />
+                    <field name="quotation_count" invisible="1" />
+                    <field name="contract_count" invisible="1" />
+                </field>
+                <xpath expr="//header" position="inside">
+                    <button string="Return Previous Stage" name="action_view_stage_change_wizard" type="object" class="oe_highlight" groups="crm_management.access_previous_stage"/>
+                    <button string="New Inquiry" name="generate_new_inquiry" type="object" class="oe_highlight" 
+                        attrs="{'invisible': [
+                            '|', '|', '|',
+                            ('inquiry_count', '>', 0), 
+                            ('quotation_count', '>', 0), 
+                            ('contract_count', '>', 0),
+                            ('stage_id', '=', %(crm_management.crm_stage_data_lost_deal)d)
+                        ]}"
+                    />
+                    <button string="Lost" name="action_set_lost" type="object" attrs="{'invisible': [('stage_id', '=', %(crm_management.crm_stage_data_lost_deal)d)]}" />
+                </xpath>
+                <xpath expr="//button[@name='action_set_won_rainbowman']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_show_potential_duplicates']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='%(crm.crm_lead_lost_action)d']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_set_lost']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="string" value="AE">AE</attribute>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page name="pic" string="PIC">
+                        <field name="pic_ids" context="{'search_default_parent_id': partner_id, 'default_parent_id': partner_id, 'default_type': 'other'}">
+                            <tree editable="bottom">
+                                <field name="name" />
+                                <field name="title" />
+                                <field name="function" />
+                                <field name="phone" />
+                                <field name="email" />
+                                <field name="mobile" />
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="stage_history" string="Stage History">
+                        <field name="history_ids" widget="one2many">
+                            <tree editable="bottom" create="false" edit="false" delete="false">
+                                <field name="opportunity_id" invisible="1" />
+                                <field name="user_id" />
+                                <field name="date" />
+                                <field name="old_stage_id" />
+                                <field name="stage_id" />
+                                <field name="reason" />
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="attachment" string="Files">
+                        <group>
+                            <field name="attachment_ids" widget="many2many_attachment_preview" />
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_show_inquiry" type="object" class="oe_stat_button" icon="fa-key">
+                        <div class="o_stat_info">
+                            <field name="inquiry_count" class="o_stat_value"/>
+                            <span class="o_stat_text"> Inquiries</span>
+                        </div>
+                    </button>
+                    <button name="action_show_order" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('order_count', '=', 0)]}" >
+                        <div class="o_stat_info">
+                            <field name="order_count" class="o_stat_value"/>
+                            <span class="o_stat_text"> Order</span>
+                        </div>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="crm_case_form_view_oppor_inherit_contract" model="ir.ui.view">
+            <field name="name">crm.lead.view.form.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="sale_crm.crm_case_form_view_oppor"/>
+            <field name="arch" type="xml">
+                <button name="action_view_sale_quotation" position="before">
+                    <button name="action_show_contract" type="object" class="oe_stat_button" icon="fa-handshake-o">
+                        <div class="o_stat_info">
+                            <field name="contract_count" class="o_stat_value"/>
+                            <span class="o_stat_text"> Contract</span>
+                        </div>
+                    </button>
+                </button>
+                <xpath expr="//button[@name='action_view_sale_order']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="crm_lead_view_form_inherit_button" model="ir.ui.view">
+            <field name="name">crm.lead.view.form.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm_iap_enrich.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='iap_enrich'][1]" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='iap_enrich'][2]" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="crm_case_form_view_oppor_inherit_button" model="ir.ui.view">
+            <field name="name">crm.lead.view.form.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="sale_crm.crm_case_form_view_oppor"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_sale_quotations_new']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="crm_case_kanban_view_leads_inherit_stage" model="ir.ui.view">
+            <field name="name">crm.lead.view.kanban.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban" position="attributes">
+                    <attribute name="records_draggable" value="false">false</attribute>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+    
+
+</odoo>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="view_kokainusa_rab_form_inherit_approval" model="ir.ui.view">
+            <field name="name">kokai.rab.view.form.inherit</field>
+            <field name="model">kokai.rab</field>
+            <field name="inherit_id" ref="ks_kokai.view_kokainusa_rab_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='oe_button_box']" position="inside">
+                    <button
+                        type="object"
+                        name="action_view_approval_request"
+                        class="oe_stat_button"
+                        attrs="{'invisible':[('approval_count', '=', 0)]}"
+                        icon="fa-list"
+                    >
+                        <field name="approval_count" string="Approval" widget="statinfo" />
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+    
+        <record id="crm_stage_data_price_query" model="crm.stage">
+            <field name="name">Price Query</field>
+            <field name="is_won">False</field>
+            <field name="fold">False</field>
+            <field name="sequence">105</field>
+        </record>
+
+    </data>
+
+</odoo>

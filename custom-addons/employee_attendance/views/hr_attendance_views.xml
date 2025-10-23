@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <menuitem
+            id="attendance_configuration_menu"
+            name="Configuration"
+            sequence="10"
+            parent="hr_attendance.menu_hr_attendance_settings"
+            action="hr_attendance.action_hr_attendance_settings"
+            groups="hr_attendance.group_hr_attendance_manager"
+        />
+
+        <record id="view_attendance_tree_inherit_value" model="ir.ui.view">
+            <field name="name">hr.attendance.view.list.inherit</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+            <field name="arch" type="xml">
+                <field name="employee_id" position="before">
+                    <field name="name" optional="hide" />
+                    <field name="description" optional="hide" />
+                    <field name="source" optional="hide" />
+                </field>
+                <field name="employee_id" position="after">
+                    <field name="user_id" optional="hide" />
+                    <field name="date" optional="hide" />
+                    <field name="company_id" optional="hide" />
+                    <field name="work_entry_type_id" optional="hide" />
+                    <field name="working_schedule_id" optional="hide" />
+                </field>
+            </field>
+        </record>
+
+        <record id="hr_attendance_view_form_inherit_custom" model="ir.ui.view">
+            <field name="name">hr.attendance.view.form.inherit</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="before">
+                    <header>
+                        <button string="Validate" name="action_validate" type="object" class="oe_highlight" states="draft"/>
+                        <button string="Reject" name="action_cancel" type="object" states="draft"/>
+                        <button string="Draft" name="action_draft" type="object" states="cancel"/>
+                        <field name="state" widget="statusbar" />
+                    </header>
+                </xpath>
+                <xpath expr="//sheet" position="inside">
+                    <group>
+                        <group>
+                            <field name="user_id" />
+                            <field name="date" />
+                            <field name="name" />
+                            <field name="counted_unit" />
+                        </group>
+                        <group>
+                            <field name="source" readonly="1" />
+                            <field name="description" />
+                            <field name="working_schedule_id" />
+                            <field name="work_entry_type_id" />
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="hr_employee_shift_view_tree" model="ir.ui.view">
+            <field name="name">hr.employee.shift.view.tree</field>
+            <field name="model">hr.employee.shift</field>
+            <field name="arch" type="xml">
+                <tree string="Employee Shift" editable="bottom">
+                    <field name="name" />
+                    <field name="start_time" widget="float_time" />
+                    <field name="end_time" widget="float_time" />
+                    <field name="day_period" />
+                    <field name="color" widget="color_picker" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_employee_shift_action" model="ir.actions.act_window">
+            <field name="name">Employee Shift</field>
+            <field name="res_model">hr.employee.shift</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="hr_employee_shift_menu"
+            name="Employee Shift"
+            action="hr_employee_shift_action"
+            parent="hr_attendance.menu_hr_attendance_settings"
+            sequence="10"
+        />
+
+
+        <record id="view_employee_form_inherit_shift" model="ir.ui.view">
+            <field name="name">hr.employee.view.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <field name="tz" position="after">
+                    <field name="employee_shift_id" />
+                </field>
+            </field>
+        </record>
+
+
+        <record id="hr_payslip_run_form_inherit_attendance" model="ir.ui.view">
+            <field name="name">hr.payslip.run.view.form.inherit</field>
+            <field name="model">hr.payslip.run</field>
+            <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button string="Generate Attendance" name="compute_attendance" type="object" class="oe_highlight" states="draft" />
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_show_attendance" type="object" class="oe_stat_button" icon="fa-list" attrs="{'invisible': [('attendance_count', '=', 0)]}">
+                        <field name="attendance_count" string="Attendance" widget="statinfo"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="hr_attendance_penalty_view_form" model="ir.ui.view">
+            <field name="name">hr.attendance.penalty.view.form</field>
+            <field name="model">hr.attendance.penalty</field>
+            <field name="arch" type="xml">
+                <form string="Attendance Penalty">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1" />
+                                <field name="employee_id" readonly="1" />
+                                <field name="attendance_id" readonly="1" />
+                                <field name="date" readonly="1" />
+                            </group>
+                            <group>
+                                <field name="type" />
+                                <field name="time" readonly="1" widget="float_time" />
+                                <field name="hard_pass" widget="boolean_toggle" attrs="{'invisible': [('hard_penalty', '=', True)]}" />
+                                <field name="hard_penalty" widget="boolean_toggle" attrs="{'invisible': [('hard_pass', '=', True)]}" />
+                                <field name="penalty_type" />
+                                <field name="penalty_amount" readonly="1" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="hr_attendance_penalty_view_tree" model="ir.ui.view">
+            <field name="name">hr.attendance.penalty.view.tree</field>
+            <field name="model">hr.attendance.penalty</field>
+            <field name="arch" type="xml">
+                <tree string="Attendance Penalty">
+                    <field name="name" />
+                    <field name="date" />
+                    <field name="employee_id" />
+                    <field name="type" />
+                    <field name="time" widget="float_time" />
+                    <field name="penalty_type" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_attendance_penalty_action" model="ir.actions.act_window">
+            <field name="name">Attendance Penalty</field>
+            <field name="res_model">hr.attendance.penalty</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="hr_attendance_penalty_menu"
+            name="Attendance Penalty"
+            action="hr_attendance_penalty_action"
+            parent="hr_attendance.menu_hr_attendance_settings"
+            sequence="10"
+        />
+
+
+        <record id="hr_work_entry_type_view_form_inherit_attendance" model="ir.ui.view">
+            <field name="name">hr.work.entry.type.view.form.inherit</field>
+            <field name="model">hr.work.entry.type</field>
+            <field name="inherit_id" ref="hr_work_entry.hr_work_entry_type_view_form"/>
+            <field name="arch" type="xml">
+                <field name="color" position="after">
+                    <field name="create_attendance" />
+                </field>
+            </field>
+        </record>
+
+
+        <record id="view_employee_form_inherit_complete_attendance" model="ir.ui.view">
+            <field name="name">hr.employee.view.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='identification_group']" position="inside">
+                    <field name="skip_complete_attendance" />
+                    <field name="have_shift" />
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

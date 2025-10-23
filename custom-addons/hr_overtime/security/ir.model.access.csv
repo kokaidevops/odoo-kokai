@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_overtime,hr_overtime,model_hr_overtime,base.group_user,1,1,1,1
+access_hr_overtime_batch,hr_overtime_batch,model_hr_overtime_batch,base.group_user,1,1,1,1
+access_overtime_type,overtime_type,model_overtime_type,base.group_user,1,1,1,1
+access_overtime_batch_line,overtime_batch_line,model_overtime_batch_line,base.group_user,1,1,1,1
+access_overtime_type_rule,overtime_type_rule,model_overtime_type_rule,base.group_user,1,1,1,1

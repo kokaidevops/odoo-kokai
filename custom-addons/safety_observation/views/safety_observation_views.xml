@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="safety_observation_view_form" model="ir.ui.view">
+            <field name="name">safety.observation.view.form</field>
+            <field name="model">safety.observation</field>
+            <field name="arch" type="xml">
+                <form string="Safety Observation">
+                    <header>
+                        <button string="Draft" name="action_draft" type="object" states="cancel"/>
+                        <button string="Done" name="action_done" type="object" class="oe_highlight" states="draft" />
+                        <button string="Cancel" name="action_cancel" type="object" states="draft" />
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1" />
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            <field name="observation_time" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            <field name="assessor_id" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            <field name="location_id" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            <field name="area_id" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            <field name="type" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            <field name="description" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            <field name="handling_action" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="safety_observation_view_tree" model="ir.ui.view">
+            <field name="name">safety.observation.view.tree</field>
+            <field name="model">safety.observation</field>
+            <field name="arch" type="xml">
+                <tree string="Safety Observation">
+                    <field name="name" />
+                    <field name="date" />
+                    <field name="assessor_id" />
+                    <field name="location_id" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="safety_observation_action" model="ir.actions.act_window">
+            <field name="name">Safety Observation</field>
+            <field name="res_model">safety.observation</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="safety_observation_menu"
+            name="Safety Observation"
+            action="safety_observation_action"
+            parent="qhse_program.hse_menu"
+            sequence="10"
+        />
+    
+    </data>
+
+</odoo>

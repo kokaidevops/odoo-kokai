@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ohs_nonconformity,access_ohs_nonconformity,model_ohs_nonconformity,base.group_user,1,1,1,1
+access_corrective_ohs_nonconformity,access_corrective_ohs_nonconformity,model_corrective_ohs_nonconformity,base.group_user,1,1,1,1
+access_preventive_ohs_nonconformity,access_preventive_ohs_nonconformity,model_preventive_ohs_nonconformity,base.group_user,1,1,1,1
+access_ohs_question,access_ohs_question,model_ohs_question,base.group_user,1,1,1,1
+access_ohs_patrol,access_ohs_patrol,model_ohs_patrol,base.group_user,1,1,1,1
+access_nonconformity_patrol,access_nonconformity_patrol,model_nonconformity_patrol,base.group_user,1,1,1,1
+

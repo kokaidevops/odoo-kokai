@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Security Group -->
+    <!-- <record id="group_product_category_template_user" model="res.groups">
+        <field name="name">Product Category Template User</field>
+        <field name="category_id" ref="base.module_category_operations_inventory"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record> -->
+
+    <record id="group_product_category_template_manager" model="res.groups">
+        <field name="name">Product Category Template Manager</field>
+        <field name="category_id" ref="base.module_category_operations_inventory"/>
+        <field name="implied_ids" eval="[(4, ref('group_product_category_template_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+
+    <!-- Access Rights -->
+    <data noupdate="1">
+        <!-- User Access (Read Only) -->
+        <record id="access_product_category_template_user" model="ir.model.access">
+            <field name="name">product.category.template.user</field>
+            <field name="model_id" ref="model_product_category_template"/>
+            <field name="group_id" ref="group_product_category_template_user"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <record id="access_product_category_template_line_user" model="ir.model.access">
+            <field name="name">product.category.template.line.user</field>
+            <field name="model_id" ref="model_product_category_template_line"/>
+            <field name="group_id" ref="group_product_category_template_user"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <!-- Manager Access (Full Access) -->
+        <record id="access_product_category_template_manager" model="ir.model.access">
+            <field name="name">product.category.template.manager</field>
+            <field name="model_id" ref="model_product_category_template"/>
+            <field name="group_id" ref="group_product_category_template_manager"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+        <record id="access_product_category_template_line_manager" model="ir.model.access">
+            <field name="name">product.category.template.line.manager</field>
+            <field name="model_id" ref="model_product_category_template_line"/>
+            <field name="group_id" ref="group_product_category_template_manager"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+    </data>
+
+    <!-- Record Rules -->
+    <record id="product_category_template_comp_rule" model="ir.rule">
+        <field name="name">Product Category Template: multi-company</field>
+        <field name="model_id" ref="model_product_category_template"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|', ('product_base_id.company_id', '=', False), ('product_base_id.company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

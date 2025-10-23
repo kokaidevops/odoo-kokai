@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="sales_target_view_form" model="ir.ui.view">
+            <field name="name">sales.target.view.form</field>
+            <field name="model">sales.target</field>
+            <field name="arch" type="xml">
+                <form string="Sales Target Achievement">
+                    <header>
+                        <button string="Draft" name="action_draft" type="object" class="oe_highlight" states="cancel" />
+                        <button string="Process" name="action_process" type="object" class="oe_highlight" states="draft" />
+                        <button string="Cancel" name="action_cancel" type="object" class="oe_highlight" states="draft" />
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" readonly="1" /></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="user_id" />
+                                <field name="team_id" invisible="1" />
+                                <field name="company_id" invisible="1" />
+                                <field name="currency_id" />
+                                <field name="start_period" />
+                                <field name="end_period" />
+                            </group>
+                            <group>
+                                <field name="target" widget="monetary" />
+                                <field name="salesperson_achieved_amount" widget="monetary" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="sales_target_view_tree" model="ir.ui.view">
+            <field name="name">sales.target.view.tree</field>
+            <field name="model">sales.target</field>
+            <field name="arch" type="xml">
+                <tree string="Sales Target Achievement">
+                    <field name="name" />
+                    <field name="user_id" />
+                    <field name="target" widget="monetary" />
+                    <field name="salesperson_achieved_amount" widget="monetary" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="sales_target_action" model="ir.actions.act_window">
+            <field name="name">Sales Target Achievement</field>
+            <field name="res_model">sales.target</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="sales_target_menu"
+            name="Sales Target Achievement"
+            action="sales_target_action"
+            sequence="10"
+            parent="sale.menu_sale_config"
+            groups="sales_achievement.group_sales_achievement_user"
+        />
+
+
+        <record id="view_employee_form_inherit_sales_target" model="ir.ui.view">
+            <field name="name">hr.employee.view.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_view_salesperson_target" type="object" class="oe_stat_button" icon="fa-trophy">
+                        <field name="salesperson_target_count" string="Target" widget="statinfo"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="hr_training_content_view_form" model="ir.ui.view">
+            <field name="name">hr.training.content.view.form</field>
+            <field name="model">hr.training.content</field>
+            <field name="arch" type="xml">
+                <form string="Content">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="description" />
+                            <field name="responsible_id" />
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+    
+        <record id="hr_training_content_view_tree" model="ir.ui.view">
+            <field name="name">hr.training.content.view.tree</field>
+            <field name="model">hr.training.content</field>
+            <field name="arch" type="xml">
+                <tree string="Content" editable="bottom">
+                    <field name="name" />
+                    <field name="description" />
+                    <field name="responsible_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_training_content_action" model="ir.actions.act_window">
+            <field name="name">Content</field>
+            <field name="res_model">hr.training.content</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="hr_training_content_menu"
+            name="Content"
+            action="hr_training_content_action"
+            parent="hr_training.configuration_root_menu"
+            sequence="10"
+        />
+    
+        <record id="hr_training_method_view_tree" model="ir.ui.view">
+            <field name="name">hr.training.method.view.tree</field>
+            <field name="model">hr.training.method</field>
+            <field name="arch" type="xml">
+                <tree string="Method" editable="bottom">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_training_method_action" model="ir.actions.act_window">
+            <field name="name">Method</field>
+            <field name="res_model">hr.training.method</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="hr_training_method_menu"
+            name="Method"
+            action="hr_training_method_action"
+            parent="hr_training.configuration_root_menu"
+            sequence="10"
+        />
+    
+    </data>
+
+</odoo>

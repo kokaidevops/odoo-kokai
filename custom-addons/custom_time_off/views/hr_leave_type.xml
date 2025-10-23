@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="edit_holiday_status_form_inherit_custom" model="ir.ui.view">
+            <field name="name">hr.leave.type.view.form.inherit</field>
+            <field name="model">hr.leave.type</field>
+            <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='allocation_validation']" position="after">
+                    <group name='configuration' string="Configuration" attrs="{'invisible': [('requires_allocation', '=', 'no')]}">
+                        <field name="range" />
+                        <field name="range_type" />
+                        <field name="duration" />
+                    </group>
+                </xpath>
+                <field name="leave_validation_type" position="after">
+                    <field name="custom_approval" widget="boolean_toggle" />
+                    <field name="can_payout" widget="boolean_toggle" />
+                </field>
+            </field>
+        </record>
+        
+        <record id="work_entry_type_leave_form_inherit_inherit_work_entry" model="ir.ui.view">
+            <field name="name">hr.leave.type.view.form.inherit</field>
+            <field name="model">hr.leave.type</field>
+            <field name="inherit_id" ref="hr_work_entry_holidays.work_entry_type_leave_form_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='payroll']" position="inside">
+                    <field name="create_work_entry" widget="boolean_toggle" />
+                    <field name="create_attendance" widget="boolean_toggle" />
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="hr_leave_view_form_inherit_approval" model="ir.ui.view">
+            <field name="name">hr.leave.view.form.inherit</field>
+            <field name="model">hr.leave</field>
+            <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <field name="approval_count" invisible="1" />
+                    <button string="Show Approval" name="action_show_approval" type="object" attrs="{'invisible': [('approval_count', '=', 0)]}"/>
+                </xpath>
+                <xpath expr="//button[@name='action_approve']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_validate']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_refuse']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//div[@name='duration_display']" position="after">
+                    <field name="number_of_days" groups="hr_holidays.group_hr_holidays_user" />
+                    <field name="actual_days" groups="hr_holidays.group_hr_holidays_user" />
+                </xpath>
+                <field name="holiday_status_id" position="attributes">
+                    <attribute name="context" operation="update">
+                        {'employee_id':employee_id, 'default_date_from':date_from, 'default_date_to':date_to, 'holiday_status_name_custom':True}
+                    </attribute>
+                </field>
+            </field>
+        </record>
+
+        
+        <record id="hr_leave_allocation_view_form_inherit_custom" model="ir.ui.view">
+            <field name="name">hr.leave.allocation.view.form.inherit</field>
+            <field name="model">hr.leave.allocation</field>
+            <field name="inherit_id" ref="hr_holidays.hr_leave_allocation_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet//group" position="inside">
+                    <group>
+                        <field name="actual_allocation" />
+                        <field name="allocation_usage" attrs="{'invisible': [('backdate_time_off', '=', True)]}" />
+                        <field name="backdate_time_off" />
+                        <field name="backdate_usage" attrs="{'invisible': [('backdate_time_off', '=', False)]}" />
+                        <field name="remaining_days" />
+                        <field name="payslip_paid" />
+                    </group>
+                </xpath>
+                <field name="holiday_status_id" position="attributes">
+                    <attribute name="context" operation="update">
+                        {'employee_id':employee_id, 'default_date_from':current_date, 'request_type':'allocation', 'holiday_status_name_custom':True}
+                    </attribute>
+                </field>
+            </field>
+        </record>
+
+
+        <record id="view_hr_payslip_form_inherit_overtime" model="ir.ui.view">
+            <field name="name">hr.payslip.view.form.inherit</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page name="time_off_input" string="Time Off">
+                        <group>
+                            <field name="calculate_leave" />
+                            <field name="holiday_status_ids" attrs="{'invisible': [('calculate_leave', '=', False)]}" widget="many2many_tags" />
+                        </group>
+                        <field name="time_off_ids" readonly="1" >
+                            <tree editable="bottom" create="False">
+                                <field name="holiday_status_id" />
+                                <field name="date_from" />
+                                <field name="date_to" />
+                                <field name="duration_display" />
+                                <field name="actual_days" />
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+                <xpath expr="//page[@name='account_info']//group//group[1]" position="inside">
+                    <field name="get_pto_payout" />
+                    <field name="pto_payout_ids" readonly="1" widget="many2many_tags" />
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

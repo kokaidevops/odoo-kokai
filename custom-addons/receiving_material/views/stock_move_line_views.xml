@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="view_picking_form_inherit_rom" model="ir.ui.view">
+            <field name="name">stock.picking.view.form.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <field name="has_rom" invisible="1" />
+                    <button string="Generate Approval" name="generate_approval_request" type="object" class="oe_highlight" attrs="{'invisible': [('has_rom', '=', False)]}"/>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_show_approval" type="object" class="oe_stat_button" icon="fa-list" attrs="{'invisible': [('approval_count', '=', 0)]}">
+                        <field name="approval_count" string="Approval" widget="statinfo"/>
+                    </button>
+                    <button name="action_show_rom" string="RoM" type="object" class="oe_stat_button" icon="fa-search-plus" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_move_form_inherit_rom" model="ir.ui.view">
+            <field name="name">stock.move.view.form.inherit</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='origin_grp']" position="after">
+                    <group string="Receiving of Material">
+                        <field name="visual" />
+                        <field name="diameter" />
+                        <field name="thick" />
+                        <field name="rom_state" />
+                        <field name="checked_by_id" invisible="1" />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_stock_move_operations_inherit_rom" model="ir.ui.view">
+            <field name="name">stock.move.view.form.inherit</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_stock_move_operations"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='next_serial']" position="before">
+                    <field name="visual" />
+                    <field name="diameter" />
+                    <field name="thick" />
+                    <field name="rom_state" />
+                    <field name="checked_by_id" invisible="1" />
+                </xpath>
+            </field>
+        </record>
+    
+        <record id="view_move_tree_inherit_rom" model="ir.ui.view">
+            <field name="name">stock.move.view.form.inherit</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="visual" optional="hide" />
+                    <field name="diameter" optional="hide" />
+                    <field name="thick" optional="hide" />
+                    <field name="rom_state" optional="hide" />
+                    <field name="checked_by_id" optional="hide" />
+                </xpath>
+            </field>
+        </record>
+    
+        <record id="view_move_line_tree_inherit_rom" model="ir.ui.view">
+            <field name="name">stock.move.line.view.form.inherit</field>
+            <field name="model">stock.move.line</field>
+            <field name="inherit_id" ref="stock.view_move_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="visual" optional="hide" />
+                    <field name="diameter" optional="hide" />
+                    <field name="thick" optional="hide" />
+                    <field name="rom_state" optional="hide" />
+                    <field name="checked_by_id" optional="hide" />
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

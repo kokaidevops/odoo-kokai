@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Batch Manufacturing Order Form View -->
+    <record id="view_batch_manufacturing_order_form" model="ir.ui.view">
+        <field name="name">batch.manufacturing.order.form</field>
+        <field name="model">batch.manufacturing.order</field>
+        <field name="arch" type="xml">
+            <form string="Batch Manufacturing Order - Smart MO Finder">
+                <header>
+                    <button name="action_find_available_mos" 
+                            string="Find Available MOs" 
+                            type="object" 
+                            class="btn-primary"
+                            attrs="{'invisible': [('mo_ids', '!=', False)]}"/>
+                    
+                    <button name="action_process_batch" 
+                            string="Process Selected MOs" 
+                            type="object" 
+                            class="btn-success"
+                            attrs="{'invisible': [('selected_mo_ids', '=', False)]}"
+                            confirm="Are you sure you want to process the selected Manufacturing Orders?"/>
+                    
+                    <button name="action_view_selected_mos" 
+                            string="View Selected MOs" 
+                            type="object" 
+                            class="btn-secondary"
+                            attrs="{'invisible': [('selected_mo_ids', '=', False)]}"/>
+                    
+                    <button name="action_detailed_availability_report" 
+                            string="Detailed Report" 
+                            type="object" 
+                            class="btn-secondary"
+                            attrs="{'invisible': [('mo_ids', '=', False)]}"/>
+                </header>
+                
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="display_name" readonly="1"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Configuration">
+                            <field name="storage_location_id" 
+                                   options="{'no_create': True, 'no_edit': True}"/>
+                            <field name="company_id" options="{'no_create': True}"/>
+                            <field name="priority_order"/>
+                            <field name="auto_reserve"/>
+                        </group>
+                    </group>
+                    
+                    <notebook attrs="{'invisible': [('mo_ids', '=', False)]}">
+                        <page string="Available Manufacturing Orders" name="available_mos">
+                            <group>
+                                <field name="mo_ids" nolabel="1" readonly="1">
+                                    <tree string="Available Manufacturing Orders" 
+                                          decoration-success="reservation_state=='assigned'"
+                                          decoration-warning="reservation_state=='partially_available'"
+                                          decoration-muted="reservation_state=='confirmed'">
+                                        <field name="name"/>
+                                        <field name="product_id"/>
+                                        <field name="product_qty"/>
+                                        <field name="product_uom_id"/>
+                                        <field name="date_planned_start"/>
+                                        <field name="state"/>
+                                        <field name="reservation_state"/>
+                                        <field name="priority"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        
+                        <page string="Selected for Processing" name="selected_mos">
+                            <group>
+                                <field name="selected_mo_ids" nolabel="1">
+                                    <tree string="Selected Manufacturing Orders" 
+                                          editable="bottom"
+                                          decoration-success="reservation_state=='assigned'"
+                                          decoration-warning="reservation_state=='partially_available'"
+                                          decoration-muted="reservation_state=='confirmed'">
+                                        <field name="name" readonly="1"/>
+                                        <field name="product_id" readonly="1"/>
+                                        <field name="product_qty" readonly="1"/>
+                                        <field name="product_uom_id" readonly="1"/>
+                                        <field name="date_planned_start" readonly="1"/>
+                                        <field name="state" readonly="1"/>
+                                        <field name="reservation_state" readonly="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        
+                        <page string="Availability Check Results" name="check_results">
+                            <group>
+                                <field name="check_result" nolabel="1" readonly="1" 
+                                       widget="text" 
+                                       attrs="{'invisible': [('check_result', '=', False)]}"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Batch Manufacturing Order Tree View -->
+    <record id="view_batch_manufacturing_order_tree" model="ir.ui.view">
+        <field name="name">batch.manufacturing.order.tree</field>
+        <field name="model">batch.manufacturing.order</field>
+        <field name="arch" type="xml">
+            <tree string="Batch Manufacturing Orders">
+                <field name="storage_location_id"/>
+                <field name="company_id"/>
+                <field name="priority_order"/>
+                <field name="auto_reserve"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action for Batch Manufacturing Order -->
+    <record id="action_batch_manufacturing_order" model="ir.actions.act_window">
+        <field name="name">Batch Manufacturing Order</field>
+        <field name="res_model">batch.manufacturing.order</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_batch_manufacturing_order_form"/>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem id="menu_batch_manufacturing_order"
+              name="Batch MO Finder"
+              parent="mrp.menu_mrp_manufacturing"
+              action="action_batch_manufacturing_order"
+              sequence="15"/>
+
+    <!-- Server Action for Quick Access -->
+    <record id="server_action_batch_mo_finder" model="ir.actions.server">
+        <field name="name">Smart MO Finder</field>
+        <field name="model_id" ref="model_batch_manufacturing_order"/>
+        <field name="binding_model_id" ref="mrp.model_mrp_production"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    action = {
+        'type': 'ir.actions.act_window',
+        'name': 'Smart MO Finder',
+        'res_model': 'batch.manufacturing.order',
+        'view_mode': 'form',
+        'target': 'new',
+        'context': {
+            'default_company_id': env.company.id,
+        }
+    }
+        </field>
+    </record>
+
+</odoo>

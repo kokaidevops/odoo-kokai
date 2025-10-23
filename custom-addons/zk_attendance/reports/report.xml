@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <data>
+    
+        <report
+            id="action_report_employee_attendance_xlsx"
+            model="employee.attendance.wizard"
+            string="Employee Attendance"
+            report_type="xlsx"
+            name="zk_attendance.report_employee_attendance_xlsx"
+            file="zk_attendance.report_employee_attendance_xlsx"
+            attachment_use="False"
+            menu = "False"
+        />
+    
+    </data>
+
+</odoo>

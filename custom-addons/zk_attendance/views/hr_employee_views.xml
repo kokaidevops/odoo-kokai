@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="view_employee_form_inherit_fingerprint" model="ir.ui.view">
+            <field name="name">hr.employee.view.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page name="fingerprint" string="Device">
+                        <field name="fingerprint_ids" context="{'default_employee_id': active_id}">
+                            <tree editable="bottom">
+                                <field name="employee_id" invisible="1" />
+                                <field name="device_id" />
+                                <field name="pin" />
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

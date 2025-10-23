@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Wizard Form View -->
+    <record id="view_account_budget_pnl_report_form" model="ir.ui.view">
+        <field name="name">account.budget.pnl.report.form</field>
+        <field name="model">account.budget.pnl.report</field>
+        <field name="arch" type="xml">
+            <form string="Generate PnL Budget vs Actual Report">
+                <sheet>
+                    <div class="alert alert-info" role="alert">
+                        <p><b>This report will generate:</b></p>
+                        <ul>
+                            <li>Planning (Budget) amounts from approved budgets</li>
+                            <li>Actual amounts from realized budget lines</li>
+                            <li>Variance calculation (Actual - Planning)</li>
+                            <li>Percentage achievement (Actual / Planning)</li>
+                        </ul>
+                    </div>
+                    <group>
+                        <group string="Period">
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group string="Filters">
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="budget_ids" widget="many2many_tags" 
+                                   options="{'no_create': True, 'no_create_edit': True}"
+                                   />
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_generate_excel" 
+                            string="Generate Excel Report" 
+                            type="object" 
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for wizard -->
+    <record id="action_account_budget_pnl_report" model="ir.actions.act_window">
+        <field name="name">PnL Report from Budget</field>
+        <field name="res_model">account.budget.pnl.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_account_budget_pnl_report_form"/>
+    </record>
+
+    <!-- Download action -->
+    <record id="action_download_pnl_report" model="ir.actions.act_url">
+        <field name="name">Download PnL Report</field>
+        <field name="url">/web/content/account.budget.pnl.report/%(id)s/file_data/%(file_name)s?download=true</field>
+        <field name="target">self</field>
+    </record>
+
+    <!-- Menu item under Accounting > Reporting -->
+    <menuitem id="menu_account_budget_pnl_report"
+              name="PnL from Budget"
+              parent="account.menu_finance_reports"
+              action="action_account_budget_pnl_report"
+              sequence="50"/>
+
+    <!-- Alternative: Add to Budget menu -->
+    <!-- <menuitem id="menu_budget_pnl_report"
+              name="PnL Excel Report"
+              parent="account_budget.menu_act_crossovered_budget_view"
+              action="action_account_budget_pnl_report"
+              sequence="100"/> -->
+
+    <!-- ===== Extended Views for Budgetary Position ===== -->
+    
+    <!-- Add PnL Category field to Budgetary Position form -->
+    <record id="view_budget_post_form_pnl" model="ir.ui.view">
+        <field name="name">account.budget.post.form.pnl</field>
+        <field name="model">account.budget.post</field>
+        <field name="inherit_id" ref="account_budget.view_budget_post_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='account_ids']" position="before">
+                <group string="PnL Configuration">
+                    <field name="pnl_category"/>
+                    <field name="is_income" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add PnL Category to tree view -->
+    <record id="view_budget_post_tree_pnl" model="ir.ui.view">
+        <field name="name">account.budget.post.tree.pnl</field>
+        <field name="model">account.budget.post</field>
+        <field name="inherit_id" ref="account_budget.view_budget_post_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="pnl_category" optional="show"/>
+                <field name="is_income" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Search view with PnL filters -->
+    <record id="view_budget_post_search_pnl" model="ir.ui.view">
+        <field name="name">account.budget.post.search.pnl</field>
+        <field name="model">account.budget.post</field>
+        <field name="inherit_id" ref="account_budget.view_budget_post_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter string="Income" name="filter_income" 
+                        domain="[('is_income', '=', True)]"/>
+                <filter string="Expense" name="filter_expense" 
+                        domain="[('is_income', '=', False)]"/>
+                <separator/>
+                <filter string="Operating Income" name="filter_operating_income" 
+                        domain="[('pnl_category', '=', 'operating_income')]"/>
+                <filter string="Cost of Revenue" name="filter_cost_revenue" 
+                        domain="[('pnl_category', '=', 'cost_of_revenue')]"/>
+                <filter string="Operating Expense" name="filter_operating_expense" 
+                        domain="[('pnl_category', '=', 'operating_expense')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="PnL Category" name="group_pnl_category" 
+                            context="{'group_by': 'pnl_category'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

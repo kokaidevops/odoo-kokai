@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- tree View -->
+                            <!-- attrs="{'invisible': [('stock_status', 'not in', ['partial_available', 'need_purchase'])]}" -->
+
+
+    <record id="view_kokai_rab_line_tree" model="ir.ui.view">
+        <field name="name">kokai.rab.line.tree</field>
+        <field name="model">kokai.rab.line</field>
+        <field name="arch" type="xml">
+            <tree string="RAB Lines" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="product_id"/>
+                <!-- <field name="name"/> -->
+                <field name="quantity"/>
+                <field name="unit_id"/>
+                <field name="cost_price"/>
+                <field name="subtotal" sum="Total"/>
+                <field name="stock_status" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_project_rab_tree" model="ir.ui.view">
+        <field name="name">project.rab.tree</field>
+        <field name="model">kokai.rab</field>
+        <field name="arch" type="xml">
+            <tree string="RAB tree" decoration-success="state == 'approved'" 
+                  decoration-warning="state == 'submitted'" 
+                  decoration-danger="state == 'rejected'"
+                  create="false">
+                <field name="name"/>
+                <!-- <field name="project_id"/> -->
+                <field name="customer_id"/>
+                <field name="date"/>
+                <field name="total_amount" widget="monetary"/>
+                <field name="stock_status" widget="badge" 
+                       decoration-success="stock_status == 'all_available'"
+                       decoration-warning="stock_status == 'partial_available'"
+                       decoration-danger="stock_status == 'need_purchase'"/>
+                <field name="state" widget="badge" 
+                       decoration-success="state == 'approved'"
+                       decoration-info="state == 'submitted'"
+                       decoration-warning="state == 'revised'"
+                       decoration-danger="state == 'rejected'"/>
+                <!-- <field name="currency_id" invisible="1"/> -->
+                <field name="so_number"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_kokainusa_rab_form" model="ir.ui.view">
+        <field name="name">project.rab.form</field>
+        <field name="model">kokai.rab</field>
+        <field name="arch" type="xml">
+            <form string="RAB Form">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" 
+                            class="btn-primary" 
+                            attrs="{'invisible': [('state', 'in', ['approved', 'rejected'])]}"                            
+                            />
+                    <button name="action_approve" string="Approve" type="object" 
+                            class="btn-success"  
+                            groups="ks_kokai.group_rab_manager"
+                            attrs="{'invisible': [('state', 'in', ['draft', 'approved', 'rejected', 'revised'])]}"                            
+                            />
+                    <button name="action_reject" string="Reject" type="object" 
+                            class="btn-danger" 
+                            attrs="{'invisible': [('state', 'in', ['draft', 'approved', 'rejected', 'revised'])]}"
+                            groups="ks_kokai.group_rab_manager"/>
+                    <button name="action_revise" string="Request Revision" type="object" 
+                            groups="ks_kokai.group_rab_manager"/>
+                    <button name="action_set_to_draft" string="Set to Draft" type="object" 
+                            />
+                    <button name="action_calculate" string="Calculate" type="object" 
+                            class="btn-primary" />
+                    <button name="action_create_purchase_request" 
+                            string="Create Purchase Request" 
+                            type="object"
+                            states="approved"
+                            class="btn-primary"
+                        />
+
+                    <field name="state" widget="statusbar" 
+                           statusbar_visible="draft,submitted,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <div class="oe_button_box" name="button_box">
+                        <!-- Purchase Request Button -->
+                        <button class="oe_stat_button" 
+                                name="action_view_purchase_requests"
+                                type="object"
+                                icon="fa-shopping-cart"
+                                attrs="{'invisible': [('purchase_request_count', '=', 0)]}">
+                            <field name="purchase_request_count" widget="statinfo" string="Purchase Request"/>
+                        </button>
+                        
+                        <!-- Stock Status Button -->
+                        <button class="oe_stat_button" 
+                                icon="fa-cubes"
+                                attrs="{'invisible': [('stock_status', '=', 'not_checked')]}">
+                            <div class="o_stat_info">
+                                <field name="stock_status" class="o_stat_value" widget="badge" 
+                                    decoration-success="stock_status == 'all_available'"
+                                    decoration-warning="stock_status == 'partial_available'"
+                                    decoration-danger="stock_status == 'need_purchase'"/>
+                                <span class="o_stat_text">Stock Status</span>
+                            </div>
+                        </button>
+                        
+                        <!-- Total Lines Button -->
+                        <button class="oe_stat_button" 
+                                name="action_view_rab_lines"
+                                type="object"
+                                icon="fa-list">
+                            <div class="o_stat_info">
+                                <field name="line_count" class="o_stat_value"/>
+                                <span class="o_stat_text">Lines</span>
+                            </div>
+                        </button>
+                        
+                        <!-- Total Amount Button -->
+                        <button class="oe_stat_button" 
+                                icon="fa-money">
+                            <div class="o_stat_info">
+                                <field name="total_amount" class="o_stat_value" widget="monetary"/>
+                                <span class="o_stat_text">Total</span>
+                            </div>
+                        </button>
+                        
+                        <!-- Total Cost Button (if manager) -->
+                        <button class="oe_stat_button" 
+                                icon="fa-calculator"
+                                groups="ks_kokai.group_rab_manager">
+                            <div class="o_stat_info">
+                                <field name="total_cost_price" class="o_stat_value" widget="monetary" invisible="1"/>
+                                <span class="o_stat_value">
+                                    <field name="total_cost_percentage" nolabel="1"/>%
+                                </span>
+                                <span class="o_stat_text">Cost Ratio</span>
+                            </div>
+                        </button>
+                    </div>
+
+
+
+
+                    <group>
+                        <group name="left_group">
+                            <!-- <field name="project_id" options="{'no_create': True}"/> -->
+                            <field name="project"/>
+                            <field name="customer_id" options="{'no_create': True}"/>
+                            <field name="date"/>
+                            <!-- <field name="valid_until"/> -->
+                        </group>
+                        <group name="right_group">
+                            <!-- <field name="finished_goods" /> -->
+                            <!-- <field name="currency_id" groups="base.group_multi_currency"/> -->
+                            <!-- <field name="margin_percentage"/> -->
+                            <!-- <field name="last_stock_check" readonly="1"/> -->
+                            <label for="finished_goods"/>
+                            <div class="o_row">
+                                <field name="finished_goods" nolabel="1"/>
+                                <!-- <button name="action_show_wizard_generate_product" 
+                                        string="Create Finished Goods" 
+                                        type="object" 
+                                        class="btn-primary"
+                                        icon="fa-magic"/> -->
+                            </div>                            
+                            <field name="quantity"/>
+                            <field name="product_uom"/>
+                            <field name="approved_by"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Rincian Biaya" name="rab_lines">
+                            <field name="rab_line_ids">
+                                <tree string="RAB Lines" editable="bottom" mode="tree">
+                                    <control>
+                                        <create string="Add a product"/>
+                                        <!-- <create string="Add a section" context="{'default_display_type': 'line_section'}"/>
+                                        <create string="Add a note" context="{'default_display_type': 'line_note'}"/> -->
+                                    </control>                                      
+                                    <!-- <control>
+                                        <create name="add_product_control" string="Add a product"/>
+                                        <create name="add_section_control" string="Add a section" context="{'default_display_type': 'line_section'}"/>
+                                        <create name="add_note_control" string="Add a note" context="{'default_display_type': 'line_note'}"/>
+                                    </control> -->
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="category_id" options="{'no_create': True}"/>
+                                    <field name="product_id"/>
+                                    <field name="description"/>
+                                    <field name="quantity"/>
+                                    <field name="unit_id" options="{'no_create': True}"/>
+                                    <field name="stock_available" readonly="1"/>
+                                    <field name="stock_status" widget="badge"/>
+                                    <!-- <field name="cost_price" readonly="1" groups="ks_kokai.group_rab_manager"/> -->
+                                    <field name="unit_price" string="Cost Price"/>
+                                    <field name="margin_percentage" readonly="1" groups="ks_kokainusa.group_rab_manager"/>
+                                    <field name="subtotal" readonly="1" widget="monetary"/>
+                                    <field name="purchase_state" 
+                                                widget="badge"
+                                                decoration-success="purchase_state == 'done'"
+                                                decoration-warning="purchase_state == 'partial'"
+                                                decoration-info="purchase_state == 'approved'"
+                                                decoration-secondary="purchase_state == 'requested'"/>
+                                    <button name="action_view_purchase_request_lines" 
+                                            type="object" 
+                                            icon="fa-list-alt" 
+                                            string="View PR"
+                                            attrs="{'invisible': [('purchase_state', '=', 'none')]}"
+                                            class="oe_link"/>
+                                    <button name="action_create_purchase_request" 
+                                            type="object" 
+                                            icon="fa-plus" 
+                                            string="Create PR"
+                                            attrs="{'invisible': [('purchase_state', '!=', 'none')]}"
+                                            class="oe_link"/>                                   
+                                    <!-- <field name="currency_id" invisible="1"/>
+                                    <field name="reason"/> -->
+                                </tree>
+                                <form string="RAB Line">
+                                    <group>
+                                        <group>
+                                            <field name="category_id"/>
+                                            <field name="product_id"/>
+                                            <field name="description"/>
+                                            <field name="quantity"/>
+                                            <field name="unit_id"/>
+                                        </group>
+                                        <group>
+                                            <field name="unit_price"/>
+                                            <field name="cost_price" readonly="1"/>
+                                            <field name="margin_percentage" readonly="1"/>
+                                            <field name="subtotal" readonly="1"/>
+                                        </group>
+                                    </group>
+                                    <group string="Stock Information">
+                                        <group>
+                                            <field name="is_stockable" readonly="1"/>
+                                            <field name="stock_available" readonly="1"/>
+                                            <field name="stock_forecast" readonly="1"/>
+                                            <field name="stock_status" readonly="1"/>
+                                        </group>
+                                        <group>
+                                            <field name="supplier_id"/>
+                                            <field name="vendor_price"/>
+                                            <field name="lead_time"/>
+                                            <field name="min_qty"/>
+                                        </group>
+                                    </group>
+                                    <group string="Cost Analysis" groups="ks_kokai.group_rab_manager">
+                                        <field name="last_purchase_price" readonly="1"/>
+                                        <field name="average_price" readonly="1"/>
+                                        <field name="margin_amount" readonly="1"/>
+                                    </group>
+                                    <field name="notes" placeholder="Additional notes..."/>
+                                </form>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="subtotal_amount" widget="monetary"/>
+                                <field name="margin_amount" widget="monetary"/>
+                                <field name="tax_amount" widget="monetary"/>
+                                <div class="oe_subtotal_footer_separator oe_inline">
+                                    <label for="total_amount"/>
+                                </div>
+                                <field name="total_amount" nolabel="1" 
+                                       class="oe_subtotal_footer_separator" 
+                                       widget="monetary"/>
+                            </group>
+                            <field name="notes" placeholder="Terms and conditions..."/>
+                        </page>
+                        
+                        <!-- <page string="Stock Analysis" name="stock_analysis">
+                            <group>
+                            </group>
+                            <field name="rab_line_ids" readonly="1">
+                                <tree string="Stock Status" create="false" delete="false">
+                                    <field name="product_id"/>
+                                    <field name="description"/>
+                                    <field name="quantity"/>
+                                    <field name="stock_available"/>
+                                    <field name="stock_forecast"/>
+                                    <field name="stock_status" widget="badge"/>
+                                    <field name="supplier_id"/>
+                                    <field name="lead_time"/>
+                                </tree>
+                            </field>
+                        </page> -->
+                        
+                        <page string="Cost Analysis" name="cost_analysis" 
+                              groups="ks_kokai.group_rab_manager">
+                            <group string="Summary">
+                                <group>
+                                    <field name="subtotal_amount" widget="monetary"/>
+                                    <field name="margin_percentage"/>
+                                    <field name="margin_amount" widget="monetary"/>
+                                </group>
+                                <group>
+                                    <field name="tax_amount" widget="monetary"/>
+                                    <field name="total_amount" widget="monetary"/>
+                                </group>
+                            </group>
+                            <!-- <field name="rab_line_ids" readonly="1">
+                                <tree string="Cost Details" create="false" delete="false">
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                    <field name="cost_price"/>
+                                    <field name="unit_price"/>
+                                    <field name="margin_amount"/>
+                                    <field name="margin_percentage"/>
+                                    <field name="subtotal" widget="monetary"/>
+                                </tree>
+                            </field> -->
+                        </page>
+                        
+                        <page string="Attachments" name="attachments">
+                            <field name="attachment_ids" widget="many2many_binary"/>
+                        </page>
+                        <page string="Other Information" name="other_information">
+                            <group>
+                                <group name="other_information" string="Other Information">
+                                    <field name="user_id"/>
+                                    <field name="partner_id"/>
+                                    <field name="company_id"/>
+                                    <field name="so_number"/>
+                                    <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>            
+
+
+    <!-- Form View -->
+    <!-- <record id="view_project_rab_form" model="ir.ui.view">
+        <field name="name">project.rab.form</field>
+        <field name="model">kokai.rab</field>
+        <field name="arch" type="xml">
+            <form string="RAB Form">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" 
+                            class="btn-primary" states="draft,revised"/>
+                    <button name="action_approve" string="Approve" type="object" 
+                            class="btn-success" states="submitted" 
+                            groups="ks_kokainusa.group_rab_manager"/>
+                    <button name="action_reject" string="Reject" type="object" 
+                            class="btn-danger" states="submitted"
+                            groups="ks_kokainusa.group_rab_manager"/>
+                    <button name="action_revise" string="Request Revision" type="object" 
+                            states="submitted,approved"
+                            groups="ks_kokainusa.group_rab_manager"/>
+                    <button name="action_set_to_draft" string="Set to Draft" type="object" 
+                            states="rejected,expired"/>
+                    <button name="action_check_stock" string="Check Stock" type="object" 
+                            class="btn-info" states="draft,submitted,approved"/>
+                    <field name="state" widget="statusbar" 
+                           statusbar_visible="draft,submitted,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_rab_stock_check)d" type="action" 
+                                class="oe_stat_button" icon="fa-cubes">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="stock_status"/>
+                                </span>
+                                <span class="o_stat_text">Stock Status</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="left_group">
+                            <field name="project_id" options="{'no_create': True}"/>
+                            <field name="customer_id" options="{'no_create': True}"/>
+                            <field name="date"/>
+                            <field name="valid_until"/>
+                        </group>
+                        <group name="right_group">
+                            <field name="currency_id" groups="base.group_multi_currency"/>
+                            <field name="margin_percentage"/>
+                            <field name="last_stock_check" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Rincian Biaya" name="rab_lines">
+                            <field name="rab_line_ids" widget="section_and_note_one2many">
+                                <tree string="RAB Lines" editable="bottom" 
+                                      decoration-warning="stock_status == 'partial'"
+                                      decoration-danger="stock_status == 'out_of_stock'">
+                                    <control>
+                                        <create name="add_product_control" string="Add a product"/>
+                                        <create name="add_section_control" string="Add a section" context="{'default_display_type': 'line_section'}"/>
+                                        <create name="add_note_control" string="Add a note" context="{'default_display_type': 'line_note'}"/>
+                                    </control>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="category_id" options="{'no_create': True}"/>
+                                    <field name="product_id"/>
+                                    <field name="description"/>
+                                    <field name="quantity"/>
+                                    <field name="unit_id" options="{'no_create': True}"/>
+                                    <field name="stock_available" readonly="1"/>
+                                    <field name="stock_status" widget="badge"/>
+                                    <field name="cost_price" readonly="1" groups="project_rab.group_rab_manager"/>
+                                    <field name="unit_price"/>
+                                    <field name="margin_percentage" readonly="1" groups="project_rab.group_rab_manager"/>
+                                    <field name="subtotal" readonly="1" widget="monetary"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </tree>
+                                <form string="RAB Line">
+                                    <group>
+                                        <group>
+                                            <field name="category_id"/>
+                                            <field name="product_id"/>
+                                            <field name="description"/>
+                                            <field name="quantity"/>
+                                            <field name="unit_id"/>
+                                        </group>
+                                        <group>
+                                            <field name="unit_price"/>
+                                            <field name="cost_price" readonly="1"/>
+                                            <field name="margin_percentage" readonly="1"/>
+                                            <field name="subtotal" readonly="1"/>
+                                        </group>
+                                    </group>
+                                    <group string="Stock Information">
+                                        <group>
+                                            <field name="is_stockable" readonly="1"/>
+                                            <field name="stock_available" readonly="1"/>
+                                            <field name="stock_forecast" readonly="1"/>
+                                            <field name="stock_status" readonly="1"/>
+                                        </group>
+                                        <group>
+                                            <field name="supplier_id"/>
+                                            <field name="vendor_price"/>
+                                            <field name="lead_time"/>
+                                            <field name="min_qty"/>
+                                        </group>
+                                    </group>
+                                    <group string="Cost Analysis" groups="project_rab.group_rab_manager">
+                                        <field name="last_purchase_price" readonly="1"/>
+                                        <field name="average_price" readonly="1"/>
+                                        <field name="margin_amount" readonly="1"/>
+                                    </group>
+                                    <field name="notes" placeholder="Additional notes..."/>
+                                </form>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="subtotal_amount" widget="monetary"/>
+                                <field name="margin_amount" widget="monetary"/>
+                                <field name="tax_amount" widget="monetary"/>
+                                <div class="oe_subtotal_footer_separator oe_inline">
+                                    <label for="total_amount"/>
+                                </div>
+                                <field name="total_amount" nolabel="1" 
+                                       class="oe_subtotal_footer_separator" 
+                                       widget="monetary"/>
+                            </group>
+                            <field name="notes" placeholder="Terms and conditions..."/>
+                        </page>
+                        
+                        <page string="Stock Analysis" name="stock_analysis">
+                            <group>
+                                <button name="action_check_stock" string="Refresh Stock" 
+                                        type="object" class="btn-primary"/>
+                            </group>
+                            <field name="rab_line_ids" readonly="1">
+                                <tree string="Stock Status" create="false" delete="false">
+                                    <field name="product_id"/>
+                                    <field name="description"/>
+                                    <field name="quantity"/>
+                                    <field name="stock_available"/>
+                                    <field name="stock_forecast"/>
+                                    <field name="stock_status" widget="badge"/>
+                                    <field name="supplier_id"/>
+                                    <field name="lead_time"/>
+                                </tree>
+                            </field>
+                        </page>
+                        
+                        <page string="Cost Analysis" name="cost_analysis" 
+                              groups="ks_kokainusa.group_rab_manager">
+                            <group string="Summary">
+                                <group>
+                                    <field name="subtotal_amount" widget="monetary"/>
+                                    <field name="margin_percentage"/>
+                                    <field name="margin_amount" widget="monetary"/>
+                                </group>
+                                <group>
+                                    <field name="tax_amount" widget="monetary"/>
+                                    <field name="total_amount" widget="monetary"/>
+                                </group>
+                            </group>
+                            <field name="rab_line_ids" readonly="1">
+                                <tree string="Cost Details" create="false" delete="false">
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                    <field name="cost_price"/>
+                                    <field name="unit_price"/>
+                                    <field name="margin_amount"/>
+                                    <field name="margin_percentage"/>
+                                    <field name="subtotal" widget="monetary"/>
+                                </tree>
+                            </field>
+                        </page>
+                        
+                        <page string="Attachments" name="attachments">
+                            <field name="attachment_ids" widget="many2many_binary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record> -->
+
+    <!-- Search View -->
+    <record id="view_project_rab_search" model="ir.ui.view">
+        <field name="name">project.rab.search</field>
+        <field name="model">kokai.rab</field>
+        <field name="arch" type="xml">
+            <search string="Search RAB">
+                <field name="name"/>
+                <!-- <field name="project_id"/> -->
+                <field name="customer_id"/>
+                <separator/>
+                <filter string="Draft" name="draft" 
+                        domain="[('state', '=', 'draft')]"/>
+                <filter string="Submitted" name="submitted" 
+                        domain="[('state', '=', 'submitted')]"/>
+                <filter string="Approved" name="approved" 
+                        domain="[('state', '=', 'approved')]"/>
+                <separator/>
+                <filter string="Stock Available" name="stock_available" 
+                        domain="[('stock_status', '=', 'all_available')]"/>
+                <filter string="Need Purchase" name="need_purchase" 
+                        domain="[('stock_status', '=', 'need_purchase')]"/>
+                <separator/>
+                <filter string="My RABs" name="my_rabs" 
+                        domain="[('create_uid', '=', uid)]"/>
+                <group expand="0" string="Group By">
+                    <!-- <filter string="Project" name="group_project" 
+                            context="{'group_by': 'project_id'}"/> -->
+                    <filter string="Customer" name="group_customer" 
+                            context="{'group_by': 'customer_id'}"/>
+                    <filter string="Status" name="group_state" 
+                            context="{'group_by': 'state'}"/>
+                    <filter string="Stock Status" name="group_stock" 
+                            context="{'group_by': 'stock_status'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="view_project_rab_kanban" model="ir.ui.view">
+        <field name="name">project.rab.kanban</field>
+        <field name="model">kokai.rab</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" sample="1" create="false">
+                <field name="name"/>
+                <!-- <field name="project_id"/> -->
+                <field name="customer_id"/>
+                <field name="total_amount"/>
+                <field name="state"/>
+                <field name="stock_status"/>
+                <field name="currency_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top mb16">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="name"/>
+                                    </strong>
+                                </div>
+                                <field name="state" widget="label_selection" 
+                                       options="{'classes': {'draft': 'default', 
+                                               'submitted': 'primary', 
+                                               'approved': 'success',
+                                               'rejected': 'danger'}}"/>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <!-- <div class="text-muted">
+                                    <field name="project_id"/>
+                                </div> -->
+                                <div>
+                                    <field name="customer_id"/>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left">
+                                    <field name="stock_status" widget="badge"/>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <field name="total_amount" widget="monetary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_project_rab" model="ir.actions.act_window">
+        <field name="name">RAB</field>
+        <field name="res_model">kokai.rab</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="search_view_id" ref="view_project_rab_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first RAB
+            </p>
+            <p>
+                Manage your project cost estimation with detailed breakdown
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_project_rab_root" 
+              name="Project RAB" 
+              web_icon="ks_kokai,static/description/icon.png"
+              sequence="10"/>
+              
+    <menuitem id="menu_project_rab" 
+              name="RAB" 
+              parent="menu_project_rab_root"
+              action="action_project_rab"
+              sequence="10"/>
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="department_team_view_form_inherit_hr_job" model="ir.ui.view">
+            <field name="name">department.team.view.form.inherit</field>
+            <field name="model">department.team</field>
+            <field name="inherit_id" ref="department_detail.department_team_view_form"/>
+            <field name="arch" type="xml">
+                <field name="company_id" position="after">
+                    <field name="job_id" />
+                </field>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

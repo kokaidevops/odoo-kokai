@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="helpdesk_team_data_maintenance_team" model="helpdesk.team">
+            <field name="name">Maintenance Team</field>
+            <field name="privacy_visibility">internal</field>
+        </record>
+    
+    </data>
+
+</odoo>

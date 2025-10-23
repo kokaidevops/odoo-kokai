@@ -1,0 +1,35 @@
+{
+    'name': 'Price Query Form',
+    'version': '16.0',
+    'summary': 'Price Query Form to Request Specifications, Price and Drawing Sheet of Items in Lead',
+    'author': 'github.com/zdni',
+    'license': 'LGPL-3',
+    'category': 'Sales',
+    'depends': [
+        'approvals_portal',
+        'approvals',
+        'approvals_position',
+        'approvals_refused_reason',
+        'crm_management', 
+        'custom_activity',
+        'engineering_aspects',
+        'product_variant_configurator',
+        'approvals_evidence', 
+        'sale', 
+        'sequence_reset_period',
+        'stock',
+    ],
+    'data': [
+        'data/data.xml',
+        'data/ir_sequence.xml',
+
+        'security/ir.model.access.csv',
+
+        'views/crm_lead_views.xml',
+        'views/mrp_views.xml',
+        'views/price_query_views.xml',
+        'views/sale_order_views.xml',
+    ],
+    'auto_install': False,
+    'application': False,
+}

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="purchase_order_line_view_form_bundle" model="ir.ui.view">
+            <field name="name">purchase.order.line.view.form</field>
+            <field name="model">purchase.order.line</field>
+            <field name="arch" type="xml">
+                <form string="PO Line Bundle">
+                    <sheet>
+                        <group>
+                            <field name="bundle_ids" string="Bundle">
+                                <tree editable="bottom">
+                                    <field name="line_id" readonly="1" />
+                                    <field name="product_id" />
+                                    <field name="qty_uom" />
+                                    <field name="uom_id" />
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="purchase_order_line_show_bundle_action" model="ir.actions.act_window">
+            <field name="name">PO Line Bundle</field>
+            <field name="res_model">purchase.order.line</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+
+        <record id="purchase_order_line_bundle_view_form" model="ir.ui.view">
+            <field name="name">purchase.order.line.bundle.view.form</field>
+            <field name="model">purchase.order.line.bundle</field>
+            <field name="arch" type="xml">
+                <form string="Product Bundle">
+                    <sheet>
+                        <group>
+                            <field name="line_id" readonly="1" />
+                            <field name="product_id" />
+                            <field name="qty_uom" />
+                            <field name="uom_id" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="purchase_order_line_bundle_view_tree" model="ir.ui.view">
+            <field name="name">purchase.order.line.bundle.view.tree</field>
+            <field name="model">purchase.order.line.bundle</field>
+            <field name="arch" type="xml">
+                <tree string="Product Bundle">
+                    <field name="line_id" readonly="1" />
+                    <field name="product_id" />
+                    <field name="qty_uom" />
+                    <field name="uom_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="purchase_order_line_bundle_action" model="ir.actions.act_window">
+            <field name="name">Product Bundle</field>
+            <field name="res_model">purchase.order.line.bundle</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+
+        <record id="purchase_order_form_inherit_bundle" model="ir.ui.view">
+            <field name="name">purchase.order.view.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']//tree" position="inside">
+                    <button 
+                        name="action_show_bundle"
+                        type="object"
+                        icon="fa-cubes" 
+                        title="Bundle" 
+                        width="0.1" 
+                        options="{&quot;warn&quot;: true}"
+                    />
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

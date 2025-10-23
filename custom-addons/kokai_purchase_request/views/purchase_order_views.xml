@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="purchase_order_form_inherit_custom" model="ir.ui.view">
+            <field name="name">purchase.order.view.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']" position="attributes">
+                    <attribute name="attrs" value="{'readonly': [('state', '=', 'purchase')]}">{'readonly': [('state', '=', 'purchase')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="readonly" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page name="source" string="Source Documents">
+                        <field name="request_ids" readonly="1">
+                            <tree>
+                                <field name="name" />
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase_order_view_form_inherit_inherit_custom" model="ir.ui.view">
+            <field name="name">purchase.order.view.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase_stock.purchase_order_view_form_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                    <attribute name="readonly" value="1">1</attribute>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

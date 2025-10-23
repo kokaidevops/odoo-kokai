@@ -1,0 +1,11 @@
+<odoo>
+    <data noupdate="1">
+
+        <record id="hr_allowance_overtime_package" model="hr.allowance">
+            <field name="name">Overtime Package</field>
+            <field name="code">OT_PACKAGE</field>
+            <field name="sequence" eval="100"/>
+        </record>
+
+    </data>
+</odoo>

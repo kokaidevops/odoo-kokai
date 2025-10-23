@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <menuitem
+            id="document_root_menu"
+            name="Documents"
+            parent="base.menu_administration"
+            sequence="10"
+        />
+
+
+        <record id="base_document_type_view_form" model="ir.ui.view">
+            <field name="name">base.document.type.view.form</field>
+            <field name="model">base.document.type</field>
+            <field name="arch" type="xml">
+                <form string="Document Type">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" /></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="code" />
+                                <field name="set_notify" />
+                            </group>
+                            <group attrs="{'invisible': [('set_notify', '=', False)]}">
+                                <field name="value" />
+                                <field name="range" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="base_document_type_view_tree" model="ir.ui.view">
+            <field name="name">base.document.type.view.tree</field>
+            <field name="model">base.document.type</field>
+            <field name="arch" type="xml">
+                <tree string="Document Type">
+                    <field name="name" />
+                    <field name="set_notify" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="base_document_type_action" model="ir.actions.act_window">
+            <field name="name">Document Type</field>
+            <field name="res_model">base.document.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="base_document_type_menu"
+            name="Document Type"
+            action="base_document_type_action"
+            parent="document_expiry.document_root_menu"
+            sequence="10"
+        />
+
+
+        <record id="base_document_view_form" model="ir.ui.view">
+            <field name="name">base.document.view.form</field>
+            <field name="model">base.document</field>
+            <field name="arch" type="xml">
+                <form string="Document">
+                    <header>
+                        <button string="Confirm" name="action_confirmed" type="object" class="oe_highlight" states="draft" />
+                        <button string="Draft" name="action_draft" type="object" states="refused" />
+                        <button string="Generate Expense" name="action_create_expense" type="object" states="expiry" />
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_show_expense_sheet" type="object" class="oe_stat_button" icon="fa-usd">
+                                <field name="expense_count" string="Expense" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1><field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}" /></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="document_type_id" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="number" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="activate_notify" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            </group>
+                            <group name="owner">
+                                <field name="responsible_ids" widget="many2many_tags" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="based_on" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="company_id" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('based_on', '!=', 'company')]}" />
+                                <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('based_on', '!=', 'employee')]}" />
+                            </group>
+                            <group>
+                                <field name="issue_date" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="expiry_date" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            </group>
+                        </group>
+                        <group>
+                            <field name="description" />
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="base_document_view_tree" model="ir.ui.view">
+            <field name="name">base.document.view.tree</field>
+            <field name="model">base.document</field>
+            <field name="arch" type="xml">
+                <tree string="Documents">
+                    <field name="name" />
+                    <field name="number" />
+                    <field name="activate_notify" />
+                    <field name="expiry_date" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="base_document_view_search" model="ir.ui.view">
+            <field name="name">base.document.view.search</field>
+            <field name="model">base.document</field>
+            <field name="arch" type="xml">
+                <search string="Documents">
+                    <filter name="name" string="Name" domain="[('name', 'ilike', self)]" />
+                    <separator />
+                    <group expand="1" string="Group By">
+                        <filter name="groupExpiryDate" string="Expiry of Date" context="{'group_by': 'expiry_date'}" />
+                        <filter name="groupBasedOn" string="Based On" context="{'group_by': 'based_on'}" />
+                        <filter name="groupDocumentType" string="Document Type" context="{'group_by': 'document_type_id'}" />
+                        <filter name="groupState" string="State" context="{'group_by': 'state'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record id="base_document_action" model="ir.actions.act_window">
+            <field name="name">Documents</field>
+            <field name="res_model">base.document</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            id="base_document_menu"
+            name="Documents"
+            action="base_document_action"
+            parent="document_expiry.document_root_menu"
+            sequence="10"
+        />
+    
+    </data>
+
+</odoo>

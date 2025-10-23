@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="view_order_form_inherit_revision_approval" model="ir.ui.view">
+            <field name="name">sale.order.view.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="inside">
+                    <field name="can_revision" invisible="1" />
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <button string="Request Revision" name="request_approval_revision" type="object" attrs="{'invisible': ['|', ('state', '!=', 'sale'), ('can_revision', '=', True)]}" />
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_view_revision_approval_request" type="object" class="oe_stat_button" icon="fa-code-fork" attrs="{'invisible': [('revision_approval_count', '=', 0)]}" >
+                        <field name="revision_approval_count" string="Revision Approval" widget="statinfo"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

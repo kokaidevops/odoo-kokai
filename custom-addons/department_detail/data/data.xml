@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+    
+        <record id="hr_management_data_management" model="hr.department">
+            <field name="name">MANAGEMENT</field>
+            <field name="alias">MGM</field>
+            <field name="company_id">1</field>
+        </record>
+        <record id="hr_management_data_engineering" model="hr.department">
+            <field name="name">ENGINEERING &amp; PRODUCT DEVELOPMENT</field>
+            <field name="alias">ENG</field>
+            <field name="company_id">1</field>
+        </record>
+        <record id="hr_management_data_finance" model="hr.department">
+            <field name="name">FINANCE ACCOUNTING &amp; TAX</field>
+            <field name="alias">FAT</field>
+            <field name="company_id">1</field>
+        </record>
+        <record id="hr_management_data_hrd" model="hr.department">
+            <field name="name">HUMAN RESOURCES DEVELOPMENT &amp; GA</field>
+            <field name="alias">HRD</field>
+            <field name="company_id">1</field>
+        </record>
+        <record id="hr_management_data_inventory_logistic" model="hr.department">
+            <field name="name">INVENTORY &amp; LOGISTIC</field>
+            <field name="alias">INV</field>
+            <field name="company_id">1</field>
+        </record>
+        <record id="hr_management_data_production" model="hr.department">
+            <field name="name">PRODUCTION</field>
+            <field name="alias">PROD</field>
+            <field name="company_id">1</field>
+        </record>
+        <record id="hr_management_data_purchasing" model="hr.department">
+            <field name="name">PURCHASING</field>
+            <field name="alias">PUR</field>
+            <field name="company_id">1</field>
+        </record>
+        <record id="hr_management_data_quality" model="hr.department">
+            <field name="name">QUALITY &amp; HSE</field>
+            <field name="alias">QHSE</field>
+            <field name="company_id">1</field>
+        </record>
+
+
+        <record id="hr_contract_type_permanent_employment_contract" model="hr.contract.type">
+            <field name="name">Permanent Employment Contract</field>
+            <field name="sequence">10</field>
+        </record>
+        <record id="hr_contract_type_fixed_term_employment_contract" model="hr.contract.type">
+            <field name="name">Fixed-Term Employment Contract</field>
+            <field name="sequence">20</field>
+        </record>
+        <record id="hr_contract_type_internship_employment_contract" model="hr.contract.type">
+            <field name="name">Internship Employment Contract</field>
+            <field name="sequence">30</field>
+        </record>
+    
+    </data>
+
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_pack,access_product_pack,model_product_pack,base.group_user,1,1,1,1
+access_purchase_order_line_bundle,access_purchase_order_line_bundle,model_purchase_order_line_bundle,base.group_user,1,1,1,1

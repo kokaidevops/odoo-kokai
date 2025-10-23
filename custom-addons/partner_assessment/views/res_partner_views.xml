@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="view_partner_form_inherit_purchase" model="ir.ui.view">
+            <field name="name">res.partner.view.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='purchase']" position="inside">
+                    <field name="product_categ_id" />
+                    <field name="category" />
+                </xpath>
+                <xpath expr="//sheet" position="before">
+                    <header>
+                        <field name="state" widget="statusbar" />
+                    </header>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_show_assessment" type="object" class="oe_stat_button" icon="fa-pencil-square-o">
+                        <field name="assessment_count" string="Assessment" widget="statinfo"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

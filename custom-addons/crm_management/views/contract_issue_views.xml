@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="contract_issue_view_form" model="ir.ui.view">
+            <field name="name">contract.issue.view.form</field>
+            <field name="model">contract.issue</field>
+            <field name="arch" type="xml">
+                <form string="Contract Issue">
+                    <header>
+                        <button string="Request" name="action_request" type="object" class="oe_highlight" states="draft"/>
+                        <button string="Cancel" name="action_cancel" type="object" states="draft"/>
+                        <field name="state" widget="statusbar" class="oe_field_statusbar" />
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field class="text-break" name="name"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="order_id" readonly="1" />
+                                <field name="opportunity_id" readonly="1" />
+                                <field name="document" readonly="1" />
+                                <field name="issue_date" />
+                                <field name="description" />
+                            </group>
+                            <group>
+                                <field name="user_id" />
+                                <field name="solve_date" />
+                                <field name="issue_solve" />
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="contract_issue_view_tree" model="ir.ui.view">
+            <field name="name">contract.issue.view.tree</field>
+            <field name="model">contract.issue</field>
+            <field name="arch" type="xml">
+                <tree string="Contract Issue">
+                    <field name="name" />
+                    <field name="order_id" />
+                    <field name="issue_date" />
+                    <field name="solve_date" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="contract_issue_action" model="ir.actions.act_window">
+            <field name="name">Contract Issue</field>
+            <field name="res_model">contract.issue</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="contract_issue_menu"
+            name="Issue"
+            action="contract_issue_action"
+            parent="crm_management.crm_root_menu"
+            sequence="10"
+        />
+    
+    </data>
+
+</odoo>

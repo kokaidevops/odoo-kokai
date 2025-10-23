@@ -1,0 +1,62 @@
+<odoo>
+    <data noupdate="1">
+
+        <record id="hr_insurance_jkk_comp" model="hr.insurance">
+            <field name="name">Jaminan Kecelakaan Kerja (Perusahaan)</field>
+            <field name="code">JKK_COMP</field>
+            <field name="borne_by">company</field>
+            <field name="rate">0.89</field>
+            <field name="sequence" eval="100"/>
+        </record>
+        <record id="hr_insurance_jk_comp" model="hr.insurance">
+            <field name="name">Jaminan Kematian (Perusahaan)</field>
+            <field name="code">JK_COMP</field>
+            <field name="borne_by">company</field>
+            <field name="rate">0.30</field>
+            <field name="sequence" eval="200"/>
+        </record>
+        <record id="hr_insurance_jht_comp" model="hr.insurance">
+            <field name="name">Jaminan Hari Tua (Perusahaan)</field>
+            <field name="code">JHT_COMP</field>
+            <field name="borne_by">company</field>
+            <field name="rate">3.70</field>
+            <field name="sequence" eval="300"/>
+        </record>
+        <record id="hr_insurance_jht_emp" model="hr.insurance">
+            <field name="name">Jaminan Hari Tua (Karyawan)</field>
+            <field name="code">JHT_EMP</field>
+            <field name="borne_by">employee</field>
+            <field name="rate">2.00</field>
+            <field name="sequence" eval="400"/>
+        </record>
+        <record id="hr_insurance_jp_comp" model="hr.insurance">
+            <field name="name">Jaminan Pensiun (Perusahaan)</field>
+            <field name="code">JP_COMP</field>
+            <field name="borne_by">company</field>
+            <field name="rate">2.00</field>
+            <field name="sequence" eval="500"/>
+        </record>
+        <record id="hr_insurance_jp_emp" model="hr.insurance">
+            <field name="name">Jaminan Pensiun (Karyawan)</field>
+            <field name="code">JP_EMP</field>
+            <field name="borne_by">employee</field>
+            <field name="rate">1.00</field>
+            <field name="sequence" eval="600"/>
+        </record>
+        <record id="hr_insurance_bpjskes_comp" model="hr.insurance">
+            <field name="name">BPJS Kesehatan (Perusahaan)</field>
+            <field name="code">BPJSK_COMP</field>
+            <field name="borne_by">company</field>
+            <field name="rate">4.00</field>
+            <field name="sequence" eval="700"/>
+        </record>
+        <record id="hr_insurance_bpjskes_emp" model="hr.insurance">
+            <field name="name">BPJS Kesehatan (Karyawan)</field>
+            <field name="code">BPJSK_EMP</field>
+            <field name="borne_by">employee</field>
+            <field name="rate">1.00</field>
+            <field name="sequence" eval="800"/>
+        </record>
+
+    </data>
+</odoo>

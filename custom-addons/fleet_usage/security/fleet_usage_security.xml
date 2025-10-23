@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="fleet.fleet_rule_vehicle_visibility_user" model="ir.rule">
+            <field name="domain_force">[]</field>
+        </record>
+    </data>
+</odoo>

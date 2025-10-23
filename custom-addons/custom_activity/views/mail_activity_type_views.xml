@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="mail_activity_type_view_form_inherit_time" model="ir.ui.view">
+            <field name="name">mail.activity.type.view.form.inherit</field>
+            <field name="model">mail.activity.type</field>
+            <field name="inherit_id" ref="mail.mail_activity_type_view_form"/>
+            <field name="arch" type="xml">
+                <field name='delay_count' position="before">
+                    <field name="processing_time"  widget="timesheet_uom"/>
+                </field>
+            </field>
+        </record>
+    
+        <record id="mail_activity_type_view_tree_inherit_time" model="ir.ui.view">
+            <field name="name">mail.activity.type.list.form.inherit</field>
+            <field name="model">mail.activity.type</field>
+            <field name="inherit_id" ref="mail.mail_activity_type_view_tree"/>
+            <field name="arch" type="xml">
+                <field name='delay_label' position="before">
+                    <field name="processing_time"  widget="timesheet_uom"/>
+                </field>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

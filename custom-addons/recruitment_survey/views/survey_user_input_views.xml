@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="survey_user_input_view_form_inherit_recruitment" model="ir.ui.view">
+            <field name="name">survey.user_input.view.form.inherit</field>
+            <field name="model">survey.user_input</field>
+            <field name="inherit_id" ref="survey.survey_user_input_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button string="Post Applicant" name="post_to_recruitment" type="object" class="oe_highlight" attrs="{'invisible': [('category_id', '!=', %(recruitment_survey.survey_category_data_recruitment_profile)d)]}" />
+                </xpath>
+                <xpath expr="//sheet" position="inside">
+                    <field name="category_id" invisible="1" />
+                </xpath>
+                <field name="partner_id" position="before">
+                    <field name="applicant_id" attrs="{'readonly': True, 'invisible': [('applicant_id', '=', False)]}" />
+                </field>
+            </field>
+        </record>
+
+        
+        <record id="survey_survey_view_form_inherit_category_inherit_job" model="ir.ui.view">
+            <field name="name">survey.survey.view.form.inherit</field>
+            <field name="model">survey.survey</field>
+            <field name="inherit_id" ref="survey_category.survey_survey_view_form_inherit_category"/>
+            <field name="arch" type="xml">
+                <field name="category_id" position="after">
+                    <field name="job_id" attrs="{'invisible': [('category_id', '!=', %(recruitment_survey.survey_category_data_recruitment_profile)d)]}" />
+                </field>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

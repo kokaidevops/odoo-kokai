@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="hr_salary_rule_data_jkk_comp_office" model="hr.salary.rule">
+            <field name="name">JKK (Perusahaan)</field>
+            <field name="code">JKK_COMP</field>
+            <field name="sequence" eval="410"/>
+            <field name="category_id" ref="hr_insurance.hr_salary_rule_category_data_ins_comp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+amount = 0
+for line in contract.insurance_ids:
+    if line.insurance_id.code == 'JKK_COMP':
+        amount = contract.company_id.minimum_wage_id.value*line.rate/100 if line.amount_type == 'code' else line.amount_fixed
+        break
+result = amount
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_office_pay" />
+        </record>
+        <record id="hr_salary_rule_data_jk_comp_office" model="hr.salary.rule">
+            <field name="name">JK (Perusahaan)</field>
+            <field name="code">JK_COMP</field>
+            <field name="sequence" eval="415"/>
+            <field name="category_id" ref="hr_insurance.hr_salary_rule_category_data_ins_comp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+amount = 0
+for line in contract.insurance_ids:
+    if line.insurance_id.code == 'JK_COMP':
+        amount = contract.company_id.minimum_wage_id.value*line.rate/100 if line.amount_type == 'code' else line.amount_fixed
+        break
+result = amount
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_office_pay" />
+        </record>
+        <record id="hr_salary_rule_data_jht_comp_office" model="hr.salary.rule">
+            <field name="name">JHT (Perusahaan)</field>
+            <field name="code">JHT_COMP</field>
+            <field name="sequence" eval="420"/>
+            <field name="category_id" ref="hr_insurance.hr_salary_rule_category_data_ins_comp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+amount = 0
+for line in contract.insurance_ids:
+    if line.insurance_id.code == 'JHT_COMP':
+        amount = contract.company_id.minimum_wage_id.value*line.rate/100 if line.amount_type == 'code' else line.amount_fixed
+        break
+result = amount
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_office_pay" />
+        </record>
+        <record id="hr_salary_rule_data_jht_emp_office" model="hr.salary.rule">
+            <field name="name">JHT (Karyawan)</field>
+            <field name="code">JHT_EMP</field>
+            <field name="sequence" eval="425"/>
+            <field name="category_id" ref="hr_insurance.hr_salary_rule_category_data_ins_emp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+amount = 0
+for line in contract.insurance_ids:
+    if line.insurance_id.code == 'JHT_EMP':
+        amount = contract.company_id.minimum_wage_id.value*line.rate/100 if line.amount_type == 'code' else line.amount_fixed
+        break
+result = amount
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_office_pay" />
+        </record>
+        <record id="hr_salary_rule_data_jp_comp_office" model="hr.salary.rule">
+            <field name="name">JP (Perusahaan)</field>
+            <field name="code">JP_COMP</field>
+            <field name="sequence" eval="430"/>
+            <field name="category_id" ref="hr_insurance.hr_salary_rule_category_data_ins_comp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+amount = 0
+value = min(contract.company_id.minimum_wage_id.value, contract.company_id.max_pens_cont_id.value) 
+for line in contract.insurance_ids:
+    if line.insurance_id.code == 'JP_COMP':
+        amount = value*line.rate/100 if line.amount_type == 'code' else line.amount_fixed
+        break
+result = amount
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_office_pay" />
+        </record>
+        <record id="hr_salary_rule_data_jp_emp_office" model="hr.salary.rule">
+            <field name="name">JP (Karyawan)</field>
+            <field name="code">JP_EMP</field>
+            <field name="sequence" eval="435"/>
+            <field name="category_id" ref="hr_insurance.hr_salary_rule_category_data_ins_emp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+amount = 0
+value = min(contract.company_id.minimum_wage_id.value, contract.company_id.max_pens_cont_id.value) 
+for line in contract.insurance_ids:
+    if line.insurance_id.code == 'JP_EMP':
+        amount = value*line.rate/100 if line.amount_type == 'code' else line.amount_fixed
+        break
+result = amount
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_office_pay" />
+        </record>
+        <record id="hr_salary_rule_data_bpjsk_comp_office" model="hr.salary.rule">
+            <field name="name">BPJS Kesehatan (Perusahaan)</field>
+            <field name="code">BPJSK_COMP</field>
+            <field name="sequence" eval="430"/>
+            <field name="category_id" ref="hr_insurance.hr_salary_rule_category_data_ins_comp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+amount = 0
+wage = max(categories.BASIC_ALW,contract.minimum_wage_id.value)
+value = min(wage, contract.company_id.max_health_ins_id.value) 
+for line in contract.insurance_ids:
+    if line.insurance_id.code == 'BPJSK_COMP':
+        amount = value*line.rate/100 if line.amount_type == 'code' else line.amount_fixed
+        break
+result = amount
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_office_pay" />
+        </record>
+        <record id="hr_salary_rule_data_bpjsk_emp_office" model="hr.salary.rule">
+            <field name="name">BPJS Kesehatan (Karyawan)</field>
+            <field name="code">BPJSK_EMP</field>
+            <field name="sequence" eval="435"/>
+            <field name="category_id" ref="hr_insurance.hr_salary_rule_category_data_ins_emp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+amount = 0
+wage = max(categories.BASIC_ALW,contract.minimum_wage_id.value)
+value = min(wage, contract.company_id.max_health_ins_id.value) 
+for line in contract.insurance_ids:
+    if line.insurance_id.code == 'BPJSK_EMP':
+        amount = value*line.rate/100 if line.amount_type == 'code' else line.amount_fixed
+        break
+result = amount
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_office_pay" />
+        </record>
+        <record id="hr_salary_rule_data_ins_emp_office" model="hr.salary.rule">
+            <field name="name">Insurance (Employee)</field>
+            <field name="code">INS_EMP</field>
+            <field name="sequence" eval="440"/>
+            <field name="category_id" ref="custom_payroll.hr_salary_rule_category_data_other_rule_emp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = 1*categories.INS_EMP
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_office_pay" />
+        </record>
+        <record id="hr_salary_rule_data_ins_tax_emp_office" model="hr.salary.rule">
+            <field name="name">Insurance (Company)</field>
+            <field name="code">INS_TAX_EMP</field>
+            <field name="sequence" eval="445"/>
+            <field name="category_id" ref="custom_payroll.hr_salary_rule_category_data_tax_emp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = 1*(JKK_COMP + JK_COMP + BPJSK_COMP)</field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_office_pay" />
+        </record>
+
+
+
+        <record id="hr_salary_rule_data_jkk_comp_worker" model="hr.salary.rule">
+            <field name="name">JKK (Perusahaan)</field>
+            <field name="code">JKK_COMP</field>
+            <field name="sequence" eval="410"/>
+            <field name="category_id" ref="hr_insurance.hr_salary_rule_category_data_ins_comp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+amount = 0
+for line in contract.insurance_ids:
+    if line.insurance_id.code == 'JKK_COMP':
+        amount = contract.company_id.minimum_wage_id.value*line.rate/100 if line.amount_type == 'code' else line.amount_fixed
+        break
+result = amount
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_worker_pay" />
+        </record>
+        <record id="hr_salary_rule_data_jk_comp_worker" model="hr.salary.rule">
+            <field name="name">JK (Perusahaan)</field>
+            <field name="code">JK_COMP</field>
+            <field name="sequence" eval="415"/>
+            <field name="category_id" ref="hr_insurance.hr_salary_rule_category_data_ins_comp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+amount = 0
+for line in contract.insurance_ids:
+    if line.insurance_id.code == 'JK_COMP':
+        amount = contract.company_id.minimum_wage_id.value*line.rate/100 if line.amount_type == 'code' else line.amount_fixed
+        break
+result = amount
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_worker_pay" />
+        </record>
+        <record id="hr_salary_rule_data_jht_comp_worker" model="hr.salary.rule">
+            <field name="name">JHT (Perusahaan)</field>
+            <field name="code">JHT_COMP</field>
+            <field name="sequence" eval="420"/>
+            <field name="category_id" ref="hr_insurance.hr_salary_rule_category_data_ins_comp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+amount = 0
+for line in contract.insurance_ids:
+    if line.insurance_id.code == 'JHT_COMP':
+        amount = contract.company_id.minimum_wage_id.value*line.rate/100 if line.amount_type == 'code' else line.amount_fixed
+        break
+result = amount
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_worker_pay" />
+        </record>
+        <record id="hr_salary_rule_data_jht_emp_worker" model="hr.salary.rule">
+            <field name="name">JHT (Karyawan)</field>
+            <field name="code">JHT_EMP</field>
+            <field name="sequence" eval="425"/>
+            <field name="category_id" ref="hr_insurance.hr_salary_rule_category_data_ins_emp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+amount = 0
+for line in contract.insurance_ids:
+    if line.insurance_id.code == 'JHT_EMP':
+        amount = contract.company_id.minimum_wage_id.value*line.rate/100 if line.amount_type == 'code' else line.amount_fixed
+        break
+result = amount
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_worker_pay" />
+        </record>
+        <record id="hr_salary_rule_data_jp_comp_worker" model="hr.salary.rule">
+            <field name="name">JP (Perusahaan)</field>
+            <field name="code">JP_COMP</field>
+            <field name="sequence" eval="430"/>
+            <field name="category_id" ref="hr_insurance.hr_salary_rule_category_data_ins_comp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+amount = 0
+value = min(contract.company_id.minimum_wage_id.value, contract.company_id.max_pens_cont_id.value) 
+for line in contract.insurance_ids:
+    if line.insurance_id.code == 'JP_COMP':
+        amount = value*line.rate/100 if line.amount_type == 'code' else line.amount_fixed
+        break
+result = amount
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_worker_pay" />
+        </record>
+        <record id="hr_salary_rule_data_jp_emp_worker" model="hr.salary.rule">
+            <field name="name">JP (Karyawan)</field>
+            <field name="code">JP_EMP</field>
+            <field name="sequence" eval="435"/>
+            <field name="category_id" ref="hr_insurance.hr_salary_rule_category_data_ins_emp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+amount = 0
+value = min(contract.company_id.minimum_wage_id.value, contract.company_id.max_pens_cont_id.value) 
+for line in contract.insurance_ids:
+    if line.insurance_id.code == 'JP_EMP':
+        amount = value*line.rate/100 if line.amount_type == 'code' else line.amount_fixed
+        break
+result = amount
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_worker_pay" />
+        </record>
+        <record id="hr_salary_rule_data_bpjsk_comp_worker" model="hr.salary.rule">
+            <field name="name">BPJS Kesehatan (Perusahaan)</field>
+            <field name="code">BPJSK_COMP</field>
+            <field name="sequence" eval="430"/>
+            <field name="category_id" ref="hr_insurance.hr_salary_rule_category_data_ins_comp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+amount = 0
+wage = max(categories.BASIC_ALW,contract.minimum_wage_id.value)
+value = min(wage, contract.company_id.max_health_ins_id.value) 
+for line in contract.insurance_ids:
+    if line.insurance_id.code == 'BPJSK_COMP':
+        amount = value*line.rate/100 if line.amount_type == 'code' else line.amount_fixed
+        break
+result = amount
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_worker_pay" />
+        </record>
+        <record id="hr_salary_rule_data_bpjsk_emp_worker" model="hr.salary.rule">
+            <field name="name">BPJS Kesehatan (Karyawan)</field>
+            <field name="code">BPJSK_EMP</field>
+            <field name="sequence" eval="435"/>
+            <field name="category_id" ref="hr_insurance.hr_salary_rule_category_data_ins_emp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+amount = 0
+wage = max(categories.BASIC_ALW,contract.minimum_wage_id.value)
+value = min(wage, contract.company_id.max_health_ins_id.value) 
+for line in contract.insurance_ids:
+    if line.insurance_id.code == 'BPJSK_EMP':
+        amount = value*line.rate/100 if line.amount_type == 'code' else line.amount_fixed
+        break
+result = amount
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_worker_pay" />
+        </record>
+        <record id="hr_salary_rule_data_ins_emp_worker" model="hr.salary.rule">
+            <field name="name">Insurance (Employee)</field>
+            <field name="code">INS_EMP</field>
+            <field name="sequence" eval="440"/>
+            <field name="category_id" ref="custom_payroll.hr_salary_rule_category_data_other_rule_emp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = 1*categories.INS_EMP
+            </field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_worker_pay" />
+        </record>
+        <record id="hr_salary_rule_data_ins_tax_emp_worker" model="hr.salary.rule">
+            <field name="name">Insurance (Company)</field>
+            <field name="code">INS_TAX_EMP</field>
+            <field name="sequence" eval="445"/>
+            <field name="category_id" ref="custom_payroll.hr_salary_rule_category_data_tax_emp"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.calculate_insurance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = 1*(JKK_COMP + JK_COMP + BPJSK_COMP)</field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_worker_pay" />
+        </record>
+    
+    </data>
+
+</odoo>

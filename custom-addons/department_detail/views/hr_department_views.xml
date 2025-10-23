@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="department_team_view_form" model="ir.ui.view">
+            <field name="name">department.team.view.form</field>
+            <field name="model">department.team</field>
+            <field name="arch" type="xml">
+                <form string="Department Team">
+                    <sheet>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                        <div class="oe_title">
+                            <label for="name" string="Department Team"/>
+                            <h1>
+                                <field class="text-break" name="name" placeholder="e.g. Team 1"/>
+                            </h1>
+                            <div name="options_active"/>
+                        </div>
+                        <group>
+                            <group name="left" string="Team Details">
+                                <field name="active" invisible="1" />
+                                <field name="department_id" />
+                                <field name="user_id" widget="many2one_avatar_user"/>
+                                <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="member" string="Member">
+                                <field name="member_ids" mode="kanban" class="w-100">
+                                    <kanban>
+                                        <field name="name"/>
+                                        <field name="email"/>
+                                        <field name="avatar_128"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div class="oe_kanban_card oe_kanban_global_click">
+                                                    <div class="o_kanban_card_content d-flex">
+                                                        <div>
+                                                            <img t-att-src="kanban_image('res.users', 'avatar_128', record.id.raw_value)" class="o_kanban_image o_image_64_cover" alt="Avatar"/>
+                                                        </div>
+                                                        <div class="oe_kanban_details d-flex flex-column ms-3">
+                                                            <strong class="o_kanban_record_title oe_partner_heading"><field name="name"/></strong>
+                                                            <div class="d-flex align-items-baseline text-break">
+                                                                <i class="fa fa-envelope me-1" role="img" aria-label="Email" title="Email"/><field name="email"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" help="Follow this salesteam to automatically track the events associated to users of this team."/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="department_team_view_tree" model="ir.ui.view">
+            <field name="name">department.team.view.tree</field>
+            <field name="model">department.team</field>
+            <field name="arch" type="xml">
+                <tree string="Department Team" create="False">
+                    <field name="name" />
+                    <field name="department_id" />
+                    <field name="user_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="department_team_view_search" model="ir.ui.view">
+            <field name="name">department.team.view.search</field>
+            <field name="model">department.team</field>
+            <field name="arch" type="xml">
+                <search string="Department Team">
+                    <field name="name" string="Name"/>
+                    <field name="department_id" string="Department" />
+                    <filter name="qhse_team" string="QHSE Team" domain="[('department_id', '=', %(department_detail.hr_management_data_quality)d)]" />
+                    <group string="Group By" expand="1">
+                        <filter name="department_id" string="Department" context="{'group_by': 'department_id'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="department_team_action" model="ir.actions.act_window">
+            <field name="name">Department Team</field>
+            <field name="res_model">department.team</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="department_team_view_search"/>
+        </record>
+
+        <menuitem
+            id="hr_department_kanban_menu"
+            action="hr.hr_department_kanban_action"
+            groups="hr.group_hr_user"
+            parent="hr.menu_hr_department_kanban"
+        />
+
+        <menuitem
+            id="department_team_menu"
+            name="Team"
+            action="department_team_action"
+            parent="hr.menu_hr_department_kanban"
+            sequence="10"
+        />
+
+        <record id="view_department_form_inherit_team" model="ir.ui.view">
+            <field name="name">hr.department.view.form.inherit</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button string="Sequence" name="action_generate_sequence_wizard" type="object" icon="fa-sort-numeric-asc"/>
+                </xpath>
+                <field name='parent_id' position="after">
+                    <field name="alias" />
+                </field>
+                <field name="manager_id" position="after">
+                    <field name="pic_id" />
+                </field>
+                <xpath expr="//sheet" position="inside">
+                    <notebook>
+                        <page name="function" string="Function">
+                            <field name="department_function" options="{'resizable': false}" placeholder="Description of the department's functions" />
+                        </page>
+                        <page name="task" string="Task">
+                            <field name="department_task" options="{'resizable': false}" placeholder="Description of the department's tasks" />
+                        </page>
+                        <page name="teams" string="Teams">
+                            <field name="team_ids" mode="kanban" class="w-100" context="{'default_department_id': active_id, 'default_user_id': manager_id}">
+                                <kanban>
+                                    <field name="name"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div class="oe_kanban_card oe_kanban_global_click">
+                                                <div class="o_kanban_card_content d-flex">
+                                                    <div class="oe_kanban_details d-flex flex-column ms-3">
+                                                        <strong class="o_kanban_record_title oe_partner_heading"><field name="name"/></strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </page>
+                        <page name="sequence" string="Sequence">
+                            <field name="sequence_ids">
+                                <tree create="False" edit="False" delete="False">
+                                    <field name="model_id" />
+                                    <field name="department_id" />
+                                    <field name="sequence_id" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

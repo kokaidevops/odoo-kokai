@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="view_purchase_request_form_inherit_sent_offering" model="ir.ui.view">
+            <field name="name">purchase.request.view.form.inherit</field>
+            <field name="model">purchase.request</field>
+            <field name="inherit_id" ref="purchase_request.view_purchase_request_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button string="Sent" name="sent_vendor_offering" type="object" states="in_progress" />
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_show_batch" type="object" class="oe_stat_button" icon="fa-table" attrs="{'invisible': [('batch_count', '=', 0)]}">
+                        <field name="batch_count" string="Offering" widget="statinfo"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="purchase_order_form_inherit_offering" model="ir.ui.view">
+            <field name="name">purchase.order.view.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button string="Offering Done" name="action_offering_done" type="object" class="oe_highlight" states="sent"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree" position="inside">
+                    <field name="offer_state" readonly="1" />
+                    <button name="confirm_accepted" type="object" icon="fa-check-circle-o" title="Accept" width="0.1" options="{&quot;warn&quot;: true}"/>
+                    <button name="action_rejected" type="object" icon="fa-times-circle-o" title="Reject" width="0.1" options="{&quot;warn&quot;: true}"/>
+                </xpath>
+                <xpath expr="//group[@name='other_info']" position="inside">
+                    <field name="batch_id" readonly="1" />
+                    <field name="check_line" widget="boolean_toggle" readonly="1" />
+                </xpath>
+                <xpath expr="//button[@name='button_confirm']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_confirm'][2]" position="attributes">
+                    <attribute name="attrs" value="{'invisible': ['|', ('check_line', '=', True), ('state', 'not in', ['approved'])]}">{'invisible': ['|', ('check_line', '=', True), ('state', 'not in', ['approved'])]}</attribute>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <button string="Confirm Order" name="action_check" context="{'callback_function': 'button_confirm'}" attrs="{'invisible': ['|', ('check_line', '=', False), ('state', 'not in', ['approved'])]}" type="object"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="purchase_order_line_tree_sub_inherit_offering" model="ir.ui.view">
+            <field name="name">purchase.order.line.view.tree.inherit</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase_request.purchase_order_line_tree_sub"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="offer_state" />
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="purchase_order_batch_view_form" model="ir.ui.view">
+            <field name="name">purchase.order.batch.view.form</field>
+            <field name="model">purchase.order.batch</field>
+            <field name="arch" type="xml">
+                <form string="Offering Batch">
+                    <header>
+                        <field name="state" widget="statusbar" />
+                        <button string="Draft" name="action_draft" type="object" states="cancel" />
+                        <button string="Sent" name="action_offering" type="object" class="oe_highlight" states="draft" />
+                        <button string="Done" name="action_done" type="object" class="oe_highlight" states="offering" />
+                        <button string="Generate" name="generate_order" type="object" class="oe_highlight" states="done" />
+                        <button string="Cancel" name="action_cancel" type="object" states="draft,offering" />
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_show_purchase_order" type="object" class="oe_stat_button" icon="fa-shopping-cart">
+                                <field name="order_count" string="Purchase Order" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1" />
+                                <field name="date" readonly="1" />
+                                <field name="request_ids" readonly="1" widget="many2many_tags" />
+                            </group>
+                            <group>
+                                <field name="user_ids" widget="many2many_tags" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="purchase_order_batch_view_tree" model="ir.ui.view">
+            <field name="name">purchase.order.batch.view.tree</field>
+            <field name="model">purchase.order.batch</field>
+            <field name="arch" type="xml">
+                <tree string="Offering Batch" create="False">
+                    <field name="name" />
+                    <field name="request_ids" readonly="1" widget="many2many_tags" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="purchase_order_batch_action" model="ir.actions.act_window">
+            <field name="name">Offering Batch</field>
+            <field name="res_model">purchase.order.batch</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="purchase_order_batch_menu"
+            name="Offering Batch"
+            action="purchase_order_batch_action"
+            groups="purchase_request.group_purchase_request_manager"
+            parent="purchase_request.menu_purchase_request"
+            sequence="30"
+        />
+    
+    </data>
+
+</odoo>

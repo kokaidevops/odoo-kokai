@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+    
+        <record model="ir.module.category" id="module_category_employee_shift_allocation">
+            <field name="name">Employee Shift Allocation</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="group_employee_shift_allocation_user" model="res.groups">
+            <field name="name">User: Own Documents Only</field>
+            <field name="category_id" ref="module_category_employee_shift_allocation" />
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+        <record id="group_employee_shift_allocation_manager" model="res.groups">
+            <field name="name">Manager: Own Departments Only</field>
+            <field name="category_id" ref="module_category_employee_shift_allocation" />
+            <field name="implied_ids" eval="[(4, ref('employee_attendance.group_employee_shift_allocation_user'))]" />
+        </record>
+
+        <record id="group_employee_shift_allocation_administrator" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="category_id" ref="module_category_employee_shift_allocation" />
+            <field name="implied_ids" eval="[(4, ref('employee_attendance.group_employee_shift_allocation_manager'))]" />
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+        <record id="base.default_user" model="res.users">
+            <field name="groups_id" eval="[(4,ref('group_employee_shift_allocation_administrator'))]"/>
+        </record>
+    
+    </data>
+
+</odoo>

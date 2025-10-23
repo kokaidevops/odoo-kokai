@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_allowance,access_hr_allowance,model_hr_allowance,base.group_user,1,1,1,1
+access_hr_contract_allowance,access_hr_contract_allowance,model_hr_contract_allowance,base.group_user,1,1,1,1
+access_hr_minimum_wage,access_hr_minimum_wage,model_hr_minimum_wage,base.group_user,1,1,1,1

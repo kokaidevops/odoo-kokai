@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <template id="purchase_request_report_template">
+            <t t-call="web.html_container">
+                <t t-set="company" t-value="env.company"/>
+                <t t-call="web.external_layout_boxed">
+                    <div page="page">
+                        <h3 class="text-center">PURCHASE REQUISITION</h3>
+                        
+                        <div class="row mb32">
+                            <div class="col-5">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td>NO PURCHASE REQUEST</td>
+                                            <td><t t-esc="name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>DEPARTMENT</td>
+                                            <td><t t-esc="department"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>REQUESTED BY</td>
+                                            <td><t t-esc="requested_by"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>PRIORITY</td>
+                                            <td><t t-esc="priority"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-2"></div>
+                            <div class="col-5">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td>PURCHASE REQUEST DATE</td>
+                                            <td><t t-esc="date"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>DUE DATE</td>
+                                            <td><t t-esc="due_date"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>DESCRIPTION</td>
+                                            <td><t t-esc="name"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row mb32">
+                            <div class="col-12">
+                                <table class="table table-bordered table-striped" style="table-layout: fixed">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Item</th>
+                                            <th>Description</th>
+                                            <th>Qty</th>
+                                            <th>UoM</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="line_ids" t-as="line">
+                                            <tr>
+                                                <td><t t-esc="line['number']"/></td>
+                                                <td><t t-esc="line['product']"/></td>
+                                                <td><t t-esc="line['description']"/></td>
+                                                <td class="text-right"><t t-esc="line['qty']"/></td>
+                                                <td><t t-esc="line['uom']"/></td>
+                                            </tr>
+                                        </t>
+                                        <tr>
+                                            <td colspan="5">
+                                                <t t-esc="description"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4 text-center">
+                                <p>REQUESTED BY</p>
+                                <img t-att-src="qrcode_requested_by" style="width:100px;height:100px;"/>
+                                <p><t t-esc="requested_by"/></p>
+                            </div>
+                            <t t-foreach="approvers" t-as="approver">
+                                <div class="col-4 text-center">
+                                    <p><t t-esc="approver['position']"/></p>
+                                    <img t-att-src="approver['url']" style="width:100px;height:100px;"/>
+                                    <p><t t-esc="approver['name']"/></p>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    
+    </data>
+
+</odoo>

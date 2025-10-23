@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="popup_message_wizard_view_form" model="ir.ui.view">
+            <field name="name">popup.message.wizard.view.form</field>
+            <field name="model">popup.message.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Message">
+                    <field name="name" />
+                    <footer>
+                        <button string="Close" class="oe_highlight" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

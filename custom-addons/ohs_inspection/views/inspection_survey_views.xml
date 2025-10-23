@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <menuitem
+            id="patrol_configuration_menu"
+            name="Inspection"
+            parent="qhse_program.configuration_menu"
+            sequence="10"
+        />
+
+        <record id="ohs_question_view_form" model="ir.ui.view">
+            <field name="name">ohs.question.view.form</field>
+            <field name="model">ohs.question</field>
+            <field name="arch" type="xml">
+                <form string="Question">
+                    <header>
+                        <button string="NC" name="action_submit_nc" type="object" class="oe_highlight" attrs="{'invisible': [('type', '=', 'section')]}" />
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="sequence" invisible="1" />
+                            <field name="name" />
+                            <field name="type" />
+                            <field name="department_ids" widget="many2many_tags" />
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="ohs_question_view_tree" model="ir.ui.view">
+            <field name="name">ohs.question.view.tree</field>
+            <field name="model">ohs.question</field>
+            <field name="arch" type="xml">
+                <tree string="Question">
+                    <field name="sequence" widget="handle" />
+                    <field name="name" />
+                    <field name="type" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="ohs_question_action" model="ir.actions.act_window">
+            <field name="name">Question</field>
+            <field name="res_model">ohs.question</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="ohs_question_menu"
+            name="Question"
+            action="ohs_question_action"
+            parent="patrol_configuration_menu"
+            sequence="10"
+        />
+
+
+        <record id="ohs_patrol_view_form" model="ir.ui.view">
+            <field name="name">ohs.patrol.view.form</field>
+            <field name="model">ohs.patrol</field>
+            <field name="arch" type="xml">
+                <form string="Patrol">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_show_question" type="object" class="oe_stat_button" icon="fa-list" string="Question" />
+                            <button name="action_show_nonconformity" type="object" class="oe_stat_button" icon="fa-list" string="Nonconformity" />
+                        </div>
+                        <div class="oe_title">
+                            <h1><field name="name" /></h1>
+                        </div>
+                        <group>
+                            <field name="department_id" />
+                        </group>
+                        <notebook>
+                            <page name="nonconformity" string="Nonconformity">
+                                <field name="nonconformity_ids">
+                                    <tree>
+                                        <field name="patrol_id" optional="hide" />
+                                        <field name="user_id" optional="hide" />
+                                        <field name="name" />
+                                        <field name="question_id" />
+                                        <field name="date" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="ohs_patrol_view_tree" model="ir.ui.view">
+            <field name="name">ohs.patrol.view.tree</field>
+            <field name="model">ohs.patrol</field>
+            <field name="arch" type="xml">
+                <tree string="Patrol">
+                    <field name="name" />
+                    <field name="department_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="ohs_patrol_action" model="ir.actions.act_window">
+            <field name="name">HSE Patrol</field>
+            <field name="res_model">ohs.patrol</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="ohs_patrol_menu"
+            name="HSE Patrol"
+            action="ohs_patrol_action"
+            parent="qhse_program.hse_menu"
+            sequence="10"
+        />
+
+
+        <record id="nonconformity_patrol_view_form" model="ir.ui.view">
+            <field name="name">nonconformity.patrol.view.form</field>
+            <field name="model">nonconformity.patrol</field>
+            <field name="arch" type="xml">
+                <form string="Nonconformity Patrol">
+                    <header>
+                        <button string="Report" name="generate_nonconformity_report" type="object" class="oe_highlight"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_show_report" type="object" class="oe_stat_button" icon="fa-list">
+                                <field name="report_count" string="Report" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <group>
+                            <field name="patrol_id" />
+                            <field name="question_id" />
+                            <field name="name" />
+                            <field name="user_id" />
+                            <field name="date" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="nonconformity_patrol_view_tree" model="ir.ui.view">
+            <field name="name">nonconformity.patrol.view.tree</field>
+            <field name="model">nonconformity.patrol</field>
+            <field name="arch" type="xml">
+                <tree string="Nonconformity Patrol">
+                    <field name="patrol_id" />
+                    <field name="question_id" />
+                    <field name="name" />
+                    <field name="user_id" />
+                    <field name="date" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="nonconformity_patrol_action" model="ir.actions.act_window">
+            <field name="name">Nonconformity Patrol</field>
+            <field name="res_model">nonconformity.patrol</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <!-- <menuitem
+            id="nonconformity_patrol_menu"
+            name="Nonconformity Patrol"
+            action="nonconformity_patrol_action"
+            parent="qhse_program.hse_menu"
+            sequence="10"
+        /> -->
+    
+    </data>
+
+</odoo>

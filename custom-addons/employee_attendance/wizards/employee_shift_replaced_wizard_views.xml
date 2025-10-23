@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="employee_shift_replaced_wizard_view_form" model="ir.ui.view">
+            <field name="name">employee.shift.replaced.wizard.view.form</field>
+            <field name="model">employee.shift.replaced.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Employee Shift Change">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="shift_allocation_id" readonly="1" />
+                                <field name="employee_allocation_id" readonly="1" />
+                            </group>
+                            <group>
+                                <field name="specific_readonly_field" invisible="1" />
+                                <field name="type" />
+                                <field name="employee_id" attrs="{'readonly': [('specific_readonly_field', '=', True)]}" />
+                                <field name="exchange_shift_allocation_id" domain="[('employee_id', '=', employee_id), ('state', '=', 'done')]" attrs="{'invisible': [('type', '!=', 'exchange')]}" />
+                                <field name="description" />
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Confirm" data-hotkey='c' name="action_confirm" type="object" class="oe_highlight"/>
+                        <button string="Cancel" data-hotkey='x' special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="employee_shift_replaced_wizard_action" model="ir.actions.act_window">
+            <field name="name">Employee Shift Change</field>
+            <field name="res_model">employee.shift.replaced.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    
+    </data>
+
+</odoo>

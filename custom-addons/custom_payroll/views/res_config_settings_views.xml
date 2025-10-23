@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="res_config_settings_view_form_inherit_minimum_wage" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="hr_payroll.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@id='hr_payroll_localization']" position="inside">
+                    <div class="col-lg-6 col-12 o_setting_box" id="minimum_wage">
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Minimum Wage</span>
+                            <div class="text-muted">
+                                <field name="minimum_wage_id" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 o_setting_box" id="max_pens_cont_id">
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Maximal Pension Contribution Salary</span>
+                            <div class="text-muted">
+                                <field name="max_pens_cont_id" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 o_setting_box" id="max_health_ins_id">
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Maximal Health Insurance Salary</span>
+                            <div class="text-muted">
+                                <field name="max_health_ins_id" options="{'no_create': True, 'no_open': True}"/>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

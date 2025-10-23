@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="view_partners_form_crm1_inherit_business_trip" model="ir.ui.view">
+            <field name="name">crm.lead.view.form.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.view_partners_form_crm1"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_view_opportunity']" position="after">
+                    <button name="action_show_business_trip" type="object" class="oe_stat_button" icon="fa-plane" >
+                        <div class="o_stat_info">
+                            <field name="trip_count" class="o_stat_value"/>
+                            <span class="o_stat_text"> Business Trip</span>
+                        </div>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

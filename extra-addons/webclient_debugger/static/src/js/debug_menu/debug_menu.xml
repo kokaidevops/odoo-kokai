@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="webclient_debugger.debugMenu" owl="1">
+        <div class="">
+            <a t-attf-href="{{state.debug_mode == 'off' ? '?debug=1' : '?debug=0'}}" t-on-click="() => this.toggleDebugMode(state.debug_mode)" title="Toggle Debug Mode">
+                <i t-attf-class="fa fa-toggle-{{state.debug_mode}} debug-toggle"/>
+            </a>
+        </div>
+    </t>
+</templates>

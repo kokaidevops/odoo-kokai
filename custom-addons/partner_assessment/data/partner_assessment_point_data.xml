@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+    
+        <record id="partner_assessment_point_data_" model="partner.assessment.point">
+            <field name="name">Verify Vendor's Quality Management System (QMS)</field>
+        </record>
+        <record id="partner_assessment_point_data_" model="partner.assessment.point">
+            <field name="name">Verify Vendor's internal &amp; supply chain extent of control</field>
+        </record>
+        <record id="partner_assessment_point_data_" model="partner.assessment.point">
+            <field name="name">Perform on-site evaluation of relevant activities</field>
+        </record>
+        <record id="partner_assessment_point_data_" model="partner.assessment.point">
+            <field name="name">Perform first article inspection</field>
+        </record>
+        <record id="partner_assessment_point_data_" model="partner.assessment.point">
+            <field name="name">Identify conformance to stated requirements</field>
+        </record>
+        <record id="partner_assessment_point_data_" model="partner.assessment.point">
+            <field name="name">Assess vendor ability to meet purchasing requirements</field>
+        </record>
+        <record id="partner_assessment_point_data_" model="partner.assessment.point">
+            <field name="name">Assess product/component upon delivery, or activity upon completion</field>
+        </record>
+    
+    </data>
+
+</odoo>

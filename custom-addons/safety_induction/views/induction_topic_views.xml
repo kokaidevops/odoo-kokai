@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="induction_topic_view_tree" model="ir.ui.view">
+            <field name="name">induction.topic.view.tree</field>
+            <field name="model">induction.topic</field>
+            <field name="arch" type="xml">
+                <tree string="induction Topic" editable="bottom">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="induction_topic_action" model="ir.actions.act_window">
+            <field name="name">Induction Topic</field>
+            <field name="res_model">induction.topic</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="induction_topic_menu"
+            name="Induction Topic"
+            action="induction_topic_action"
+            parent="qhse_program.configuration_menu"
+            sequence="10"
+        />
+
+        <record id="induction_announcement_view_form" model="ir.ui.view">
+            <field name="name">induction.announcement.view.form</field>
+            <field name="model">induction.announcement</field>
+            <field name="arch" type="xml">
+                <form string="Induction Form">
+                    <sheet>
+                        <group>
+                            <field name="name" attrs="{'readonly': [('id', '!=', False)]}" />
+                            <field name="description" attrs="{'readonly': [('id', '!=', False)]}" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="induction_announcement_view_tree" model="ir.ui.view">
+            <field name="name">induction.announcement.view.tree</field>
+            <field name="model">induction.announcement</field>
+            <field name="arch" type="xml">
+                <tree string="Form">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="induction_announcement_action" model="ir.actions.act_window">
+            <field name="name">Induction Form</field>
+            <field name="res_model">induction.announcement</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="induction_announcement_menu"
+            name="Induction Form"
+            action="induction_announcement_action"
+            parent="qhse_program.configuration_menu"
+            sequence="10"
+        />
+    
+    </data>
+
+</odoo>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="training_note_view_form" model="ir.ui.view">
+            <field name="name">training.note.view.form</field>
+            <field name="model">training.note</field>
+            <field name="arch" type="xml">
+                <form string="Note">
+                    <header>
+                        <button string="Draft" name="action_draft" type="object" states="cancel" />
+                        <button string="Cancel" name="action_cancel" type="object" states="draft" />
+                        <button string="Approval Request" name="action_requested" type="object" class="oe_highlight" states="draft,refused" />
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" readonly="1" /></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="user_id" readonly="1" />
+                                <field name="training_id" readonly="1" />
+                                <field name="date" />
+                            </group>
+                            <group>
+                                <field name="test_date" />
+                                <field name="min_value" />
+                                <field name="avg_value" />
+                                <field name="grad_percentage" />
+                            </group>
+                        </group>
+                        <group string="Summary">
+                            <field name="summary" placeholder="Summery of Training" />
+                        </group>
+                        <group string="Evaluation">
+                            <field name="evaluation" placeholder="Summery of Training" />
+                        </group>
+                        <notebook>
+                            <page name="result" string="Result">
+                                <field name="result_ids" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                    <tree editable="bottom">
+                                        <field name="note_id" invisible="1" />
+                                        <field name="training_id" invisible="1" />
+                                        <field name="participant_id" readonly="1" />
+                                        <field name="department_id" readonly="1" />
+                                        <field name="attendance" />
+                                        <field name="value" />
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="attachment" string="Attachment">
+                                <field name="attachment_ids" widget="many2many_attachment_preview" />
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="training_note_view_tree" model="ir.ui.view">
+            <field name="name">training.note.view.tree</field>
+            <field name="model">training.note</field>
+            <field name="arch" type="xml">
+                <tree string="Note" create="False">
+                    <field name="name" />
+                    <field name="responsible_id" />
+                    <field name="date" />
+                    <field name="avg_value" />
+                    <field name="grad_percentage" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="training_note_action" model="ir.actions.act_window">
+            <field name="name">Note</field>
+            <field name="res_model">training.note</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="training_note_menu"
+            name="Note"
+            action="training_note_action"
+            parent="hr_training.training_root_menu"
+            sequence="10"
+        />
+    
+    </data>
+
+</odoo>

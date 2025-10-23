@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="approval_request_view_form_inherit_expense" model="ir.ui.view">
+            <field name="name">approval.request.view.form.inherit</field>
+            <field name="model">approval.request</field>
+            <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+            <field name="arch" type="xml">
+                <field name='category_id' position="after">
+                    <field name="has_expense_report" invisible="1" />
+                    <field name="expense_id" attrs="{'readonly': [('request_status', '!=', 'new')],'invisible': [('has_expense_report', 'in', ['no', False])], 'required': [('has_expense_report', '=', 'required')]}" />
+                </field>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

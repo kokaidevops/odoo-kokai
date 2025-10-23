@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+    
+        <record id="seq_crm_lead" model="ir.sequence">
+            <field name="name">Opportunity Sequence</field>
+            <field name="code">crm.lead</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name="number_next">1</field>
+            <field name="use_date_range">1</field>
+            <field name="range_reset">monthly</field>
+            <field name="prefix">OPP/%(year)s/%(month)s/</field>
+        </record>
+    
+        <record id="seq_inquiry_review" model="ir.sequence">
+            <field name="name">Inquiry Review</field>
+            <field name="code">inquiry.review</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name="number_next">1</field>
+            <field name="use_date_range">1</field>
+            <field name="range_reset">monthly</field>
+            <field name="suffix">/FIR/%(year)s/%(month)s</field>
+        </record>
+
+        <record id="seq_contract_review_a" model="ir.sequence">
+            <field name="name">Contract Review</field>
+            <field name="code">contract.review.a</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name="number_next">1</field>
+            <field name="use_date_range">1</field>
+            <field name="range_reset">monthly</field>
+            <field name="prefix">FRKA/%(year)s/%(month)s/</field>
+        </record>
+
+        <record id="seq_contract_review_b" model="ir.sequence">
+            <field name="name">Contract Review</field>
+            <field name="code">contract.review.b</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name="number_next">1</field>
+            <field name="use_date_range">1</field>
+            <field name="range_reset">monthly</field>
+            <field name="prefix">FRKB/%(year)s/%(month)s/</field>
+        </record>
+
+        <record id="seq_contract_review_c" model="ir.sequence">
+            <field name="name">Contract Review</field>
+            <field name="code">contract.review.c</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+            <field name="number_next">1</field>
+            <field name="use_date_range">1</field>
+            <field name="range_reset">monthly</field>
+            <field name="prefix">FRKC/%(year)s/%(month)s/</field>
+        </record>
+
+        <record id="seq_contract_issue" model="ir.sequence">
+            <field name="name">Contract Issue/</field>
+            <field name="code">contract.issue</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="number_next">1</field>
+            <field name="use_date_range">1</field>
+            <field name="range_reset">monthly</field>
+            <field name="prefix">ISSUE/</field>
+        </record>
+
+        <record id="seq_quotation_order" model="ir.sequence">
+            <field name="name">Quotation Order/</field>
+            <field name="code">quotation.order</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="number_next">1</field>
+            <field name="use_date_range">1</field>
+            <field name="range_reset">yearly</field>
+            <field name="prefix">QUO/</field>
+        </record>
+
+    </data>
+
+</odoo>

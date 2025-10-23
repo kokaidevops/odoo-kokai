@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="product_brand_view_form" model="ir.ui.view">
+            <field name="name">product.brand.view.form</field>
+            <field name="model">product.brand</field>
+            <field name="arch" type="xml">
+                <form string="Product Brand">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="type" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="product_brand_view_tree" model="ir.ui.view">
+            <field name="name">product.brand.view.tree</field>
+            <field name="model">product.brand</field>
+            <field name="arch" type="xml">
+                <tree string="Product Brand" editable="bottom">
+                    <field name="active" invisible="1" />
+                    <field name="name" />
+                    <field name="type" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="product_brand_action" model="ir.actions.act_window">
+            <field name="name">Product Brand</field>
+            <field name="res_model">product.brand</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="product_brand_menu"
+            name="Product Brand"
+            action="product_brand_action"
+            parent="stock.menu_stock_inventory_control"
+            sequence="100"
+        />
+
+
+        <record id="view_order_form_inherit_brand" model="ir.ui.view">
+            <field name="name">sale.order.view.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']//tree" position="inside">
+                    <field name="brand_id" groups="product_brand.group_brand_per_so_line" optional="show" />
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_purchase_request_form_inherit_custom" model="ir.ui.view">
+            <field name="name">purchase.request.view.form.inherit</field>
+            <field name="model">purchase.request</field>
+            <field name="inherit_id" ref="purchase_request.view_purchase_request_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='line_ids']//tree" position="inside">
+                    <field name="brand_id" groups="product_brand.group_brand_per_so_line" optional="show" />
+                </xpath>
+            </field>
+        </record>
+
+        
+        <record id="purchase_order_form_inherit_brand" model="ir.ui.view">
+            <field name="name">purchase.order.view.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']//tree" position="inside">
+                    <field name="brand_id" groups="product_brand.group_brand_per_so_line" optional="show" />
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

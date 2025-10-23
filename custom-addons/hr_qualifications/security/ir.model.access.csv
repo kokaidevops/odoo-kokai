@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_qualification_type,hr_qualification_type,model_hr_qualification_type,base.group_user,1,1,1,1
+access_hr_qualification_level,hr_qualification_level,model_hr_qualification_level,base.group_user,1,1,1,1
+access_hr_qualification_line,hr_qualification_line,model_hr_qualification_line,base.group_user,1,1,1,1

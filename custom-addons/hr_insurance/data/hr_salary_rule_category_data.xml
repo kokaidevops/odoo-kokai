@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="hr_salary_rule_category_data_ins_comp" model="hr.salary.rule.category">
+            <field name="name">Insurance (Company)</field>
+            <field name="code">INS_COMP</field>
+        </record>
+        <record id="hr_salary_rule_category_data_ins_emp" model="hr.salary.rule.category">
+            <field name="name">Insurance (Employee)</field>
+            <field name="code">INS_EMP</field>
+        </record>
+    
+    </data>
+
+</odoo>

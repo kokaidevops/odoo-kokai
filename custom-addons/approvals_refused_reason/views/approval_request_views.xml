@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="approval_request_view_form_inherit_refused_reason" model="ir.ui.view">
+            <field name="name">approval.request.view.form.inherit</field>
+            <field name="model">approval.request</field>
+            <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_refuse']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <button string="Refuse Wizard" type='object' name="action_view_approval_refused_reason_wizard" attrs="{'invisible':['|', ('request_status', 'in', ['approved', 'refused', 'cancel']), ('user_status','!=','pending')]}" data-hotkey="x"/>
+                </xpath>
+                <xpath expr="//field[@name='approver_ids']//tree//field[@name='status']" position="after">
+                    <field name="reason" />
+                </xpath>
+                <xpath expr="//field[@name='approver_ids']//kanban//field[@name='status']" position="after">
+                    <field name="reason" />
+                </xpath>
+                <xpath expr="//sheet//group[@name='request_main']" position="inside">
+                    <field name="refused_reason" attrs="{'invisible': [('refused_reason', '=', '-')]}" />
+                </xpath>
+                <xpath expr="//button[@name='action_cancel']" position="attributes">
+                    <attribute name="attrs">{'invisible':['|',('request_status','in',['new','refused','cancel']),'&amp;',('user_status','=',False),('has_access_to_request','=',False)]}</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_withdraw']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+    
+
+</odoo>

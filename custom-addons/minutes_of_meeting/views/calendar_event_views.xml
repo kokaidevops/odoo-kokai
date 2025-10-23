@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="view_calendar_event_form_inherit_meeting" model="ir.ui.view">
+            <field name="name">calendar.event.view.form.inherit</field>
+            <field name="model">calendar.event</field>
+            <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="before">
+                    <header>
+                        <button string="Draft" name="action_draft" type="object" states="cancel" />
+                        <button string="Assign" name="action_assign" type="object" class="oe_highlight" states="draft" />
+                        <button string="Progress" name="action_progress" type="object" class="oe_highlight" states="assign" />
+                        <button string="Done" name="action_done" type="object" class="oe_highlight" states="progress" />
+                        <button string="Cancel" name="action_cancel" type="object" states="draft,assign" />
+                        <button string="Attend" name="action_attend" type="object" class="oe_highlight" states="progress" />
+                        <field name="state" widget="statusbar" />
+                    </header>
+                </xpath>
+                <field name='alarm_ids' position="before">
+                    <field name="type" />
+                    <field name="media" />
+                </field>
+                <xpath expr="//notebook" position="inside">
+                    <page name="attachment_page" string="Attachment">
+                        <group>
+                            <field name="attachment_ids" widget="many2many_attachment_preview" />
+                        </group>
+                    </page>
+                    <page name="note_page" string="MoM">
+                        <field name="note_ids" context="{'default_stage_id': %(note.note_stage_01)d}">
+                            <tree>
+                                <field name="name" />
+                                <field name="date" />
+                                <field name="user_id" />
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="attendance" string="Attendance">
+                        <field name="attendance_ids" readonly="1">
+                            <tree>
+                                <field name="partner_id" />
+                                <field name="datetime_attend" />
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+                <field name="location" position="before">
+                    <field name="location_id" />
+                    <field name="area_id" />
+                </field>
+            </field>
+        </record>
+
+        <record id="view_note_note_form_inherit_date" model="ir.ui.view">
+            <field name="name">note.note.view.form.inherit</field>
+            <field name="model">note.note</field>
+            <field name="inherit_id" ref="note.view_note_note_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="date" />
+                </field>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

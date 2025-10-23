@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="group_brand_per_so_line" model="res.groups">
+            <field name="name">Brand on Sale lines</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+        <record id="group_brand_per_po_line" model="res.groups">
+            <field name="name">Brand on Purchase lines</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+        <record id="group_brand_per_sm_line" model="res.groups">
+            <field name="name">Brand on Stock lines</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+
+    </data>
+</odoo>

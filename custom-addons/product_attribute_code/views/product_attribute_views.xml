@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="product_attribute_view_form_inherit_code" model="ir.ui.view">
+            <field name="name">product.attribute.view.form.inherit</field>
+            <field name="model">product.attribute</field>
+            <field name="inherit_id" ref="product.product_attribute_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='value_ids']//tree" position="inside">
+                    <field name="code" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_template_form_view_inherit_code" model="ir.ui.view">
+            <field name="name">product.template.view.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <field name="categ_id" position="after">
+                    <field name="hs_code" />
+                </field>
+            </field>
+        </record>
+
+        <record id="product_normal_form_view_inherit_attribute_code" model="ir.ui.view">
+            <field name="name">product.product.view.form.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='general_information']//group[1]" position="inside">
+                    <group>
+                        <field name="attribute_code" />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit Lot Form View -->
+    <record id="view_production_lot_form_weight" model="ir.ui.view">
+        <field name="name">stock.production.lot.form.weight</field>
+        <field name="model">stock.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='main_group']" position="after">
+                <!-- <group string="Weight Tracking" attrs="{'invisible': [('product_id.track_weight_by_serial', '=', False)]}"> -->
+                <group string="Weight Tracking">
+                    <group>
+                        <field name="initial_weight"/>
+                        <field name="current_weight"/>
+                    </group>
+                    <group>
+                        <field name="weight_loss_total"/>
+                        <field name="weight_loss_percentage"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Weight History">
+                    <!-- <page string="Weight History" attrs="{'invisible': [('product_id.track_weight_by_serial', '=', False)]}"> -->
+                        <field name="weight_history_ids" readonly="1">
+                            <tree>
+                                <field name="date"/>
+                                <field name="old_weight"/>
+                                <field name="new_weight"/>
+                                <field name="weight_change"/>
+                                <field name="reference"/>
+                                <field name="production_id"/>
+                                <field name="user_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_stock_move_operations_mrp" model="ir.ui.view">
+        <field name="name">stock.move.operations.mrp</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="auto_generate_lot_number.view_stock_move_nosuggest_operations_custom"/>
+        <field name="arch" type="xml">
+            <!-- Add missing fields -->
+            <xpath expr="//form" position="inside">
+                <group invisible="1">
+                    <field name="raw_material_production_id"/>
+                    <field name="picking_id"/>
+                    <field name="has_tracking"/>
+                </group>
+            </xpath>
+            
+            <!-- Modify move_line_nosuggest_ids to be invisible when from MRP -->
+            <xpath expr="//field[@name='move_line_nosuggest_ids']" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': ['|', ('state', '=', 'cancel'), '&amp;', ('state', '=', 'done'), ('is_locked', '=', True)],
+                    'invisible': [('raw_material_production_id', '!=', False)]
+                }</attribute>
+            </xpath>
+            
+            <!-- Add move_line_ids for MRP context (visible only when from MRP) -->
+            <xpath expr="//field[@name='move_line_nosuggest_ids']" position="after">
+                <field 
+                    name="move_line_ids"
+                    attrs="{
+                        'readonly': ['|', ('state', '=', 'cancel'), '&amp;', ('state', '=', 'done'), ('is_locked', '=', True)],
+                        'invisible': [('raw_material_production_id', '=', False)]
+                    }"
+                    context="{
+                        'tree_view_ref': 'ks_metal_production.view_stock_move_line_operation_tree_mrp',
+                        'default_move_id': id,
+                        'default_product_id': product_id,
+                        'default_location_id': location_id,
+                        'default_location_dest_id': location_dest_id,
+                        'default_company_id': company_id,
+                        'show_lots_text': has_tracking == 'serial',
+                        'show_lots_m2o': has_tracking != 'none'
+                    }"
+                />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Create editable tree view for MRP -->
+    <record id="view_stock_move_line_operation_tree_mrp" model="ir.ui.view">
+        <field name="name">stock.move.line.operations.tree.mrp</field>
+        <field name="model">stock.move.line</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" create="true" delete="true">
+                <!-- Hidden fields -->
+                <field name="product_id" invisible="1" force_save="1"/>
+                <field name="location_id" invisible="1" force_save="1"/>
+                <field name="location_dest_id" invisible="1" force_save="1"/>
+                <field name="picking_id" invisible="1" force_save="1"/>
+                <field name="move_id" invisible="1" force_save="1"/>
+                <field name="company_id" invisible="1" force_save="1"/>
+                <field name="state" invisible="1"/>
+                <field name="is_locked" invisible="1"/>
+                <field name="product_uom_category_id" invisible="1"/>
+                
+                <!-- Visible fields -->
+                <field name="lot_name" 
+                    string="Serial Number"
+                    attrs="{
+                        'required': [('parent.has_tracking', '=', 'serial')],
+                        'invisible': [('parent.has_tracking', '!=', 'serial')]
+                    }"
+                    placeholder="Enter serial number"/>
+                
+                <field name="lot_id" 
+                    string="Lot/Serial"
+                    attrs="{
+                        'invisible': [('parent.has_tracking', '=', 'none')],
+                        'required': [('parent.has_tracking', '=', 'lot')]
+                    }"
+                    domain="[('product_id', '=', parent.product_id)]"
+                    context="{'default_product_id': parent.product_id}"
+                    options="{'no_create': False}"/>
+                
+                <field name="reserved_uom_qty" 
+                    readonly="1" 
+                    string="Reserved"
+                    optional="show"/>
+                
+                <field name="qty_done" 
+                    string="Done"/>
+                
+                <field name="product_uom_id" 
+                    groups="uom.group_uom" 
+                    string="UoM"
+                    readonly="1"
+                    optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- Lot Tree View -->
+    <record id="view_production_lot_tree_weight" model="ir.ui.view">
+        <field name="name">stock.production.lot.tree.weight</field>
+        <field name="model">stock.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_tree"/>
+        <field name="arch" type="xml">
+            <field name="product_id" position="after">
+                <field name="initial_weight" optional="show"/>
+                <field name="current_weight" optional="show"/>
+                <field name="weight_loss_percentage" optional="show"/>
+            </field>
+        </field>
+    </record>
+</odoo>

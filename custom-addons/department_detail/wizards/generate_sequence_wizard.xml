@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="generate_sequence_wizard_view_form" model="ir.ui.view">
+            <field name="name">generate.sequence.wizard.view.form</field>
+            <field name="model">generate.sequence.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generate Sequence">
+                    <sheet>
+                        <group>
+                            <field name="model_id" />
+                            <field name="prefix" />
+                            <field name="suffix" />
+                            <field name="padding" />
+                            <field name="use_date_range" />
+                            <field name="range_reset" attrs="{'invisible': [('use_date_range', '=', False)], 'required': [('use_date_range', '=', True)]}" />
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Create" name="button_process" type="object" class="oe_highlight"/>
+                        <button string="Cancel" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="generate_sequence_wizard_action" model="ir.actions.act_window">
+            <field name="name">Generate Sequence</field>
+            <field name="res_model">generate.sequence.wizard</field>
+            <field name="view_mode">form</field>
+        </record>
+    
+    </data>
+
+</odoo>

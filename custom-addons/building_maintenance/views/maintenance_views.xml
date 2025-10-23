@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="equipment_part_stock_view_form" model="ir.ui.view">
+            <field name="name">equipment.part.stock.view.form</field>
+            <field name="model">equipment.part.stock</field>
+            <field name="arch" type="xml">
+                <form string="Part Stock">
+                    <sheet>
+                        <group>
+                            <field name="part_id" />
+                            <field name="service_id" />
+                            <field name="date" />
+                        </group>
+                        <group>
+                            <field name="init_qty" />
+                            <field name="final_qty" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="equipment_part_stock_view_tree" model="ir.ui.view">
+            <field name="name">equipment.part.stock.view.tree</field>
+            <field name="model">equipment.part.stock</field>
+            <field name="arch" type="xml">
+                <tree string="Part Stock">
+                    <field name="part_id" />
+                    <field name="service_id" />
+                    <field name="date" />
+                    <field name="init_qty" />
+                    <field name="final_qty" />
+                </tree>
+            </field>
+        </record>
+<!-- 
+        <record id="equipment_part_stock_view_search" model="ir.ui.view">
+            <field name="name">equipment.part.stock.view.search</field>
+            <field name="model">equipment.part.stock</field>
+            <field name="arch" type="xml">
+                <search string="Part Stock">
+                    
+                </search>
+            </field>
+        </record> -->
+
+        <record id="equipment_part_stock_action" model="ir.actions.act_window">
+            <field name="name">Part Stock</field>
+            <field name="res_model">equipment.part.stock</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="equipment_part_stock_menu"
+            name="Part Stock"
+            action="equipment_part_stock_action"
+            parent="maintenance.menu_equipment_form"
+            sequence="10"
+        />
+
+
+        <record id="maintenance_request_service_view_form" model="ir.ui.view">
+            <field name="name">maintenance.request.service.view.form</field>
+            <field name="model">maintenance.request.service</field>
+            <field name="arch" type="xml">
+                <form string="Service">
+                    <sheet>
+                        <group>
+                            <field name="maintenance_id" />
+                            <field name="service_id" />
+                            <field name="part_id" />
+                            <field name="date" />
+                        </group>
+                        <group>
+                            <field name="product_id" />
+                            <field name="qty" />
+                            <field name="uom_id" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="maintenance_request_service_view_tree" model="ir.ui.view">
+            <field name="name">maintenance.request.service.view.tree</field>
+            <field name="model">maintenance.request.service</field>
+            <field name="arch" type="xml">
+                <tree string="Service">
+                    <field name="maintenance_id" />
+                    <field name="service_id" />
+                    <field name="part_id" />
+                    <field name="date" />
+                    <field name="product_id" />
+                    <field name="qty" />
+                    <field name="uom_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="maintenance_request_service_action" model="ir.actions.act_window">
+            <field name="name">Service</field>
+            <field name="res_model">maintenance.request.service</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+    
+    
+        <record id="hr_equipment_view_form_inherit_area" model="ir.ui.view">
+            <field name="name">maintenance.equipment.view.form.inherit</field>
+            <field name="model">maintenance.equipment</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='product_information']" position="after">
+                    <page name="area" string="Area">
+                        <field name="area_ids" readonly="1">
+                            <tree editable="bottom">
+                                <field name="area_id" />
+                                <field name="qty" />
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="part" string="Part">
+                        <field name="part_ids" context="{'default_equipment_id': active_id}">
+                            <tree>
+                                <field name="equipment_id" invisible="1" />
+                                <field name="name" />
+                                <field name="qty" />
+                                <field name="state" />
+                                <button name="action_show_stock" type="object" icon="fa-cubes" string="Stock" class="btn-info"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="hr_equipment_request_view_form_inherit_structure" model="ir.ui.view">
+            <field name="name">maintenance.request.view.form.inherit</field>
+            <field name="model">maintenance.request</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='archive_equipment_request']" position="attributes">
+                    <attribute name="attrs" value="{'invisible': [('stage_id', 'not in', [%(maintenance.stage_0)d, %(maintenance.stage_1)d])]}">{'invisible': [('stage_id', 'not in', [%(maintenance.stage_0)d, %(maintenance.stage_1)d])]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='stage_id']" position="attributes">
+                    <attribute name="options" value=""/>
+                </xpath>
+                <xpath expr="//field[@name='equipment_id']" position="attributes">
+                    <attribute name="attrs" value="{'readonly': [('stage_id', '!=', %(maintenance.stage_0)d)]}">{'readonly': [('stage_id', '!=', %(maintenance.stage_0)d)]}</attribute>
+                </xpath>
+                <field name="equipment_id" position="after">
+                    <field name="can_edit" invisible="1" />
+                    <field name="structure_id" attrs="{'invisible': [('equipment_id', '>', 0)]}" />
+                    <field name="work_area_id" attrs="{'readonly': [('can_edit', '=', False)]}" />
+                    <field name="area_structure_id" attrs="{'invisible': [('equipment_id', '>', 0)], 'readonly': [('can_edit', '=', False)]}" />
+                    <field name="area_equipment_id" attrs="{'invisible': [('structure_id', '>', 0)], 'readonly': [('can_edit', '=', False)]}" />
+                </field>
+                <xpath expr="//field[@name='equipment_id']" position="attributes">
+                    <attribute name="attrs" value="{'readonly': [('stage_id', '!=', %(maintenance.stage_0)d)], 'invisible': [('structure_id', '>', 0)]}">{'readonly': [('stage_id', '!=', %(maintenance.stage_0)d)], 'invisible': [('structure_id', '>', 0)]}</attribute>
+                </xpath>
+                <xpath expr="//group//field[@name='category_id']" position="attributes">
+                    <attribute name="attrs" value=""></attribute>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <button string="Request Approval" name="action_request_approval" type="object" attrs="{'invisible': [('stage_id', '!=', %(maintenance.stage_1)d)]}" class="oe_highlight"/>
+                    <button string="Scrap" name="action_scrap" type="object" attrs="{'invisible': [('stage_id', '!=', %(maintenance.stage_1)d)]}"/>
+                </xpath>
+                <xpath expr="//sheet/div[2]" position="after">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_show_all_equipment" type="object" class="oe_stat_button" string="Equipment" icon="fa-cubes" attrs="{'invisible': [('equipment_id', '=', False)]}" />
+                        <button name="action_view_approval_request" type="object" class="oe_stat_button" icon="fa-list">
+                            <field name="approval_count" string="Approval" widget="statinfo"/>
+                        </button>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

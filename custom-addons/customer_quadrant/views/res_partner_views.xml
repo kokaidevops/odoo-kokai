@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="view_partner_form_inherit_quadrant" model="ir.ui.view">
+            <field name="name">res.partner.view.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='sales_purchases']//group//group[@name='sale']" position="inside">
+                    <field name="customer_rank" invisible="1" />
+                    <field name="quadrant" attrs="{'invisible': [('customer_rank', '=', 0)]}" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_res_partner_filter_inherit_quadrant" model="ir.ui.view">
+            <field name="name">res.partner.view.search.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='group_by']" position="inside">
+                    <filter name="quadrant" string="Quadrant" domain="[]" context="{'group_by' : 'quadrant'}"/>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

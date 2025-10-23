@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View for Product Category Template -->
+    <record id="view_product_category_template_tree" model="ir.ui.view">
+        <field name="name">product.category.template.tree</field>
+        <field name="model">product.category.template</field>
+        <field name="arch" type="xml">
+            <tree string="Product Category Templates" multi_edit="1">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="product_base_id"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View for Product Category Template -->
+    <record id="view_product_category_template_form" model="ir.ui.view">
+        <field name="name">product.category.template.form</field>
+        <field name="model">product.category.template</field>
+        <field name="arch" type="xml">
+            <form string="Product Category Template">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Ball Valve"/>
+                        </h1>
+                        <label for="code" class="oe_edit_only"/>
+                        <h2>
+                            <field name="code" placeholder="e.g. BV"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="product_base_id" required="1"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Detailed description of this product category..."/>
+                    </group>
+                    <notebook>
+                        <page string="Template Structure" name="template_lines">
+                            <field name="template_line_ids" context="{'default_template_id': active_id}">
+                                <tree string="Template Lines" editable="bottom" default_order="level, sequence">
+                                    <field name="template_id" invisible="1" force_save="1"/>                               
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="level" decoration-info="level == 1" decoration-success="level == 2" decoration-warning="level >= 3"/>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="product_id"/>
+                                    <field name="category" widget="badge" decoration-info="category == 'raw'" decoration-success="category == 'processed'"/>
+                                    <field name="component_type" widget="badge"/>
+                                    <!-- Hapus domain untuk test -->
+                                    <field name="parent_line_ids" widget="many2many_tags"/>
+                                    <!-- <field name="parent_line_ids" 
+                                           widget="many2many_tags" 
+                                           options="{'no_create': True, 'color_field': 'level'}"
+                                           context="{'default_template_id': template_id}"/> -->
+                                    <field name="uom_id"/>
+                                    <field name="quantity_formula"/>
+                                    <field name="material_attribute_ids" widget="many2many_tags" options="{'color_field': 'name'}"/>
+                                </tree>
+                                <form string="Template Line">
+                                    <sheet>
+                                        <group>
+                                            <group string="Component Information">
+                                                <field name="name" required="1"/>
+                                                <field name="code"/>
+                                                <field name="category" required="1"/>
+                                                <field name="component_type"/>
+                                            </group>
+                                            <group string="Level &amp; Sequence">
+                                                <field name="level" required="1"/>
+                                                <field name="sequence"/>
+                                                <field name="uom_id" required="1"/>
+                                                <field name="quantity_formula"/>
+                                            </group>
+                                        </group>
+                                        <group string="Product &amp; Dependencies">
+                                            <field name="product_id"/>
+                                            <field name="parent_line_ids" 
+                                                   widget="many2many_tags"/>
+                                        </group>
+                                        <group string="Material Specification">
+                                            <field name="material_attribute_ids" widget="many2many_tags" colspan="2"/>
+                                            <field name="material_selection_rule" colspan="2"/>
+                                        </group>
+                                        <group string="Operation Details" attrs="{'invisible': [('category', '!=', 'processed')]}">
+                                            <group>
+                                                <field name="operation_name"/>
+                                                <field name="operation_type"/>
+                                            </group>
+                                            <group>
+                                                <field name="time_formula"/>
+                                            </group>
+                                        </group>
+                                        <group string="Notes">
+                                            <field name="notes" nolabel="1" colspan="2"/>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View for Product Category Template -->
+    <record id="view_product_category_template_search" model="ir.ui.view">
+        <field name="name">product.category.template.search</field>
+        <field name="model">product.category.template</field>
+        <field name="arch" type="xml">
+            <search string="Search Product Category Template">
+                <!-- Search Fields -->
+                <field name="name"/>
+                <field name="code"/>
+                <field name="product_base_id"/>
+                <field name="description"/>
+                
+                <!-- Filters -->
+                <separator/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                
+                <separator/>
+                <filter string="Ball Valve" name="ball_valve" domain="[('code', 'ilike', 'BV')]"/>
+                <filter string="Check Valve" name="check_valve" domain="[('code', 'ilike', 'CV')]"/>
+                <filter string="Gate Valve" name="gate_valve" domain="[('code', 'ilike', 'GV')]"/>
+                
+                <separator/>
+                <filter string="Has Template Lines" name="has_lines" domain="[('template_line_ids', '!=', False)]"/>
+                <filter string="No Template Lines" name="no_lines" domain="[('template_line_ids', '=', False)]"/>
+                
+                <!-- Group By -->
+                <group expand="0" string="Group By">
+                    <filter string="Product Category" name="group_product_category" context="{'group_by': 'product_base_id'}"/>
+                    <filter string="Category Code" name="group_code" context="{'group_by': 'code'}"/>
+                    <filter string="Active Status" name="group_active" context="{'group_by': 'active'}"/>
+                    <filter string="Creation Date" name="group_create_date" context="{'group_by': 'create_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Tree View for Template Lines -->
+    <record id="view_product_category_template_line_tree" model="ir.ui.view">
+        <field name="name">product.category.template.line.tree</field>
+        <field name="model">product.category.template.line</field>
+        <field name="arch" type="xml">
+            <tree string="Template Components" default_order="template_id, level, sequence">
+                <field name="template_id"/>
+                <field name="sequence" widget="handle"/>
+                <field name="level" decoration-info="level == 1" decoration-success="level == 2" decoration-warning="level >= 3"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="category" widget="badge"/>
+                <field name="component_type" widget="badge"/>
+                <field name="quantity_formula"/>
+                <field name="uom_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View for Template Lines -->
+<!-- Form View for Template Lines -->
+    <record id="view_product_category_template_line_form" model="ir.ui.view">
+        <field name="name">product.category.template.line.form</field>
+        <field name="model">product.category.template.line</field>
+        <field name="arch" type="xml">
+            <form string="Template Line">
+                <sheet>
+                    <!-- Hidden fields untuk domain -->
+                    <field name="template_id" invisible="1"/>
+                    <field name="level" invisible="1"/>
+                    
+                    <group>
+                        <group string="Basic Information">
+                            <field name="template_id" force_save="1"/>  <!-- Tampilkan yang ini -->
+                            <field name="name" required="1"/>
+                            <field name="code"/>
+                            <field name="level" required="1"/>  <!-- Tampilkan yang ini juga -->
+                            <field name="sequence"/>
+                        </group>
+                        <group string="Component Details">
+                            <field name="category" required="1"/>
+                            <field name="component_type"/>
+                            <field name="product_id"/>
+                            <field name="uom_id" required="1"/>
+                            <field name="quantity_formula"/>
+                        </group>
+                    </group>
+                    <group string="Dependencies">
+                        <field name="parent_line_ids" widget="many2many_tags"/>
+                        <!-- <field name="parent_line_ids" 
+                            widget="many2many_tags"
+                            domain="[('template_id', '=', template_id), ('level', '&lt;', level)]"/> -->
+                    </group>
+                    <group string="Material Specification">
+                        <field name="material_attribute_ids" widget="many2many_tags"/>
+                        <field name="material_selection_rule"/>
+                    </group>
+                    <group string="Operation Details" attrs="{'invisible': [('category', '!=', 'processed')]}">
+                        <group>
+                            <field name="operation_name"/>
+                            <field name="operation_type"/>
+                        </group>
+                        <group>
+                            <field name="time_formula"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Search View for Template Lines -->
+    <record id="view_product_category_template_line_search" model="ir.ui.view">
+        <field name="name">product.category.template.line.search</field>
+        <field name="model">product.category.template.line</field>
+        <field name="arch" type="xml">
+            <search string="Search Template Lines">
+                <!-- Search Fields -->
+                <field name="name"/>
+                <field name="code"/>
+                <field name="template_id"/>
+                <field name="product_id"/>
+                
+                <!-- Filters -->
+                <separator/>
+                <filter string="Raw Material" name="raw_material" domain="[('category', '=', 'raw')]"/>
+                <filter string="Processed/WIP" name="processed" domain="[('category', '=', 'processed')]"/>
+                
+                <separator/>
+                <filter string="Body Components" name="body" domain="[('component_type', '=', 'body')]"/>
+                <filter string="Trim Components" name="trim" domain="[('component_type', '=', 'trim')]"/>
+                <filter string="Fasteners" name="fastener" domain="[('component_type', '=', 'fastener')]"/>
+                <filter string="Sealing" name="sealing" domain="[('component_type', '=', 'sealing')]"/>
+                <filter string="Accessories" name="accessory" domain="[('component_type', '=', 'accessory')]"/>
+                
+                <separator/>
+                <filter string="Level 1" name="level_1" domain="[('level', '=', 1)]"/>
+                <filter string="Level 2" name="level_2" domain="[('level', '=', 2)]"/>
+                <filter string="Level 3" name="level_3" domain="[('level', '=', 3)]"/>
+                <filter string="Level 4+" name="level_4_plus" domain="[('level', '&gt;=', 4)]"/>
+                
+                <separator/>
+                <filter string="Has Dependencies" name="has_dependencies" domain="[('parent_line_ids', '!=', False)]"/>
+                <filter string="No Dependencies" name="no_dependencies" domain="[('parent_line_ids', '=', False)]"/>
+                
+                <!-- Group By -->
+                <group expand="0" string="Group By">
+                    <filter string="Template" name="group_template" context="{'group_by': 'template_id'}"/>
+                    <filter string="Level" name="group_level" context="{'group_by': 'level'}"/>
+                    <filter string="Category" name="group_category" context="{'group_by': 'category'}"/>
+                    <filter string="Component Type" name="group_component_type" context="{'group_by': 'component_type'}"/>
+                    <filter string="Base Product" name="group_product" context="{'group_by': 'product_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_product_category_template" model="ir.actions.act_window">
+        <field name="name">Product Category Templates</field>
+        <field name="res_model">product.category.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_product_category_template_search"/>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Product Category Template
+            </p>
+            <p>
+                Product Category Templates define the structure and components for manufacturing products.
+                Each template can be used to generate Bills of Materials automatically.
+            </p>
+        </field>
+    </record>
+
+    <record id="view_product_category_template_form_inherit_variant_wizard" model="ir.ui.view">
+        <field name="name">product.category.template.form.inherit.variant.wizard</field>
+        <field name="model">product.category.template</field>
+        <field name="inherit_id" ref="ks_kokai.view_product_category_template_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="action_open_variant_wizard" 
+                            string="Generate Variants" 
+                            type="object"
+                            class="btn-primary"
+                            attrs="{'invisible': [('template_line_ids', '=', [])]}"
+                            groups="base.group_user"/>
+                </header>
+            </xpath>        
+        </field>
+    </record>
+
+    <record id="action_product_category_template_line" model="ir.actions.act_window">
+        <field name="name">Template Components</field>
+        <field name="res_model">product.category.template.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_product_category_template_line_search"/>
+        <field name="context">{
+            'search_default_group_template': 1,
+            'search_default_group_level': 1
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Template Components
+            </p>
+            <p>
+                Define components and their structure for product category templates.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Structure - FIXED -->
+    <!-- Main Menu -->
+    <menuitem id="menu_product_category_template_main"
+              name="Category Templates"
+              parent="mrp.menu_mrp_configuration"
+              sequence="50"/>
+
+    <!-- Sub Menu for Templates -->
+    <menuitem id="menu_product_category_template_sub"
+              name="Templates"
+              parent="menu_product_category_template_main"
+              action="action_product_category_template"
+              sequence="10"/>
+
+    <!-- Sub Menu for Template Components -->
+    <menuitem id="menu_product_category_template_line"
+              name="Template Components"
+              parent="menu_product_category_template_main"
+              action="action_product_category_template_line"
+              sequence="20"/>
+</odoo>

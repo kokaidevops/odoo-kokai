@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+    
+        <!-- <record id="crm_stage_data_packaging" model="order.term.list">
+            <field name="name">Packaging</field>
+            <field name="sequence">100</field>
+        </record>
+
+        <record id="crm_stage_data_goods_delivery_procedure" model="order.term.list">
+            <field name="name">Goods Delivery Procedure</field>
+            <field name="sequence">200</field>
+        </record>
+
+        <record id="crm_stage_data_handover_procedure" model="order.term.list">
+            <field name="name">Handover Procedure</field>
+            <field name="sequence">300</field>
+        </record> -->
+
+        <record id="crm_stage_data_after_sales_service" model="order.term.list">
+            <field name="name">After Sales Service</field>
+            <field name="sequence">400</field>
+        </record>
+
+        <record id="crm_stage_data_applicable_req" model="order.term.list">
+            <field name="name">Legal And Other Applicable Req</field>
+            <field name="sequence">500</field>
+        </record>
+    
+        <record id="crm_stage_data_monogram" model="order.term.list">
+            <field name="name">Monogram</field>
+            <field name="sequence">600</field>
+        </record>
+    
+        <!-- <record id="crm_stage_data_other_painting" model="order.term.list">
+            <field name="name">Other Painting</field>
+            <field name="sequence">700</field>
+        </record> -->
+    
+    </data>
+
+</odoo>

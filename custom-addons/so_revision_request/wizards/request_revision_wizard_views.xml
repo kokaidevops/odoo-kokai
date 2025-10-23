@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="request_revision_wizard_view_form" model="ir.ui.view">
+            <field name="name">request.revision.wizard.view.form</field>
+            <field name="model">request.revision.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Request Revision">
+                    <sheet>
+                        <group>
+                            <field name="order_id" invisible="1" />
+                            <field name="reason" />
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Request" name="action_confirm" type="object" class="oe_highlight"/>
+                        <button string="Cancel" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="request_revision_wizard_action" model="ir.actions.act_window">
+            <field name="name">Request Revision</field>
+            <field name="res_model">request.revision.wizard</field>
+            <field name="view_mode">form</field>
+        </record>
+    
+    </data>
+
+</odoo>

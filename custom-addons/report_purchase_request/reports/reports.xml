@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="paperformat_report_purchase_request" model="report.paperformat">
+            <field name="name">Purchase Request Report</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">297</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">23</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="action_report_purchase_request" model="ir.actions.report">
+            <field name="name">Purchase Request Report</field>
+            <field name="model">purchase.request</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">report_purchase_request.purchase_request_report_template</field>
+            <field name="report_file">report_purchase_request.purchase_request_report_template</field>
+            <field name="paperformat_id" ref="report_purchase_request.paperformat_report_purchase_request"/>
+            <field name="print_report_name">'%s' % object.name</field>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_report_purchase_request_py3o" model="ir.actions.report">
+            <field name="name">Purchase Request Report</field>
+            <field name="model">purchase.request</field>
+            <field name="report_name">purchase_request_report_py3o</field>
+			<field name="report_type">py3o</field>
+			<field name="py3o_filetype">pdf</field>
+			<field name="module">report_purchase_request</field>
+			<field name="py3o_template_fallback">reports/report_purchase_request.odt</field>
+            <field name="print_report_name">'%s' % object.name</field>
+			<field name="binding_model_id" eval="False"/>
+            <field name="binding_type">report</field>
+        </record>
+    
+    </data>
+
+</odoo>

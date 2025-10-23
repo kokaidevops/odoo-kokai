@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_contract_issue,access_contract_issue,model_contract_issue,base.group_user,1,1,1,1
+access_requirement_line,access_requirement_line,model_requirement_line,base.group_user,1,1,1,1
+access_stage_history,access_stage_history,model_stage_history,base.group_user,1,1,1,1
+access_stage_change_wizard,access_stage_change_wizard,model_stage_change_wizard,base.group_user,1,1,1,1
+access_stage_lost_wizard,access_stage_lost_wizard,model_stage_lost_wizard,base.group_user,1,1,1,1
+access_sale_order_review,access_sale_order_review,model_sale_order_review,base.group_user,1,1,1,1
+access_sale_order_term,access_sale_order_term,model_sale_order_term,base.group_user,1,1,1,1
+access_order_term_list,access_order_term_list,model_order_term_list,base.group_user,1,1,1,1
+access_generate_product_wizard,access_generate_product_wizard,model_generate_product_wizard,base.group_user,1,1,1,1
+access_variant_line,access_variant_line,model_variant_line,base.group_user,1,1,1,1
+access_variant_specification,access_variant_specification,model_variant_specification,base.group_user,1,1,1,1
+access_sale_order_line_specification,access_sale_order_line_specification,model_sale_order_line_specification,base.group_user,1,1,1,1

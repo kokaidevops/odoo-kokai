@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_grade,hr_grade,model_hr_grade,base.group_user,1,1,1,1
+access_hr_job_grade,hr_job_grade,model_hr_job_grade,base.group_user,1,1,1,1

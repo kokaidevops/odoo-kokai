@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="view_quotation_tree_inherit_hide_create" model="ir.ui.view">
+            <field name="name">sale.order.view.list.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create" value="False">False</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_order_tree_inherit_hide_create" model="ir.ui.view">
+            <field name="name">sale.order.view.list.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="create" value="False">False</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_order_form_inherit_disable_create" model="ir.ui.view">
+            <field name="name">sale.order.view.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create" value="False">False</attribute>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

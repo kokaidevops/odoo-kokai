@@ -1,0 +1,32 @@
+<odoo>
+    <data>
+
+        <record id="hr_salary_rule_overtime_2" model="hr.salary.rule">
+            <field name="name">Overtime</field>
+            <field name="code">OT</field>
+            <field name="sequence" eval="100"/>
+            <field name="category_id" ref="custom_payroll.hr_salary_rule_category_data_ind"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.overtime_cost_amount</field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_office_pay" />
+        </record>
+
+        <record id="hr_salary_rule_overtime_1" model="hr.salary.rule">
+            <field name="name">Overtime</field>
+            <field name="code">OT</field>
+            <field name="sequence" eval="100"/>
+            <field name="category_id" ref="custom_payroll.hr_salary_rule_category_data_ind"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.overtime_cost_amount</field>
+            <field name="struct_id" ref="custom_payroll.hr_payroll_structure_data_kokai_worker_pay" />
+        </record>
+
+        <record id="hr_payslip_input_type_overtime" model="hr.payslip.input.type">
+            <field name="name">Overtime</field>
+            <field name="code">OVERTIME</field>
+        </record>
+
+    </data>
+</odoo>

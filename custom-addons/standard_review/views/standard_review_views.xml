@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="standard_review_view_form" model="ir.ui.view">
+            <field name="name">standard.review.view.form</field>
+            <field name="model">standard.review</field>
+            <field name="arch" type="xml">
+                <form string="Standard Review">
+                    <header>
+                        <button string="Draft" name="action_draft" type="object" states="cancel"/>
+                        <button string="Done" name="action_done" type="object" class="oe_highlight" states="draft" />
+                        <button string="Cancel" name="action_cancel" type="object" states="draft" />
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1" />
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="standard" />
+                                <field name="affected_publication" />
+                                <field name="issued_date" />
+                                <field name="effective_date" />
+                            </group>
+                            <group>
+                                <field name="report_no" />
+                                <field name="date" />
+                                <field name="reported_by_id" />
+                                <field name="approved_by_id" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="line" string="Review">
+                                <field name="line_ids">
+                                    <tree editable="bottom">
+                                        <field name="standard_id" invisible="1" />
+                                        <field name="section" />
+                                        <field name="change" />
+                                        <field name="affected_procedure" />
+                                        <field name="affected_record" />
+                                        <field name="pic_id" />
+                                        <field name="target_completed" />
+                                        <field name="remarks" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="standard_review_view_tree" model="ir.ui.view">
+            <field name="name">standard.review.view.tree</field>
+            <field name="model">standard.review</field>
+            <field name="arch" type="xml">
+                <tree string="Standard Review">
+                    <field name="name" />
+                    <field name="date" />
+                    <field name="issued_date" />
+                    <field name="effective_date" />
+                    <field name="reported_by_id" />
+                    <field name="approved_by_id" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="standard_review_action" model="ir.actions.act_window">
+            <field name="name">Standard Review</field>
+            <field name="res_model">standard.review</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="standard_review_menu"
+            name="Standard Review"
+            action="standard_review_action"
+            parent="qhse_program.qa_menu"
+            sequence="30"
+        />
+    
+    </data>
+
+</odoo>

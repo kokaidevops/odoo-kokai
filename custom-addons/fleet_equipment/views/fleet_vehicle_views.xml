@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="fleet_vehicle_view_form_inherit_equipment" model="ir.ui.view">
+            <field name="name">fleet.vehicle.view.form.inherit</field>
+            <field name="model">fleet.vehicle</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page name="equipment" string="Equipment">
+                        <field name="equipment_ids">
+                            <tree editable="bottom">
+                                <field name="fleet_id" invisible="1" />
+                                <field name="equipment_id" />
+                                <field name="qty" />
+                                <field name="uom_id" />
+                                <field name="lot_id" />
+                                <field name="condition" />
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

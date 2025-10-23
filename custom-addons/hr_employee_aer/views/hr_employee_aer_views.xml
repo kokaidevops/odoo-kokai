@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+
+        <menuitem
+            id="aer_root_menu"
+            name="AER"
+            parent="hr.menu_human_resources_configuration"
+            sequence="100"
+        />
+
+
+        <record id="average_effective_rate_view_form" model="ir.ui.view">
+            <field name="name">average.effective.rate.view.form</field>
+            <field name="model">average.effective.rate</field>
+            <field name="arch" type="xml">
+                <form string="AER">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="employee_aer_ids" widget="many2many_tags" />
+                        </group>
+                        <notebook>
+                            <page name="line" string="Range">
+                                <field name="range_ids" context="{'default_aer_id': active_id}">
+                                    <tree editable="bottom">
+                                        <field name="aer_id" optional='hide' />
+                                        <field name="start_range" />
+                                        <field name="end_range" />
+                                        <field name="rate" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    
+        <record id="average_effective_rate_view_tree" model="ir.ui.view">
+            <field name="name">average.effective.rate.view.tree</field>
+            <field name="model">average.effective.rate</field>
+            <field name="arch" type="xml">
+                <tree string="AER" >
+                    <field name="name" />
+                    <field name="employee_aer_ids" widget="many2many_tags" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="average_effective_rate_action" model="ir.actions.act_window">
+            <field name="name">AER</field>
+            <field name="res_model">average.effective.rate</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="average_effective_rate_menu"
+            name="AER"
+            action="average_effective_rate_action"
+            parent="hr_employee_aer.aer_root_menu"
+            sequence="10"
+        />
+
+
+        <record id="hr_employee_aer_view_tree" model="ir.ui.view">
+            <field name="name">hr.employee.aer.view.tree</field>
+            <field name="model">hr.employee.aer</field>
+            <field name="arch" type="xml">
+                <tree string="AER Category" editable="bottom">
+                    <field name="active" invisible="1" />
+                    <field name="name" required="1" />
+                    <field name="aer_id" />
+                    <field name="marital" />
+                    <field name="dependents" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_employee_aer_action" model="ir.actions.act_window">
+            <field name="name">AER Category</field>
+            <field name="res_model">hr.employee.aer</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="aer_category_menu"
+            name="AER Category"
+            action="hr_employee_aer_action"
+            parent="hr_employee_aer.aer_root_menu"
+            sequence="10"
+        />
+
+
+        <record id="view_employee_form_inherit_aer" model="ir.ui.view">
+            <field name="name">hr.employee.view.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <field name="children" position="after">
+                    <field name="hr_employee_aer_id" options="{'no_create': True, 'no_open': True}" />
+                    <field name="aer_id" options="{'no_open': True}" />
+                </field>
+            </field>
+        </record>
+
+
+        <record id="hr_contract_view_form_inherit_aer" model="ir.ui.view">
+            <field name="name">hr.contract.view.form.inherit</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='salary_info']" position="inside">
+                    <group string="Tax">
+                        <field name="aer_id"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

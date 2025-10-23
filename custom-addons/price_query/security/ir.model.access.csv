@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_price_query,access_price_query,model_price_query,base.group_user,1,1,1,1
+access_price_query_line,access_price_query_line,model_price_query_line,base.group_user,1,1,1,1
+access_line_specification,access_line_specification,model_line_specification,base.group_user,1,1,1,1
+access_line_variant,access_line_variant,model_line_variant,base.group_user,1,1,1,1
+access_line_reference,access_line_reference,model_line_reference,base.group_user,1,1,1,1

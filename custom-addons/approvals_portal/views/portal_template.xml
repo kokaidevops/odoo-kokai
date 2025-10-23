@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="frontend_layout_without_login" name="Frontend Layout" inherit_id="web.layout" primary="True">
+        <xpath expr="//head/meta[last()]" position="after">
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        </xpath>
+        <xpath expr="//head/link[last()]" position="after">
+            <link rel="preload" href="/web/static/src/libs/fontawesome/fonts/fontawesome-webfont.woff2?v=4.7.0" as="font" crossorigin=""/>
+            <t t-call-assets="web.assets_frontend" t-js="false"/>
+        </xpath>
+        <xpath expr="//head/script[@id='web.layout.odooscript']" position="after">
+            <t t-call-assets="web.assets_frontend_minimal" t-css="false" defer_load="True"/>
+            <t t-call="web.conditional_assets_tests"/>
+            <t t-call-assets="web.assets_frontend_lazy" t-css="false" lazy_load="True"/>
+        </xpath>
+        <xpath expr="//t[@t-out='0']" position="replace">
+            <div id="wrapwrap" t-attf-class="#{pageName or ''}">
+                <main>
+                    <div class="container">
+                        <t t-out="0"/>
+                    </div>
+                </main>
+                <footer t-cache="no_footer,no_copyright" t-if="not no_footer" id="bottom" data-anchor="true" t-attf-class="bg-light o_footer">
+                    <div id="footer"/>
+                    <div t-if="not no_copyright" class="o_footer_copyright">
+                        <div class="container py-3">
+                            <div class="row">
+                                <div class="col-sm text-center text-sm-start text-muted">
+                                    <span class="o_footer_copyright_name me-2">Copyright &amp;copy; <span t-field="res_company.name" itemprop="name">Company name</span></span>
+                                </div>
+                                <div class="col-sm text-center text-sm-end">
+                                    <t t-call="web.brand_promotion"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="approval_page" name="Approval Page">
+        <t t-call="approvals_portal.frontend_layout_without_login">
+            <div class="pt-5">
+                <div class="text-center">
+                    <h3>APLIKASI PERSETUJUAN</h3>
+                    <h3><span t-field="res_company.name" itemprop="name">Company name</span></h3>
+                    <p class="mt-3 mb-3">menyatakan bahwa</p>
+                </div>
+                <div>
+                    <t t-if="status">
+                        <table>
+                            <tr>
+                                <td>Dari</td>
+                                <td>:</td>
+                                <td><t t-esc="request_by"/></td>
+                            </tr>
+                            <tr>
+                                <td>Kategori Dokumen</td>
+                                <td>:</td>
+                                <td><t t-esc="category"/></td>
+                            </tr>
+                            <tr>
+                                <td>Perihal</td>
+                                <td>:</td>
+                                <td><t t-esc="name"/></td>
+                            </tr>
+                            <tr>
+                                <td>Yang Menyetujui</td>
+                                <td>:</td>
+                                <td><t t-esc="user"/> [<t t-esc="position"/>]</td>
+                            </tr>
+                            <tr>
+                                <td>Tanggal Persetujuan</td>
+                                <td>:</td>
+                                <td><t t-esc="date"/></td>
+                            </tr>
+                        </table>
+                    </t>
+                    <t t-else="">
+                        <p class="text-center">PERSETUJUAN YANG DICARI TIDAK DITEMUKAN</p>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="requested_page" name="Approval Page">
+        <t t-call="approvals_portal.frontend_layout_without_login">
+            <div class="pt-5">
+                <div class="text-center">
+                    <h3>APLIKASI PERSETUJUAN</h3>
+                    <h3><span t-field="res_company.name" itemprop="name">Company name</span></h3>
+                    <p class="mt-3 mb-3">menyatakan bahwa</p>
+                </div>
+                <div>
+                    <t t-if="status">
+                        <table>
+                            <tr>
+                                <td>Dari</td>
+                                <td>:</td>
+                                <td><t t-esc="user"/></td>
+                            </tr>
+                            <tr>
+                                <td>Kategori Dokumen</td>
+                                <td>:</td>
+                                <td><t t-esc="category"/></td>
+                            </tr>
+                            <tr>
+                                <td>Perihal</td>
+                                <td>:</td>
+                                <td><t t-esc="name"/></td>
+                            </tr>
+                            <tr>
+                                <td>Tanggal Pengajuan</td>
+                                <td>:</td>
+                                <td><t t-esc="date"/></td>
+                            </tr>
+                            <tr>
+                                <td>Status Pengajuan</td>
+                                <td>:</td>
+                                <td><t t-esc="state"/></td>
+                            </tr>
+                        </table>
+                    </t>
+                    <t t-else="">
+                        <p class="text-center">PERMINTAAN PERSETUJUAN YANG DICARI TIDAK DITEMUKAN</p>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

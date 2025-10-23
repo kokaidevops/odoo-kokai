@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="product_template_form_view_inherit_pack" model="ir.ui.view">
+            <field name="name">product.template.view.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='options']" position="inside">
+                    <span class="d-inline-block">
+                        <field name="is_pack"/>
+                        <label for="is_pack"/>
+                    </span>
+                </xpath>
+            </field>
+        </record>
+    
+        <record id="view_production_lot_form_inherit_bundle" model="ir.ui.view">
+            <field name="name">stock.lot.view.form.inherit</field>
+            <field name="model">stock.lot</field>
+            <field name="inherit_id" ref="stock.view_production_lot_form"/>
+            <field name="arch" type="xml">
+                <field name="ref" position="after">
+                    <field name="is_pack" />
+                    <field name="pack_id" />
+                    <!-- <field name="pack_id" attrs="{'readonly': True, 'invisible': [('is_pack', '=', False)]}" /> -->
+                </field>
+                <xpath expr="//notebook" position="inside">
+                    <page name="bundle" string="Bundle" attrs="{'invisible': [('is_pack', '=', False)]}">
+                        <field name="pack_ids">
+                            <tree editable="bottom">
+                                <field name="lot_id" invisible="1" />
+                                <field name="product_id" />
+                                <field name="lot_ids" widget="many2many_tags" />
+                                <field name="qty" />
+                                <field name="uom_id" />
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_pack_view_form" model="ir.ui.view">
+            <field name="name">product.pack.view.form</field>
+            <field name="model">product.pack</field>
+            <field name="arch" type="xml">
+                <form string="Bundle">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1" />
+                                <field name="product_id" readonly="1" />
+                                <field name="lot_id" readonly="1" />
+                            </group>
+                            <group>
+                                <field name="lot_ids" widget="many2many_tags" readonly="1" />
+                                <field name="qty" readonly="1" />
+                                <field name="uom_id" readonly="1" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="product_pack_view_tree" model="ir.ui.view">
+            <field name="name">product.pack.view.tree</field>
+            <field name="model">product.pack</field>
+            <field name="arch" type="xml">
+                <tree string="Bundle">
+                    <field name="product_id" />
+                    <field name="lot_id" />
+                    <field name="qty" />
+                    <field name="uom_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="product_pack_action" model="ir.actions.act_window">
+            <field name="name">Bundle</field>
+            <field name="res_model">product.pack</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+    </data>
+
+</odoo>

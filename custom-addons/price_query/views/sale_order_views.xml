@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="view_order_form_inherit_price_query" model="ir.ui.view">
+            <field name="name">sale.order.view.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='order_lines']//field[@name='order_line']//tree" position="inside">
+                    <field name="pq_line_id" optional="hide" />
+                    <button name="action_show_datasheet_pq" type="object" icon="fa-object-group" title="Datasheet" width="0.1" options="{&quot;warn&quot;: true}"/>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_show_price_query" type="object" class="oe_stat_button" icon="fa-clipboard">
+                        <div class="o_stat_info">
+                            <field name="query_count" class="o_stat_value"/>
+                            <span class="o_stat_text"> Price Query</span>
+                        </div>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

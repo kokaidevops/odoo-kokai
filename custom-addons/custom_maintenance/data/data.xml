@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="maintenance_stage_data_cancel" model="maintenance.stage">
+            <field name="sequence">100</field>
+            <field name="name">Cancel</field>
+            <field name="fold">True</field>
+        </record>
+
+        <record id="mail_activity_type_data_maintenance" model="mail.activity.type">
+            <field name="sequence">100</field>
+            <field name="delay_count">1</field>
+            <field name="delay_unit">days</field>
+            <field name="icon">fa-wrench</field>
+            <field name="res_model">maintenance.request</field>
+            <field name="category">default</field>
+            <field name="name">Maintenance</field>
+        </record>
+    
+    </data>
+
+</odoo>

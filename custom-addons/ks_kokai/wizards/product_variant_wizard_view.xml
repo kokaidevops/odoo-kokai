@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Product Variant Generation Wizard -->
+    <record id="view_product_variant_wizard_form" model="ir.ui.view">
+        <field name="name">product.variant.wizard.form</field>
+        <field name="model">product.variant.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Product Variants">
+                <sheet>
+                    <group>
+                        <field name="category_template_id" readonly="1" force_save="1"/>
+                    </group>
+                    
+                    <!-- Statistics -->
+                    <group string="Generation Summary">
+                        <group>
+                            <field name="total_products" readonly="1"/>
+                            <field name="total_existing_variants" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="total_possible_variants" readonly="1"/>
+                            <field name="total_new_variants" readonly="1" 
+                                   decoration-success="total_new_variants > 0"
+                                   decoration-warning="total_new_variants > 1000"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <!-- Product Selection -->
+                        <page string="Product Selection">
+                            <field name="template_line_ids" nolabel="1">
+                                <tree editable="bottom" create="false" delete="false">
+                                    <field name="selected" widget="boolean_toggle"/>
+                                    <field name="product_id" readonly="1" force_save="1"/>
+                                    <field name="name" readonly="1"/>
+                                    <field name="level" readonly="1" widget="badge"/>
+                                    <field name="category" readonly="1" widget="badge"/>
+                                    <field name="component_type" readonly="1"/>
+                                    <field name="existing_variants" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        
+                        <!-- Attribute Configuration -->
+<!-- In product_variant_wizard view -->
+                        <page string="Attribute Configuration" attrs="{'invisible': [('template_line_ids', '=', [])]}">
+                            <div class="alert alert-warning" role="alert">
+                                <i class="fa fa-exclamation-triangle"/> Select attribute values for variant generation
+                            </div>
+                            
+                            <!-- Action buttons for loading values -->
+                            <div class="mt-3 mb-3">
+                                <button name="clear_all_values" 
+                                        string="Clear All Values" 
+                                        type="object" 
+                                        class="btn btn-sm btn-warning"
+                                        icon="fa-times-circle"
+                                        confirm="Are you sure you want to clear all selected attribute values?"/>
+                                
+                                <button name="load_common_values" 
+                                        string="Load Common Values" 
+                                        type="object" 
+                                        class="btn btn-sm btn-secondary"
+                                        icon="fa-filter"/>
+                                
+                                <button name="load_all_values" 
+                                        string="Load All Values" 
+                                        type="object" 
+                                        class="btn btn-sm btn-primary"
+                                        icon="fa-download"
+                                        confirm="This will load ALL available values for each attribute. Continue?"/>
+                            </div>
+                            
+                            <field name="attribute_line_ids" nolabel="1">
+                                <tree editable="bottom" create="false" delete="false">
+                                    <field name="attribute_id" readonly="1" force_save="1"/>
+                                    <field name="value_ids" 
+                                        widget="many2many_tags" 
+                                        options="{'no_create': True, 'color_field': 'color'}"
+                                        domain="[('attribute_id', '=', attribute_id)]"/>
+                                    <field name="value_count" string="Selected"/>
+                                    <field name="available_value_count" string="Available"/>
+                                    <field name="required" invisible="1"/>
+                                    <field name="attribute_line_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        
+                        <!-- Options -->
+                        <page string="Options">
+                            <group>
+                                <group>
+                                    <field name="skip_existing" widget="boolean_toggle"/>
+                                    <field name="batch_size"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                
+                <footer>
+                    <button name="action_generate_variants" 
+                            string="Generate Variants" 
+                            type="object" 
+                            class="btn-primary"
+                            confirm="This will generate variants for selected products. Continue?"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Action -->
+    <record id="action_product_variant_wizard" model="ir.actions.act_window">
+        <field name="name">Generate Product Variants</field>
+        <field name="res_model">product.variant.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

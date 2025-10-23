@@ -1,0 +1,1 @@
+from . import payslip_batch_report_xslx

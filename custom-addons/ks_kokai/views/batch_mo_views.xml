@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_batch_manufacturing_order_form" model="ir.ui.view">
+            <field name="name">batch.manufacturing.order.form</field>
+            <field name="model">batch.manufacturing.order</field>
+            <field name="arch" type="xml">
+                <form string="Batch Manufacturing Order">
+                    <header>
+                        <button name="action_find_available_mos" string="Find Available MOs" 
+                                type="object" class="btn-primary"
+                                attrs="{'invisible': [('state', 'not in', ['draft', 'confirmed'])]}"/>
+                        
+                        <!-- Tombol Process untuk MO yang terseleksi -->
+                        <button name="action_process_selected" 
+                                string="Process Selected MOs" 
+                                type="object" 
+                                class="btn-success"
+                                attrs="{'invisible': ['|', ('state', 'not in', ['draft', 'confirmed']), ('selected_mo_count', '=', 0)]}"
+                                confirm="Are you sure you want to process the selected Manufacturing Orders?"/>
+                        
+                        <button name="action_confirm" string="Confirm" 
+                                type="object" class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        
+                        <button name="action_cancel" string="Cancel" 
+                                type="object"
+                                attrs="{'invisible': [('state', 'in', ['done', 'cancel'])]}"/>
+                        
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_progress,done"/>
+                    </header>
+                    <sheet>
+                        <widget name="web_ribbon" title="Cancelled" bg_color="bg-danger" 
+                                attrs="{'invisible': [('state', '!=', 'cancel')]}"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="storage_location_id" 
+                                       attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                                <field name="user_id" 
+                                       attrs="{'readonly': [('state', 'not in', ['draft', 'confirmed'])]}"/>
+                                <field name="priority_order" 
+                                       attrs="{'readonly': [('state', 'not in', ['draft', 'confirmed'])]}"/>
+                                <field name="auto_reserve" 
+                                       attrs="{'readonly': [('state', 'not in', ['draft', 'confirmed'])]}"/>
+                            </group>
+                            <group>
+                                <field name="date_created"/>
+                                <field name="date_processed" 
+                                       attrs="{'invisible': [('date_processed', '=', False)]}"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+                        </group>
+                        
+                        <!-- Statistics -->
+                        <group string="Statistics" attrs="{'invisible': [('state', '=', 'draft')]}">
+                            <group>
+                                <field name="total_mo_count" widget="statinfo"/>
+                                <field name="selected_mo_count" widget="statinfo"/>
+                            </group>
+                            <group>
+                                <field name="processed_mo_count" widget="statinfo"/>
+                                <field name="success_rate" widget="percentage"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <!-- Available MOs Tab untuk memilih MO yang akan diproses -->
+<!-- Available MOs Tab untuk memilih MO yang akan diproses -->
+<!-- Available MOs Tab untuk memilih MO yang akan diproses -->
+
+                            <page string="Available MOs" name="available_mos">
+                                <!-- Hidden fields untuk attrs -->
+                                <field name="mo_ids" invisible="1"/>
+                                <field name="selected_mo_count" invisible="1"/>
+                                <field name="state" invisible="1"/>
+                                
+                                <!-- Alert ketika belum ada MO -->
+                                <div class="alert alert-info" attrs="{'invisible': [('mo_ids', '!=', [])]}">
+                                    <p><i class="fa fa-info-circle"/> Click "Find Available MOs" button to check which Manufacturing Orders can be processed based on material availability.</p>
+                                </div>
+                                
+                                <!-- Section Available MOs dengan toggle switch -->
+                                <div attrs="{'invisible': [('mo_ids', '=', [])]}">
+                                    <separator string="Available Manufacturing Orders"/>
+                                    <div class="row mb-3">
+                                        <div class="col-md-8">
+                                            <p class="text-muted mb-0">
+                                                <i class="fa fa-toggle-on"/> Toggle switch to select Manufacturing Orders for processing.
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4 text-right">
+                                            <button name="action_select_all" 
+                                                    string="Select All" 
+                                                    type="object" 
+                                                    class="btn-link"/>
+                                            <button name="action_deselect_all" 
+                                                    string="Deselect All" 
+                                                    type="object" 
+                                                    class="btn-link"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Table dengan toggle switch selection -->
+                                    <field name="mo_selection_lines" mode="tree">
+                                        <tree string="Available MOs" create="false" delete="false" editable="bottom">
+                                            <!-- Toggle Switch -->
+                                            <field name="is_selected" string="Select" widget="boolean_toggle" options="{'autosave': False}"/>
+                                            <field name="name" string="Reference" readonly="1"/>
+                                            <field name="product_id" string="Product" readonly="1"/>
+                                            <field name="product_qty" string="Quantity" readonly="1"/>
+                                            <field name="product_uom_id" string="UoM" readonly="1" groups="uom.group_uom"/>
+                                            <field name="date_planned_start" string="Scheduled Date" readonly="1" widget="datetime"/>
+                                            <field name="priority" widget="priority" string="Priority" readonly="1"/>
+                                            <field name="state" widget="badge" string="Status" readonly="1"
+                                                decoration-success="state == 'done'" 
+                                                decoration-info="state in ('confirmed','progress')"
+                                                decoration-muted="state == 'draft'"/>
+                                        </tree>
+                                    </field>
+                                    
+                                    <!-- Separator dengan conditional visibility -->
+                                    <div attrs="{'invisible': [('selected_mo_count', '=', 0)]}" class="mt-4">
+                                        <separator string="Selected Manufacturing Orders for Processing"/>
+                                        
+                                        <!-- Summary card -->
+                                        <div class="alert alert-success">
+                                            <div class="row">
+                                                <div class="col-auto">
+                                                    <i class="fa fa-check-circle fa-2x"/>
+                                                </div>
+                                                <div class="col">
+                                                    <h5 class="alert-heading mb-1">
+                                                        <field name="selected_mo_count" class="oe_inline"/> Manufacturing Orders Selected
+                                                    </h5>
+                                                    <p class="mb-0 text-muted">These orders will be processed in batch</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Table Selected MOs dengan better styling -->
+                                    <field name="selected_mo_ids" 
+                                        attrs="{'invisible': [('selected_mo_count', '=', 0)]}"
+                                        readonly="1"
+                                        mode="tree">
+                                        <tree string="Selected MOs" create="false" delete="false" decoration-info="True">
+                                            <field name="name" string="Reference"/>
+                                            <field name="product_id" string="Product"/>
+                                            <field name="product_qty" string="Qty to Produce"/>
+                                            <field name="product_uom_id" string="UoM" groups="uom.group_uom"/>
+                                            <field name="date_planned_start" string="Scheduled Date" widget="datetime"/>
+                                            <field name="priority" widget="priority"/>
+                                            <field name="reservation_state" widget="badge" string="Material Status"
+                                                decoration-success="reservation_state == 'assigned'"
+                                                decoration-warning="reservation_state == 'confirmed'"
+                                                decoration-danger="reservation_state == 'waiting'"/>
+                                        </tree>
+                                    </field>
+                                    
+                                    <!-- Action buttons -->
+                                    <div attrs="{'invisible': [('selected_mo_count', '=', 0)]}" class="mt-3 text-center">
+                                        <button name="action_view_selected_mos" 
+                                                string="View Selected MOs Details" 
+                                                type="object" 
+                                                class="btn btn-primary"
+                                                icon="fa-list"/>
+                                        <button name="action_process_batch" 
+                                                string="Process Selected MOs" 
+                                                type="object" 
+                                                class="btn btn-success ml-2"
+                                                icon="fa-cogs"
+                                                attrs="{'invisible': [('state', '!=', 'confirmed')]}"
+                                                confirm="Are you sure you want to process the selected Manufacturing Orders?"/>
+                                    </div>
+                                </div>
+                            </page>
+                            <!-- Processed MOs Tab -->
+                            <page string="Processed MOs" name="processed_mos" attrs="{'invisible': [('state', 'in', ['draft'])]}">
+                            <!-- <page string="Processed MOs" name="processed_mos"> -->
+                                <field name="processed_mo_ids" readonly="1">
+                                    <tree string="Processed MOs" create="false" delete="false">
+                                        <field name="name"/>
+                                        <field name="product_id"/>
+                                        <field name="product_qty"/>
+                                        <field name="product_uom_id"/>
+                                        <field name="date_planned_start"/>
+                                        <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                                        <field name="reservation_state" widget="badge" 
+                                               decoration-success="reservation_state == 'assigned'"/>
+                                    </tree>
+                                </field>
+                                <group>
+                                    <button name="action_view_processed_mos" 
+                                            string="View Processed MOs Details" 
+                                            type="object" 
+                                            class="btn-link"
+                                            attrs="{'invisible': [('processed_mo_ids', '=', [])]}"/>
+                                </group>
+                            </page>
+
+                            <!-- Availability Check Results Tab -->
+                            <page string="Availability Check" name="availability_check">
+                                <group>
+                                    <button name="action_detailed_availability_report" 
+                                            string="Generate Detailed Report" 
+                                            type="object" 
+                                            class="btn-secondary"
+                                            attrs="{'invisible': [('mo_ids', '=', [])]}"/>
+                                </group>
+                                <separator string="Check Results"/>
+                                <field name="check_result" readonly="1" style="font-family: monospace;"/>
+                            </page>
+
+                            <!-- Notes Tab -->
+                            <page string="Notes" name="notes">
+                                <field name="notes" placeholder="Add any additional notes..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    
+                    <!-- Chatter -->
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_batch_manufacturing_order_tree" model="ir.ui.view">
+            <field name="name">batch.manufacturing.order.tree</field>
+            <field name="model">batch.manufacturing.order</field>
+            <field name="arch" type="xml">
+                <tree string="Batch Manufacturing Orders">
+                    <field name="name"/>
+                    <field name="date_created"/>
+                    <field name="user_id"/>
+                    <field name="storage_location_id"/>
+                    <field name="total_mo_count"/>
+                    <field name="selected_mo_count"/>
+                    <field name="processed_mo_count"/>
+                    <field name="success_rate" widget="percentage"/>
+                    <field name="state" widget="badge" 
+                           decoration-success="state == 'done'"
+                           decoration-info="state == 'in_progress'"
+                           decoration-warning="state == 'confirmed'"
+                           decoration-muted="state == 'cancel'"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_batch_manufacturing_order_search" model="ir.ui.view">
+            <field name="name">batch.manufacturing.order.search</field>
+            <field name="model">batch.manufacturing.order</field>
+            <field name="arch" type="xml">
+                <search string="Search Batch Manufacturing Orders">
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="storage_location_id"/>
+                    
+                    <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Confirmed" name="confirmed" domain="[('state', '=', 'confirmed')]"/>
+                    <filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                    <filter string="Done" name="done" domain="[('state', '=', 'done')]"/>
+                    <separator/>
+                    <filter string="My BMOs" name="my_bmos" domain="[('user_id', '=', uid)]"/>
+                    
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>
+                        <filter name="group_by_user" string="Responsible" context="{'group_by': 'user_id'}"/>
+                        <filter name="group_by_location" string="Location" context="{'group_by': 'storage_location_id'}"/>
+                        <filter name="group_by_date" string="Created Date" context="{'group_by': 'date_created:month'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_batch_manufacturing_order" model="ir.actions.act_window">
+            <field name="name">Batch Manufacturing Orders</field>
+            <field name="res_model">batch.manufacturing.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_batch_manufacturing_order_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Batch Manufacturing Order
+                </p>
+                <p>
+                    Batch Manufacturing Orders allow you to process multiple Manufacturing Orders
+                    at once based on material availability in specific locations.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu Items -->
+        <menuitem id="menu_batch_manufacturing_order"
+                  name="Batch MO"
+                  parent="mrp.menu_mrp_manufacturing"
+                  action="action_batch_manufacturing_order"
+                  sequence="15"/>
+    </data>
+</odoo>

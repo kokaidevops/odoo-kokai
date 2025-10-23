@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_amendment_document,access_amendment_document,model_amendment_document,base.group_user,1,1,1,1
+access_amendment_line,access_amendment_line,model_amendment_line,base.group_user,1,1,1,1
+access_list_of_documents,access_list_of_documents,model_list_of_documents,base.group_user,1,1,1,1

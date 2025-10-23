@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="view_employee_form_inherit_custom" model="ir.ui.view">
+            <field name="name">hr.employee.view.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <field name="passport_id" position="before">
+                    <field name="family_card_no" />
+                    <field name="tin" />
+                </field>
+                <field name="gender" position="after">
+                    <field name="blood_type" />
+                </field>
+            </field>
+        </record>
+        
+        <record id="view_employee_tree_inherit_custom" model="ir.ui.view">
+            <field name="name">hr.employee.view.list.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='work_phone']" position="attributes">
+                    <attribute name="optional" value="hide">hide</attribute>
+                </xpath>
+                <xpath expr="//field[@name='work_email']" position="attributes">
+                    <attribute name="optional" value="hide">hide</attribute>
+                </xpath>
+                <xpath expr="//field[@name='activity_ids']" position="attributes">
+                    <attribute name="optional" value="hide">hide</attribute>
+                </xpath>
+                <xpath expr="//field[@name='activity_date_deadline']" position="attributes">
+                    <attribute name="optional" value="hide">hide</attribute>
+                </xpath>
+                <xpath expr="//field[@name='parent_id']" position="attributes">
+                    <attribute name="optional" value="hide">hide</attribute>
+                </xpath>
+                <xpath expr="//tree" position="inside">
+                    <field name="marital" optional="hide" />
+                    <field name="identification_id" optional="hide" />
+                    <field name="gender" optional="hide" />
+                    <field name="certificate" optional="hide" />
+                    <field name="place_of_birth" optional="hide" />
+                    <field name="birthday" optional="hide" />
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="hr_contract_type_view_tree_inherit_code" model="ir.ui.view">
+            <field name="name">hr.contract.type.view.list.inherit</field>
+            <field name="model">hr.contract.type</field>
+            <field name="inherit_id" ref="hr.hr_contract_type_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="code" />
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

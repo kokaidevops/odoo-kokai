@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="employee_attendance_wizard_view_form" model="ir.ui.view">
+            <field name="name">employee.attendance.wizard.view.form</field>
+            <field name="model">employee.attendance.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Employee Attendance">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="start_date" />
+                                <field name="get_by" />
+                            </group>
+                            <group>
+                                <field name="end_date" />
+                                <field name="device_id" />
+                            </group>
+                        </group>
+                        <group>
+                            <field attrs="{'invisible': [('get_by', '!=', 'department')]}" name="department_ids" widget="many2many_tags" />
+                            <field attrs="{'invisible': [('get_by', '!=', 'employee')]}" name="employee_ids" widget="many2many_tags" />
+                        </group>
+                        <footer>
+                            <button string="Sync" name="action_sync" type="object" class="oe_highlight"/>
+                            <button string="Get Attendance" name="action_confirm" type="object" class="oe_highlight"/>
+                            <button string="Cancel" special="cancel" />
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="product_search_form_view_inherit_variant" model="ir.ui.view">
+            <field name="name">product.product.view.search.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_search_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="replace">
+                    <field name="name" string="Product" filter_domain="['|', '|', '|', ('default_code', 'ilike', self), ('name', 'ilike', self), ('barcode', 'ilike', self), ('var_desc', 'ilike', self)]"/>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

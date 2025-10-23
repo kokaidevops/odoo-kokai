@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="res_config_settings_view_form_inherit_brand_sale" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='quotation_order_setting_container']" position="inside">
+                    <div class="col-12 col-lg-6 o_setting_box" id="brand_so_line">
+                        <div class="o_setting_left_pane">
+                            <field name="group_brand_per_so_line"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="group_brand_per_so_line"/>
+                            <div class="text-muted">
+                                Brand on sale order lines
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="res_config_settings_view_form_purchase_inherit_brand_purchase" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="purchase.res_config_settings_view_form_purchase"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='purchase_setting_container']" position="inside">
+                    <div class="col-12 col-lg-6 o_setting_box" id="brand_po_line">
+                        <div class="o_setting_left_pane">
+                            <field name="group_brand_per_po_line"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="group_brand_per_po_line"/>
+                            <div class="text-muted">
+                                Brand on purchase lines
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="res_config_settings_view_form_inherit_brand_stock" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@id='production_lot_info']" position="inside">
+                    <div class="col-12 col-lg-6 o_setting_box" id="brand_sm_line">
+                        <div class="o_setting_left_pane">
+                            <field name="group_brand_per_po_line"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="group_brand_per_po_line"/>
+                            <div class="text-muted">
+                                Brand on Move Line
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

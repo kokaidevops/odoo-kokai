@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="action_report_salary_slip_py3o" model="ir.actions.report">
+            <field name="name">Salary Slip</field>
+            <field name="model">hr.payslip</field>
+            <field name="report_name">salary_slip_report_py3o</field>
+			<field name="report_type">py3o</field>
+			<field name="py3o_filetype">pdf</field>
+			<field name="module">report_payslip</field>
+			<field name="py3o_template_fallback">reports/salary_slip_template.odt</field>
+            <field name="print_report_name">'Salary Slip Period %s - %s' % (object.payslip_run_id.name, object.employee_id.name)</field>
+			<field name="binding_model_id" eval="False"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <report
+            id="action_report_payslip_batch_xlsx"
+            model="generate.report.payslip.wizard"
+            string="Payroll"
+            report_type="xlsx"
+            name="report_payslip.report_payslip_batch_xlsx"
+            file="report_payslip.report_payslip_batch_xlsx"
+            attachment_use="False"
+            menu = "False"
+        />
+    
+    </data>
+
+</odoo>

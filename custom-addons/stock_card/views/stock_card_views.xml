@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="stock_card_line_view_form" model="ir.ui.view">
+            <field name="name">stock.card.line.view.form</field>
+            <field name="model">stock.card.line</field>
+            <field name="arch" type="xml">
+                <form string="Stock Card">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1" />
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="date" />
+                                <field name="product_id" />
+                                <field name="product_tmpl_id" />
+                                <field name="location_id" />
+                                <field name="location_dest_id" />
+                            </group>
+                            <group>
+                                <field name="init_qty" />
+                                <field name="incoming_qty" />
+                                <field name="output_qty" />
+                                <field name="final_qty" />
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="description" />
+                                <field name="information" />
+                                <field name="loc_id" />
+                            </group>
+                            <group>
+                                <field name="picking_id" />
+                                <field name="move_id" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="stock_card_line_view_tree" model="ir.ui.view">
+            <field name="name">stock.card.line.view.tree</field>
+            <field name="model">stock.card.line</field>
+            <field name="arch" type="xml">
+                <tree string="Stock Card">
+                    <field name="date" />
+                    <field name="product_id" />
+                    <field name="information" />
+                    <field name="init_qty" />
+                    <field name="incoming_qty" />
+                    <field name="output_qty" />
+                    <field name="final_qty" />
+                    <field name="product_tmpl_id" optional="hide" />
+                    <field name="location_id" optional="hide" />
+                    <field name="location_dest_id" optional="hide" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="stock_card_line_view_search" model="ir.ui.view">
+            <field name="name">stock.card.line.view.search</field>
+            <field name="model">stock.card.line</field>
+            <field name="arch" type="xml">
+                <search string="Stock Card">
+                    <field name="product_id" />
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter name="product_id" string="Product" context="{'group_by': 'product_id'}" />
+                        <filter name="loc_id" string="Location" context="{'group_by': 'loc_id'}" />
+                        <filter name="date" string="Date" context="{'group_by': 'date:month'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="stock_card_line_action" model="ir.actions.act_window">
+            <field name="name">Stock Card</field>
+            <field name="res_model">stock.card.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="stock_card_line_menu"
+            name="Stock Card"
+            action="stock_card_line_action"
+            parent="stock.menu_warehouse_report"
+            sequence="10"
+        />
+
+    </data>
+
+</odoo>

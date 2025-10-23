@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="crm_business_trip_view_form" model="ir.ui.view">
+            <field name="name">crm.business.trip.view.form</field>
+            <field name="model">crm.business.trip</field>
+            <field name="arch" type="xml">
+                <form string="Business Trip">
+                    <header>
+                        <button string="Draft" name="action_draft" type="object" states="cancel,rejected" />
+                        <button string="Request" name="action_request" type="object" class="oe_highlight" states="draft" />
+                        <button string="Reject" name="action_rejected" type="object" states="request" />
+                        <button string="Cancel" name="button_cancel" type="object" states="draft" />
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_show_approval_request" type="object" class="oe_stat_button" icon="fa-list" attrs="{'invisible':[('approval_count', '=', 0)]}">
+                                <field name="approval_count" string="Approval" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1><field name="name" readonly="1" /></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="employee_id" options="{'no_create': True}" />
+                                <field name="manager_id" options="{'no_create': True}" />
+                                <field name="start_date" />
+                                <field name="end_date" />
+                            </group>
+                            <group>
+                                <field name="destination_id" options="{'no_create': True}" />
+                                <field name="purpose" />
+                                <field name="partisan_ids" widget="many2many_tags" options="{'no_create': True}" />
+                                <field name="mode" />
+                                <field name="accommodation" />
+                                <field name="category" />
+                            </group>
+                            <separator/>
+                            <group>
+                                <field name="user_id" />
+                                <field name="date" />
+                            </group>
+                            <group>
+                                <field name="opportunity_id" options="{'no_create': True}" />
+                                <field name="partner_id" options="{'no_create': True}" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="cost" string="Cost">
+                                <field name="cost_ids" string="Cost">
+                                    <tree editable="bottom">
+                                        <field name="trip_id" invisible="1" />
+                                        <field name="company_id" invisible="1" />
+                                        <field name="product_id" options="{'no_create': True}" />
+                                        <field name="name" />
+                                        <field name="duration" />
+                                        <field name="value" widget="monetary" options="{'currency_field': 'currency_id'}" />
+                                        <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}" />
+                                        <field name="state" readonly="1" />
+                                        <button name="action_approved" type="object" icon="fa-check-circle-o" title="Approve" class="btn-success" width="0.1" options="{&quot;warn&quot;: true}"/>
+                                        <button name="action_rejected" type="object" icon="fa-times-circle-o" title="Reject" class="btn-danger" width="0.1" options="{&quot;warn&quot;: true}"/>
+                                    </tree>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right">
+                                    <field name="currency_id" invisible="1"/>
+                                    <div class="oe_subtotal_footer_separator oe_inline">
+                                        <label for="total_cost"/>
+                                    </div>
+                                    <field name="total_cost" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </group>
+
+                            </page>
+                            <page name="other" string="Other Info">
+                                <group>
+                                    <group>
+                                        <field name="company_id" invisible="1" />
+                                        <field name="currency_id" invisible="1" />
+                                        <field name="employee_job_id" />
+                                        <field name="employee_department_id" />
+                                        <field name="manager_job_id" />
+                                        <field name="manager_department_id" />
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="crm_business_trip_view_tree" model="ir.ui.view">
+            <field name="name">crm.business.trip.view.tree</field>
+            <field name="model">crm.business.trip</field>
+            <field name="arch" type="xml">
+                <tree string="Business Trip">
+                    <field name="name" />
+                    <field name="employee_id" />
+                    <field name="opportunity_id" />
+                    <field name="partner_id" />
+                    <field name="destination_id" />
+                    <field name="start_date" />
+                    <field name="end_date" />
+                    <field name="total_cost" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="crm_business_trip_view_search" model="ir.ui.view">
+            <field name="name">crm.business.trip.view.search</field>
+            <field name="model">crm.business.trip</field>
+            <field name="arch" type="xml">
+                <search string="Business Trip">
+                    <field name="employee_id" string="Employee" filter_domain="[('employee_id', 'child_of', raw_value)]" />
+                    <group string="Group By" expand="1">
+                        <filter name="employee" string="Employee" context="{'group_by': 'employee_id'}" />
+                        <filter name="opportunity" string="Opportunity" context="{'group_by': 'opportunity_id'}" />
+                        <filter name="partner" string="Partner" context="{'group_by': 'partner_id'}" />
+                        <filter name="state" string="State" context="{'group_by': 'state'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="crm_business_trip_action" model="ir.actions.act_window">
+            <field name="name">Business Trip</field>
+            <field name="res_model">crm.business.trip</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_state': 1}</field>
+        </record>
+
+        <menuitem
+            id="crm_business_trip_menu"
+            name="Business Trip"
+            action="crm_business_trip_action"
+            parent="crm.crm_menu_sales"
+            sequence="10"
+        />
+    
+    </data>
+
+</odoo>

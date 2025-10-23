@@ -1,0 +1,37 @@
+<!-- Stock Location Wizard Form View -->
+<odoo>
+<data>
+
+<record id="view_stock_location_wizard_form" model="ir.ui.view">
+    <field name="name">kokai.stock.location.wizard.form</field>
+    <field name="model">kokai.stock.location.wizard</field>
+    <field name="arch" type="xml">
+        <form string="Stock Availability Details">
+            <group>
+                <field name="rab_id" readonly="1"/>
+            </group>
+            <field name="line_ids" nolabel="1">
+                <tree>
+                    <field name="product_id"/>
+                    <field name="quantity_needed"/>
+                    <field name="total_available" 
+                           decoration-success="total_available &gt;= quantity_needed" 
+                           decoration-danger="total_available == 0" 
+                           decoration-warning="total_available &gt; 0 and total_available &lt; quantity_needed"/>
+                    <field name="status" 
+                           widget="badge" 
+                           decoration-success="status == 'available'" 
+                           decoration-warning="status == 'partial'" 
+                           decoration-danger="status == 'out_of_stock'"/>
+                    <field name="stock_details"/>
+                </tree>
+            </field>
+            <footer>
+                <button string="Close" class="btn-primary" special="cancel"/>
+            </footer>
+        </form>
+    </field>
+</record>
+
+</data>
+</odoo>

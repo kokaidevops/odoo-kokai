@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="fleet_checked_wizard_view_form" model="ir.ui.view">
+            <field name="name">fleet.checked.wizard.view.form</field>
+            <field name="model">fleet.checked.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Fleet Checked">
+                    <sheet>
+                        <group>
+                            <field name="usage_id" invisible="1" />
+                            <field name="equipment_id" attrs="{'invisible': [('equipment_id', '=', False)], 'readonly': True}" />
+                            <field name="condition_id" attrs="{'invisible': [('condition_id', '=', False)], 'readonly': True}" />
+                            <field name="remark" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

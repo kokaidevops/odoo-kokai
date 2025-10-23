@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="helpdesk_team_view_form_inherit_responsible" model="ir.ui.view">
+            <field name="name">helpdesk.team.view.form.inherit</field>
+            <field name="model">helpdesk.team</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@id='productivity']/div[2]" position="inside">
+                    <div class="o_setting_box">
+                        <div class="o_setting_left_pane">
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="responsible_id"/>
+                            <div class="text-muted">
+                                User who receive notification when Ticket for this team is created
+                            </div>
+                            <field name="responsible_id"/>
+                        </div>
+                    </div>
+                    <div class="o_setting_box">
+                        <div class="o_setting_left_pane">
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="maintenance_team_id"/>
+                            <div class="text-muted">
+                                Related Team of Maintenance
+                            </div>
+                            <field name="maintenance_team_id"/>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="helpdesk_team_view_tree_inherit_responsible" model="ir.ui.view">
+            <field name="name">helpdesk.team.view.form.inherit</field>
+            <field name="model">helpdesk.team</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_team_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="responsible_id" />
+                    <field name="maintenance_team_id" />
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

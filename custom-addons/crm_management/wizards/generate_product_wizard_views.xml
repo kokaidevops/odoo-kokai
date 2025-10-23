@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="generate_product_wizard_view_form" model="ir.ui.view">
+            <field name="name">generate.product.wizard.view.form</field>
+            <field name="model">generate.product.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generate Product">
+                    <sheet>
+                        <group>
+                            <field name="order_id" />
+                            <field name="product_id" attrs="{'readonly': True, 'invisible': [('product_id', '=', False)]}"  />
+                            <field name="product_tmpl_id" attrs="{'readonly': [('product_id', '!=', False)]}" domain="[('categ_id', '=', %(crm_management.product_category_data_finished_goods)d)]" options="{'no_create_edit': True}"
+                            />
+                            <field name="name" />
+                            <field name="suggested_name" />
+                            <label for="code"/>                            
+                            <div class="o_row">
+                                <field name="code" nolabel="1"/>
+                                <button name="action_search_code" 
+                                        string="Search Product Code" 
+                                        type="object" 
+                                        class="btn-primary"
+                                        icon="fa-magic"/>
+                            </div>
+
+                        </group>
+                        <notebook>
+                            <page name="variant" string="Variant">
+                                <field name="variant_ids">
+                                    <tree editable="bottom" create="False" delete="False">
+                                        <field name="wizard_id" readonly="1" invisible="1" />
+                                        <field name="attribute_id" />
+                                        <field name="value_id" options="{'no_create': True}" />
+                                        <field name="possible_value_ids" invisible="1" />
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="specification" string="Specification">
+                                <field name="specification_ids">
+                                    <tree editable="bottom">
+                                        <field name="wizard_id" readonly="1" invisible="1" />
+                                        <field name="name" />
+                                        <field name="value" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <footer>
+                        <button string="Generate" name="generate_product" type="object" class="oe_highlight"/>
+                        <button string="Save and Close" name="action_save_and_close" type="object" class="oe_highlight"/>
+                        <button string="Cancel" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="generate_product_wizard_action" model="ir.actions.act_window">
+            <field name="name">Generate Product</field>
+            <field name="res_model">generate.product.wizard</field>
+            <field name="view_mode">form</field>
+        </record>
+    
+    </data>
+
+</odoo>

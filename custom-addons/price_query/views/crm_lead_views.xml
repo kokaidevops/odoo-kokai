@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="crm_lead_view_form_inherit_price_query" model="ir.ui.view">
+            <field name="name">crm.lead.view.form.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <field name="query_count" invisible="1" />
+                    <button string="New Price Query" name="generate_price_query" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('stage_id', '!=', %(price_query.crm_stage_data_price_query)d), ('query_count', '>', 0)]}"/>
+                    <button string="Process PQ" name="process_price_query" type="object" class="oe_highlight" attrs="{'invisible': [('query_count', '=', 0)]}"/>
+                </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_show_price_query" type="object" class="oe_stat_button" icon="fa-clipboard">
+                        <div class="o_stat_info">
+                            <field name="query_count" class="o_stat_value"/>
+                            <span class="o_stat_text"> Price Query</span>
+                        </div>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

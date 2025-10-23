@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="approval_refused_reason_wizard_view_form" model="ir.ui.view">
+            <field name="name">approval.refused.reason.wizard.view.form</field>
+            <field name="model">approval.refused.reason.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Approval Refused Reason Wizard">
+                    <sheet>
+                        <group>
+                            <field name="request_id" invisible="1" />
+                            <field name="reason" />
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Refuse" name="rejection_processed" type="object" class="oe_highlight"/>
+                        <button string="Cancel" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+    
+    </data>
+    
+
+</odoo>

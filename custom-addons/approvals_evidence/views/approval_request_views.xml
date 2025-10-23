@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="approval_request_view_form_inherit_date" model="ir.ui.view">
+            <field name="name">approval.request.view.form.inherit</field>
+            <field name="model">approval.request</field>
+            <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='approver_ids']//tree//field[@name='status']" position="after">
+                    <field name="date" />
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

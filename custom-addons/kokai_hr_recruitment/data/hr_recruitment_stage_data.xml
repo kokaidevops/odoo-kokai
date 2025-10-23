@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="hr_recruitment_stage_data_pre_onboarding" model="hr.recruitment.stage">
+            <field name="name">Pre-Onboarding</field>
+            <field name="sequence" eval="4"/>
+        </record>
+    
+    </data>
+
+</odoo>

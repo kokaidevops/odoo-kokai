@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <menuitem
+            id="engineering_base_menu"
+            name="Engineering"
+            sequence="10"
+            web_icon="base_menu,static/src/image/engineering.png"
+        />
+    
+        <menuitem
+            id="human_resource_base_menu"
+            name="HR"
+            sequence="10"
+            web_icon="base_menu,static/src/image/hr.png"
+        />
+    
+        <menuitem
+            id="general_affair_base_menu"
+            name="GA"
+            sequence="10"
+            web_icon="base_menu,static/src/image/ga.png"
+        />
+    
+        <menuitem
+            id="production_base_menu"
+            name="Production"
+            sequence="10"
+            web_icon="base_menu,static/src/image/production.png"
+        />
+    
+        <menuitem
+            id="quality_base_menu"
+            name="QHSE"
+            sequence="10"
+            web_icon="base_menu,static/src/image/qhse.png"
+        />
+    
+        <menuitem
+            id="ess_base_menu"
+            name="Profile"
+            sequence="10"
+            web_icon="base_menu,static/src/image/ess.png"
+        />
+    
+    </data>
+
+</odoo>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="track_line_ids">
+        <div>
+            <strong>Order Line has been updated.</strong>
+        </div>
+        <ul>
+            <li>
+                <t t-esc="line.name"/>
+            </li>
+            <t t-foreach="datum.keys()" t-as="key">
+                <t t-set="data" t-value="datum.get(key)"/>
+                <li>
+                    <t t-esc="key"/>: <t t-esc="data[0]"/> <i class="o_TrackingValue_separator fa fa-long-arrow-right mx-1 text-600" title="Changed" role="img" aria-label="Changed" /> <t t-esc="data[1]"/>
+                </li>
+            </t>
+        </ul>
+    </template>
+
+</odoo>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="ir_cron_data_update_state_hr_leave_allocation" model="ir.cron">
+            <field name="sequence">1000</field>
+            <field name="name">Time Off Allocation: Update State</field>
+            <field name="model_id" ref="hr_holidays.model_hr_leave_allocation" />
+            <field name="state">code</field>
+            <field name="code">
+                model._update_state_expired()
+            </field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="nextcall" eval="DateTime.now().replace(hour=1, minute=0, second=0)"/>
+            <field name="numbercall">-1</field>
+        </record>
+    
+        <record id="ir_cron_data_generate_paid_time_off" model="ir.cron">
+            <field name="sequence">1000</field>
+            <field name="name">Generate Paid Time Off</field>
+            <field name="model_id" ref="hr_holidays.model_hr_leave_allocation" />
+            <field name="state">code</field>
+            <field name="code">
+                model._cron_generate_time_off({
+                    'name': 'Annual Time Off',
+                    'type_id': env.ref('hr_holidays.holiday_status_cl').id,
+                })
+            </field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="nextcall" eval="DateTime.now().replace(hour=2, minute=0, second=0) + timedelta(days=1)"/>
+            <field name="numbercall">-1</field>
+        </record>
+        <record id="ir_cron_data_generate_sick_time_off_paid" model="ir.cron">
+            <field name="sequence">1000</field>
+            <field name="name">Generate Sick Time Off (Paid)</field>
+            <field name="model_id" ref="hr_holidays.model_hr_leave_allocation" />
+            <field name="state">code</field>
+            <field name="code">
+                model._cron_generate_time_off({
+                    'name': 'Sick Time Off (Paid)',
+                    'type_id': env.ref('custom_time_off.hr_leave_type_data_sick_time_off_paid').id,
+                })
+            </field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="nextcall" eval="DateTime.now().replace(hour=2, minute=30, second=0) + timedelta(days=1)"/>
+            <field name="numbercall">-1</field>
+        </record>
+
+        <record id="hr_leave_action_server" model="ir.actions.server">
+            <field name="name">Time Off: Generate Attendance</field>
+            <field name="model_id" ref="model_hr_leave"/>
+            <field name="binding_model_id" ref="model_hr_leave"/>
+            <field name="state">code</field>
+            <field name="code">
+for record in records:
+    record._generate_attendance()
+            </field>
+        </record>
+
+    </data>
+
+</odoo>

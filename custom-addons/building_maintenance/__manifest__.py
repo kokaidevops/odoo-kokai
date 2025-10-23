@@ -1,0 +1,35 @@
+{
+    'name': 'Building Maintenance',
+    'version': '16.0.1',
+    'summary': 'Module for Setting Configuration Building and Maintenance for Building',
+    'author': 'github.com/zdni',
+    'license': 'LGPL-3',
+    'category': 'Maintenance',
+    'depends': [
+        'approvals',
+        'approvals_evidence',
+        'approvals_portal',
+        'approvals_position',
+        'approvals_refused_reason',
+        'approvals_settings',
+        'custom_activity',
+        'custom_maintenance',
+        'department_detail',
+        'maintenance',
+        'product_stock_equipment',
+    ],
+    'data': [
+        'data/approval_category_data.xml',
+        'data/maintenance_equipment_category_data.xml',
+        'data/maintenance_team_data.xml',
+
+        'security/ir.model.access.csv',
+
+        'views/building_maintenance_views.xml',
+        'views/maintenance_views.xml',
+        'views/product_template_views.xml',
+        'views/res_config_settings_views.xml',
+    ],
+    'auto_install': False,
+    'application': False,
+}

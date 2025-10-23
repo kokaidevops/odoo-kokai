@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="employee_shift_allocation_user" model="ir.rule">
+            <field name="name">User: Own Documents Only</field>
+            <field ref="model_employee_shift_allocation" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(6,0,[ref('employee_attendance.group_employee_shift_allocation_user')])]"/>
+        </record>
+    
+        <record id="employee_shift_allocation_manager" model="ir.rule">
+            <field name="name">Manager: Own Departments Only</field>
+            <field ref="model_employee_shift_allocation" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(6,0,[ref('employee_attendance.group_employee_shift_allocation_manager')])]"/>
+        </record>
+    
+        <record id="employee_shift_allocation_administrator" model="ir.rule">
+            <field name="name">All Allocations</field>
+            <field ref="model_employee_shift_allocation" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(6,0,[ref('employee_attendance.group_employee_shift_allocation_administrator')])]"/>
+        </record>
+
+
+        <record id="employee_shift_schedule_manager" model="ir.rule">
+            <field name="name">Manager: Own Departments Only</field>
+            <field ref="model_employee_shift_schedule" name="model_id"/>
+            <field name="domain_force">[('department_id','=',user.department_id.id)]</field>
+            <field name="groups" eval="[(6,0,[ref('employee_attendance.group_employee_shift_allocation_manager')])]"/>
+        </record>
+
+        <record id="employee_shift_schedule_administrator" model="ir.rule">
+            <field name="name">All Schedule</field>
+            <field ref="model_employee_shift_schedule" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(6,0,[ref('employee_attendance.group_employee_shift_allocation_administrator')])]"/>
+        </record>
+
+
+        <record id="employee_shift_change_user" model="ir.rule">
+            <field name="name">User: Own Documents Only</field>
+            <field ref="model_employee_shift_change" name="model_id"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(6,0,[ref('base.group_user')])]"/>
+        </record>
+
+        <record id="employee_shift_change_manager" model="ir.rule">
+            <field name="name">Manager: Own Departments Only</field>
+            <field ref="model_employee_shift_change" name="model_id"/>
+            <field name="domain_force">[('department_id','=',user.department_id.id)]</field>
+            <field name="groups" eval="[(6,0,[ref('employee_attendance.group_employee_shift_allocation_manager')])]"/>
+        </record>
+
+        <record id="employee_shift_change_administrator" model="ir.rule">
+            <field name="name">All Shift Change</field>
+            <field ref="model_employee_shift_change" name="model_id"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(6,0,[ref('employee_attendance.group_employee_shift_allocation_administrator')])]"/>
+        </record>
+
+    </data>
+
+</odoo>

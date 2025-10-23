@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="hr_applicant_view_form_inherit_test_result" model="ir.ui.view">
+            <field name="name">hr.applicant.view.form.inherit</field>
+            <field name="model">hr.applicant</field>
+            <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page name="test_results" string="Test Results">
+                        <group>
+                            <field name="test_result_file" />
+                        </group>
+                        <group>
+                            <field name="test_results_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="applicant_id" invisible="1" />
+                                    <field name="test_type_id" options="{'no_create': True, 'no_open': True}" />
+                                    <field name="value_id" options="{'no_create': True, 'no_open': True}" />
+                                    <field name="description" readonly="1" />
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit CRM Lead Form View -->
+    <record id="crm_lead_view_form_inherit_rab" model="ir.ui.view">
+        <field name="name">crm.lead.form.inherit.rab</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+
+            <!-- Sembunyikan tombol "New Quotation" -->
+            <xpath expr="//button[1]" position="replace">
+            </xpath>
+
+            <xpath expr="//button[2]" position="after">
+                <!-- <button string="Approve Quotation" name="action_approve_quotations" type="object" class="btn-secondary" data-hotkey="q"
+                    title="Create new quotation"
+                    invisible="type == 'lead' or probability == 0 and not active"/> -->
+            </xpath>
+
+            <xpath expr="//group/group[4]" position="inside">
+                <field name="status_quotation"/>
+                <field name="approved_by"/>
+            </xpath>
+
+            <!-- Add RAB button in button box -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_rab" type="object" 
+                        class="oe_stat_button" icon="fa-calculator"
+                        groups="ks_kokai.group_rab_user">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="rab_count"/>
+                        </span>
+                        <span class="o_stat_text">RAB</span>
+                    </div>
+                </button>
+            </xpath>
+            
+            <!-- Add RAB information after stage -->
+            <xpath expr="//sheet//group" position="inside">
+                <group string="RAB Information" name="rab_info" 
+                       groups="ks_kokai.group_rab_user">
+                    <field name="total_rab_amount" widget="monetary"/>
+                    <field name="approved_rab_amount" widget="monetary"/>
+                    <!-- <field name="has_approved_rab" column_invisible="True"/> -->
+                </group>
+            </xpath>
+            
+            <!-- Add RAB tab in notebook -->
+            <xpath expr="//notebook" position="inside">
+                <page string="RAB" name="rab_page" 
+                      groups="ks_kokai.group_rab_user" attrs="{'invisible':[('stage_id', 'in', [%(crm_management.crm_stage_data_lead)d])]}" >
+                    <div class="oe_button_box" name="rab_button_box">
+                        <button name="action_create_rab" type="object" 
+                                string="Create RAB" class="btn-primary"
+                                />
+                    </div>
+                    
+                    <field name="rab_ids" >
+                        <tree string="RAB List" 
+                              decoration-success="state == 'approved'"
+                              decoration-warning="state == 'submitted'"
+                              decoration-danger="state == 'rejected'"
+                              decoration-muted="state == 'expired'"
+                              delete="True">
+                            <field name="name"/>
+                            <field name="date"/>
+                            <field name="product_id" string="Product"/>
+                            <field name="valid_until"/>
+                            <!-- <field name="project_id" optional="show"/> -->
+                            <field name="subtotal_amount" widget="monetary" sum="Total Subtotal"/>
+                            <!-- <field name="margin_percentage"/> -->
+                            <field name="total_amount" widget="monetary" sum="Total Amount"/>
+                            <field name="stock_status" widget="badge"/>
+                            <field name="state" widget="badge"/>
+                            <field name="currency_id" column_invisible="True"/>
+                            <button name="action_submit" type="object" 
+                                    string="Submit" class="btn-sm btn-primary"
+                                    />
+                            <button name="action_approve" type="object" 
+                                    string="Approve" class="btn-sm btn-success"
+                                    groups="ks_kokai.group_rab_manager"/>
+                        </tree>
+                        <kanban>
+                            <field name="name"/>
+                            <field name="date"/>
+                            <field name="total_amount"/>
+                            <field name="state"/>
+                            <field name="currency_id"/>
+                            <templates>
+                                <t t-name="kanban-box">
+                                    <div t-attf-class="oe_kanban_global_click">
+                                        <div class="oe_kanban_content">
+                                            <div class="o_kanban_record_top">
+                                                <div class="o_kanban_record_headings">
+                                                    <strong class="o_kanban_record_title">
+                                                        <field name="name"/>
+                                                    </strong>
+                                                </div>
+                                                <field name="state" widget="label_selection"/>
+                                            </div>
+                                            <div class="o_kanban_record_body">
+                                                <field name="date"/>
+                                            </div>
+                                            <div class="o_kanban_record_bottom">
+                                                <div class="oe_kanban_bottom_right">
+                                                    <field name="total_amount" widget="monetary"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </templates>
+                        </kanban>
+                        <form string="RAB Form">
+                            <header>
+                                <field name="state" widget="statusbar"/>
+                            </header>
+                            <sheet>
+                                <h1>
+                                    <field name="name" readonly="1"/>
+                                </h1>
+                                <group>
+                                    <!-- <group>
+                                        <field name="project_id"/>
+                                        <field name="date"/>
+                                        <field name="valid_until"/>
+                                    </group> -->
+                                    <group>
+                                        <field name="subtotal_amount" widget="monetary"/>
+                                        <field name="margin_percentage"/>
+                                        <field name="total_amount" widget="monetary"/>
+                                    </group>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                    
+                    <!-- Summary section -->
+                    <group class="oe_subtotal_footer oe_right" 
+                           >
+                        <div class="oe_inline">
+                            <strong>Summary:</strong>
+                        </div>
+                        <field name="rab_count" string="Total RAB"/>
+                        <field name="total_rab_amount" widget="monetary" 
+                               string="Total All RAB"/>
+                        <!-- <field name="approved_rab_amount" widget="monetary" 
+                               string="Total Approved"
+                               invisible="not has_approved_rab"/> -->
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record> 
+    
+    <!-- Inherit CRM Lead Tree View -->
+    <record id="crm_lead_view_tree_inherit_rab" model="ir.ui.view">
+        <field name="name">crm.lead.tree.inherit.rab</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='expected_revenue']" position="after">
+                <field name="approved_rab_amount" widget="monetary" optional="show"
+                       string="Approved RAB" groups="ks_kokai.group_rab_user"/>
+                <field name="rab_count" string="RAB" optional="hide"
+                       groups="ks_kokai.group_rab_user"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Add RAB filter in search view -->
+    <record id="crm_lead_view_search_inherit_rab" model="ir.ui.view">
+        <field name="name">crm.lead.search.inherit.rab</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='assigned_to_me']" position="after">
+                <separator/>
+                <filter string="Has RAB" name="has_rab" 
+                        domain="[('rab_count', '>', 0)]"
+                        groups="ks_kokai.group_rab_user"/>
+                <!-- <filter string="Has Approved RAB" name="has_approved_rab" 
+                        domain="[('has_approved_rab', '=', True)]"
+                        groups="ks_kokai.group_rab_user"/> -->
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="list_of_documents_view_form" model="ir.ui.view">
+            <field name="name">list.of.documents.view.form</field>
+            <field name="model">list.of.documents</field>
+            <field name="arch" type="xml">
+                <form string="Document">
+                    <header>
+                        <button string="Obsolete" name="action_obsolete" type="object" states="new,revision" />
+                        <field name="stage" widget="statusbar" statusbar_visible="draft,requested,approved"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_show_amendment" type="object" class="oe_stat_button" icon="fa-object-group">
+                                <field name="amendment_count" string="Amendments" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" />
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="active" invisible="1" />
+                                <field name="source" readonly="1" />
+                                <field name="type" readonly="1" />
+                                <field name="department_id" />
+                                <field name="team_id" />
+                                <field name="init_edition" />
+                                <field name="edition" />
+                                <field name="description" />
+                            </group>
+                            <group>
+                                <field name="issued_date" />
+                                <field name="received_date" />
+                                <field name="user_id" />
+                                <field name="attachment_ids"/>
+                                <field name="state" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="list_of_documents_view_tree" model="ir.ui.view">
+            <field name="name">list.of.documents.view.tree</field>
+            <field name="model">list.of.documents</field>
+            <field name="arch" type="xml">
+                <tree string="List of Documents">
+                    <field name="department_id" />
+                    <field name="name" />
+                    <field name="issued_date" />
+                    <field name="received_date" />
+                    <field name="edition" />
+                    <field name="description" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="list_of_documents_view_search" model="ir.ui.view">
+            <field name="name">list.of.documents.view.search</field>
+            <field name="model">list.of.documents</field>
+            <field name="arch" type="xml">
+                <search string="List of Documents">
+                    <field name="department_id" />
+                    <field name="name" />
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter name="department_id" string="Department" context="{'group_by': 'department_id'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+    
+        <menuitem
+            id="list_of_documents_menu"
+            name="List of Documents"
+            parent="qhse_program.qa_menu"
+            sequence="10"
+        />
+
+        <record id="list_of_qm_action" model="ir.actions.act_window">
+            <field name="name">Quality Manual</field>
+            <field name="res_model">list.of.documents</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('type', '=', 'qm')]</field>
+            <field name="context">{'default_type': 'qm', 'default_source': 'internal'}</field>
+        </record>
+    
+        <menuitem
+            id="list_of_qm_menu"
+            name="Quality Manual"
+            action="list_of_qm_action"
+            parent="list_of_documents.list_of_documents_menu"
+            sequence="10"
+        />
+
+        <record id="list_of_qp_action" model="ir.actions.act_window">
+            <field name="name">Quality Procedure</field>
+            <field name="res_model">list.of.documents</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('type', '=', 'qp')]</field>
+            <field name="context">{'default_type': 'qp', 'default_source': 'internal'}</field>
+        </record>
+    
+        <menuitem
+            id="list_of_qp_menu"
+            name="Quality Procedure"
+            action="list_of_qp_action"
+            parent="list_of_documents.list_of_documents_menu"
+            sequence="10"
+        />
+
+        <record id="list_of_qr_action" model="ir.actions.act_window">
+            <field name="name">Quality Record</field>
+            <field name="res_model">list.of.documents</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('type', '=', 'qr')]</field>
+            <field name="context">{'default_type': 'qr', 'default_source': 'internal'}</field>
+        </record>
+    
+        <menuitem
+            id="list_of_qr_menu"
+            name="Quality Record"
+            action="list_of_qr_action"
+            parent="list_of_documents.list_of_documents_menu"
+            sequence="10"
+        />
+
+        <record id="list_of_wi_action" model="ir.actions.act_window">
+            <field name="name">Work Instruction</field>
+            <field name="res_model">list.of.documents</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('type', '=', 'wi')]</field>
+            <field name="context">{'default_type': 'wi', 'default_source': 'internal'}</field>
+        </record>
+    
+        <menuitem
+            id="list_of_wi_menu"
+            name="Work Instruction"
+            action="list_of_wi_action"
+            parent="list_of_documents.list_of_documents_menu"
+            sequence="10"
+        />
+
+        <record id="list_of_external_doc_action" model="ir.actions.act_window">
+            <field name="name">External Document</field>
+            <field name="res_model">list.of.documents</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('type', '=', 'external')]</field>
+            <field name="context">{'default_type': 'external', 'default_source': 'external'}</field>
+        </record>
+    
+        <menuitem
+            id="list_of_ed_menu"
+            name="External Document"
+            action="list_of_external_doc_action"
+            parent="list_of_documents.list_of_documents_menu"
+            sequence="10"
+        />
+    
+    </data>
+    
+
+</odoo>

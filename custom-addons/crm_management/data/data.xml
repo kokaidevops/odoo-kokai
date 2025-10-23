@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+    
+        <record id="crm_stage_data_lead" model="crm.stage">
+            <field name="name">Lead</field>
+            <field name="is_won">False</field>
+            <field name="fold">False</field>
+            <field name="sequence">100</field>
+        </record>
+
+        <record id="crm_stage_data_inquiry" model="crm.stage">
+            <field name="name">Inquiry</field>
+            <field name="is_won">False</field>
+            <field name="fold">False</field>
+            <field name="sequence">200</field>
+        </record>
+
+        <record id="crm_stage_data_quotation" model="crm.stage">
+            <field name="name">Quotation</field>
+            <field name="is_won">False</field>
+            <field name="fold">False</field>
+            <field name="sequence">300</field>
+        </record>
+
+        <record id="crm_stage_data_sale_order" model="crm.stage">
+            <field name="name">Sale Order</field>
+            <field name="is_won">True</field>
+            <field name="fold">False</field>
+            <field name="sequence">400</field>
+        </record>
+
+        <record id="crm_stage_data_lost_deal" model="crm.stage">
+            <field name="name">Lost</field>
+            <field name="is_won">False</field>
+            <field name="fold">False</field>
+            <field name="sequence">500</field>
+        </record>
+    
+    </data>
+
+</odoo>

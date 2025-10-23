@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <menuitem
+            id="recruitment_test_root_menu"
+            name="Recruitment Test"
+            parent="hr_recruitment.menu_hr_recruitment_configuration"
+            sequence="10"
+        />
+    
+        <record id="recruitment_test_type_view_tree" model="ir.ui.view">
+            <field name="name">recruitment.test.type.view.tree</field>
+            <field name="model">recruitment.test.type</field>
+            <field name="arch" type="xml">
+                <tree string="Recruitment Test Type" editable="bottom">
+                    <field name="name" />
+                    <field name="active" widget="boolean_toggle" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="recruitment_test_type_action" model="ir.actions.act_window">
+            <field name="name">Recruitment Test Type</field>
+            <field name="res_model">recruitment.test.type</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem
+            id="recruitment_test_type_menu"
+            name="Type"
+            action="recruitment_test_type_action"
+            parent="recruitment_test_root_menu"
+            sequence="10"
+        />
+
+
+        <record id="recruitment_test_value_view_tree" model="ir.ui.view">
+            <field name="name">recruitment.test.value.view.tree</field>
+            <field name="model">recruitment.test.value</field>
+            <field name="arch" type="xml">
+                <tree string="Recruitment Test Value" editable="bottom">
+                    <field name="sequence" widget="handle" />
+                    <field name="value" />
+                    <field name="name" />
+                    <field name="active" widget="boolean_toggle" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="recruitment_test_value_action" model="ir.actions.act_window">
+            <field name="name">Recruitment Test Value</field>
+            <field name="res_model">recruitment.test.value</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem
+            id="recruitment_test_value_menu"
+            name="Value"
+            action="recruitment_test_value_action"
+            parent="recruitment_test_root_menu"
+            sequence="10"
+        />
+
+        
+    
+    </data>
+
+</odoo>

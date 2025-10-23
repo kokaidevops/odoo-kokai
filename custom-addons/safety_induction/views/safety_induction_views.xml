@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="safety_induction_view_form" model="ir.ui.view">
+            <field name="name">safety.induction.view.form</field>
+            <field name="model">safety.induction</field>
+            <field name="arch" type="xml">
+                <form string="Induction">
+                    <header>
+                        <button string="Draft" name="action_draft" type="object" states="cancel" />
+                        <button string="Cancel" name="action_cancel" type="object" states="draft" />
+                        <button string="Approval Request" name="action_requested" type="object" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_show_approval" type="object" class="oe_stat_button" icon="fa-list">
+                                <field name="approval_count" string="Approval" widget="statinfo"/>
+                            </button>
+                            <button name="action_show_announcement" type="object" class="oe_stat_button" string="Form" icon="fa-list">
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1><field name="name" /></h1>
+                        </div>
+                        <group>
+                            <group string="Detail">
+                                <field name="speaker_id" />
+                                <field name="date" />
+                                <field name="location_id" />
+                                <field name="area_id" />
+                                <field name="type" />
+                                <field name="user_id" attrs="{'invisible': [('type','!=','new')]}" />
+                                <field name="employee_id" attrs="{'invisible': [('type','!=','new')]}" />
+                                <field name="partner_id" attrs="{'invisible': [('type','!=','visitor')]}" />
+                            </group>
+                            <group string="Emergency Contact">
+                                <field name="emergency_name" />
+                                <field name="emergency_address" />
+                                <field name="emergency_relationship" />
+                                <field name="emergency_number" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="other" string="Other">
+                                <group>
+                                    <field name="statement" readonly="1" />
+                                </group>
+                            </page>
+                            <page name="line" string="Topic">
+                                <field name="line_ids">
+                                    <tree editable="bottom">
+                                        <field name="induction_id" invisible="1" />
+                                        <field name="topic_id" />
+                                        <field name="done" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="safety_induction_view_tree" model="ir.ui.view">
+            <field name="name">safety.induction.view.tree</field>
+            <field name="model">safety.induction</field>
+            <field name="arch" type="xml">
+                <tree string="Induction">
+                    <field name="name" />
+                    <field name="date" />
+                    <field name="type" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="safety_induction_action" model="ir.actions.act_window">
+            <field name="name">Induction</field>
+            <field name="res_model">safety.induction</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="safety_induction_menu"
+            name="Induction"
+            action="safety_induction_action"
+            parent="qhse_program.hse_menu"
+            sequence="10"
+        />
+    
+    </data>
+
+</odoo>

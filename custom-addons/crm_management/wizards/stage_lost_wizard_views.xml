@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="stage_lost_wizard_view_form" model="ir.ui.view">
+            <field name="name">stage.lost.wizard.view.form</field>
+            <field name="model">stage.lost.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Lost Stage">
+                    <sheet>
+                        <group>
+                            <field name="ref_id" invisible="1" />
+                            <field name="reason" />
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Lost" name="button_process" type="object" class="oe_highlight"/>
+                        <button string="Cancel" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="stage_lost_wizard_action" model="ir.actions.act_window">
+            <field name="name">Lost Stage</field>
+            <field name="res_model">stage.lost.wizard</field>
+            <field name="view_mode">form</field>
+        </record>
+    
+    </data>
+
+</odoo>

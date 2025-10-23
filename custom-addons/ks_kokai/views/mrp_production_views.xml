@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- <record id="mrp_production_form_view_bom_series" model="ir.ui.view">
+        <field name="name">mrp.production.form.bom.series</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bom_id']" position="after">
+                <field name="bom_series_id" readonly="1"/>
+                <field name="production_level" readonly="1"/>
+                <field name="production_sequence" readonly="1"/>
+            </xpath>
+            
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="sale_line_id" readonly="1"/>
+                <field name="sale_order_id" readonly="1"/>
+            </xpath>
+            
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_bom_series" 
+                        type="object" 
+                        class="oe_stat_button" 
+                        icon="fa-sitemap"
+                        attrs="{'invisible': [('bom_series_id', '=', False)]}">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">BOM Series</span>
+                    </div>
+                </button>
+                
+                <button name="action_view_related_productions" 
+                        type="object" 
+                        class="oe_stat_button" 
+                        icon="fa-cogs"
+                        attrs="{'invisible': [('bom_series_id', '=', False)]}">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Related MOs</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record> -->
+
+    <!-- Manufacturing Order Tree View Enhancement -->
+    <record id="mrp_production_tree_view_bom_series" model="ir.ui.view">
+        <field name="name">mrp.production.tree.bom.series</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="production_level" string="Level" optional="show"/>
+                <field name="production_sequence" string="Seq" optional="hide"/>
+            </xpath>
+            
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="sale_order_id" string="Sale Order" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Manufacturing Order Search View Enhancement -->
+    <!-- <record id="mrp_production_search_view_bom_series" model="ir.ui.view">
+        <field name="name">mrp.production.search.bom.series</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.view_mrp_production_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="production_level"/>
+                <field name="sale_order_id"/>
+                <field name="bom_series_id"/>
+            </xpath>
+            
+            <xpath expr="//filter[@name='late']" position="after">
+                <separator/>
+                <filter string="Level 1 (Final Product)" 
+                        name="level_1" 
+                        domain="[('production_level', '=', 1)]"/>
+                <filter string="Level 2 (Sub-Assembly)" 
+                        name="level_2" 
+                        domain="[('production_level', '=', 2)]"/>
+                <filter string="Level 3+" 
+                        name="level_3_plus" 
+                        domain="[('production_level', '>=', 3)]"/>
+                <separator/>
+                <filter string="Has Sale Order" 
+                        name="has_sale_order" 
+                        domain="[('sale_order_id', '!=', False)]"/>
+            </xpath>
+            
+            <xpath expr="//group[@string='Group By']" position="inside">
+                <filter string="Production Level" 
+                        name="group_production_level" 
+                        context="{'group_by': 'production_level'}"/>
+                <filter string="Sale Order" 
+                        name="group_sale_order" 
+                        context="{'group_by': 'sale_order_id'}"/>
+                <filter string="BOM Series" 
+                        name="group_bom_series" 
+                        context="{'group_by': 'bom_series_id'}"/>
+            </xpath>
+        </field>
+    </record> -->
+
+    <record id="action_mrp_production_by_level" model="ir.actions.act_window">
+        <field name="name">Manufacturing Orders by Level</field>
+        <field name="res_model">mrp.production</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="context">{'group_by': 'production_level'}</field>
+        <field name="domain">[('production_level', '>', 0)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No manufacturing orders with BOM series levels found!
+            </p>
+            <p>
+                Manufacturing orders created from BOM series will appear here organized by production level.
+            </p>
+        </field>
+    </record>
+
+
+    <!-- Inherit Production Form -->
+    <record id="mrp_production_form_view_weight" model="ir.ui.view">
+        <field name="name">mrp.production.form.weight</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='miscellaneous']" position="before">
+                <page string="Weight Tracking" name="weight_tracking">
+                    <group>
+                        <group string="Weight Summary">
+                            <field name="total_input_weight"/>
+                            <field name="total_output_weight"/>
+                            <field name="actual_weight_loss"/>
+                            <field name="actual_weight_loss_percentage"/>
+                        </group>
+                        <group string="Weight Analysis">
+                            <field name="expected_weight_loss"/>
+                            <field name="weight_variance" decoration-danger="is_weight_variance_high"/>
+                            <field name="is_weight_variance_high" invisible="1"/>
+                            <div class="alert alert-warning" attrs="{'invisible': [('is_weight_variance_high', '=', False)]}">
+                                <p><i class="fa fa-warning"/> Weight variance is outside acceptable range!</p>
+                            </div>
+                        </group>
+                    </group>
+                    <separator string="Component Weight Details"/>
+                    <field name="weight_tracking_line_ids" readonly="1">
+                        <tree>
+                            <field name="product_id"/>
+                            <field name="lot_id"/>
+                            <field name="input_weight"/>
+                            <field name="weight_contribution"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Production Tree View with Weight Info -->
+    <record id="mrp_production_tree_view_weight" model="ir.ui.view">
+        <field name="name">mrp.production.tree.weight</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="product_id" position="after">
+                <field name="total_input_weight" optional="show"/>
+                <field name="total_output_weight" optional="show"/>
+                <field name="weight_variance" optional="show" decoration-danger="is_weight_variance_high"/>
+                <field name="is_weight_variance_high" invisible="1"/>
+            </field>
+        </field>
+    </record>
+    <!-- <record id="mrp_production_tree_view_inherit" model="ir.ui.view">
+        <field name="name">mrp.production.tree.inherit</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="product_id" position="before">
+                <field name="level" string="Level"/>
+            </field>
+        </field>
+    </record>  -->
+
+    <record id="action_mrp_production_by_level" model="ir.actions.act_window">
+        <field name="name">Manufacturing Orders by Level</field>
+        <field name="res_model">mrp.production</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="context">{'group_by': 'production_level'}</field>
+        <field name="domain">[('production_level', '>', 0)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No manufacturing orders with BOM series levels found!
+            </p>
+            <p>
+                Manufacturing orders created from BOM series will appear here organized by production level.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem id="menu_mrp_production_by_level" 
+              name="MOs by Level" 
+              parent="mrp.menu_mrp_manufacturing" 
+              action="action_mrp_production_by_level" 
+              sequence="25"/>    
+
+</odoo>

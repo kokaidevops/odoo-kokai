@@ -1,0 +1,49 @@
+<!-- Generate MO Wizard Form View -->
+<odoo>
+        <data>
+        <record id="generate_mo_wizard_form_view" model="ir.ui.view">
+            <field name="name">generate.mo.wizard.form</field>
+            <field name="model">generate.mo.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generate Manufacturing Orders">
+                    <group>
+                        <field name="sale_order_id" readonly="context.get('default_sale_order_id', False)"/>
+                        <field name="generation_method" widget="radio"/>
+                    </group>
+                    
+                    <group attrs="{'invisible': [('generation_method', '!=', 'selected')]}">
+                        <field name="line_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="is_selected"/>
+                                <field name="product_id" readonly="1"/>
+                                <field name="quantity" readonly="1"/>
+                                <field name="has_template" invisible="1"/>
+                                <widget name="badge" attrs="{'invisible': [('has_template', '=', False)]}">
+                                    <field name="has_template" string="Template Based"/>
+                                </widget>
+                            </tree>
+                        </field>
+                    </group>
+                    
+                    <footer>
+                        <button string="Generate MOs" 
+                                name="action_generate_mos" 
+                                type="object" 
+                                class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Generate MO Wizard Action -->
+        <!-- <record id="action_generate_mo_wizard" model="ir.actions.act_window">
+            <field name="name">Generate Manufacturing Orders</field>
+            <field name="res_model">generate.mo.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="binding_view_types">form</field>
+        </record> -->
+    </data>
+</odoo>

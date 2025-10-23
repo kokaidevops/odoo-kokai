@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="view_order_form_inherit_report" model="ir.ui.view">
+            <field name="name">sale.order.view.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button string="Print Quo" name="action_print_py3o" type="object" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="inquiry_review_view_form_inherit_report" model="ir.ui.view">
+            <field name="name">sale.order.view.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="crm_management.inquiry_review_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button string="Print FIR" name="action_print_inquiry_py3o" type="object" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="contract_review_view_form_inherit_report" model="ir.ui.view">
+            <field name="name">sale.order.view.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="crm_management.contract_review_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button string="Print FRK" name="action_print_contract_py3o" type="object" />
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

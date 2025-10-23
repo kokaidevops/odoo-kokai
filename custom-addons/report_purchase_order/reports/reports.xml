@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="action_report_purchase_order_py3o" model="ir.actions.report">
+            <field name="name">Purchase Order Report</field>
+            <field name="model">purchase.order</field>
+            <field name="report_name">purchase_order_report_py3o</field>
+			<field name="report_type">py3o</field>
+			<field name="py3o_filetype">pdf</field>
+			<field name="module">report_purchase_order</field>
+			<field name="py3o_template_fallback">reports/report_purchase_order.odt</field>
+            <field name="print_report_name">'%s' % object.name</field>
+			<field name="binding_model_id" eval="False"/>
+            <field name="binding_type">report</field>
+        </record>
+    
+    </data>
+
+</odoo>

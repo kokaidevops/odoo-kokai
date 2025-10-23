@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="hr_religion_view_tree" model="ir.ui.view">
+            <field name="name">hr.religion.view.tree</field>
+            <field name="model">hr.religion</field>
+            <field name="arch" type="xml">
+                <tree string="Religion">
+                    <field name="sequence" widget="handle" />
+                    <field name="active" invisible="1" />
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_religion_action" model="ir.actions.act_window">
+            <field name="name">Religion</field>
+            <field name="res_model">hr.religion</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="hr_religion_menu"
+            name="Religion"
+            action="hr_religion_action"
+            parent="hr.menu_human_resources_configuration"
+            sequence="10"
+        />
+
+
+        <record id="view_employee_form_inherit_religion" model="ir.ui.view">
+            <field name="name">hr.employee.view.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <field name="gender" position="before">
+                    <field name="religion_id" options="{'no_create': True}" />
+                </field>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

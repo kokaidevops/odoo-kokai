@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="checklist_type_view_tree" model="ir.ui.view">
+            <field name="name">checklist.type.view.tree</field>
+            <field name="model">checklist.type</field>
+            <field name="arch" type="xml">
+                <tree string="Checklist Type" editable="bottom">
+                    <field name="name" />
+                    <field name="model_id" />
+                    <field name="department_id" />
+                    <button icon="fa-list-ol" string="Template" name="action_show_template" type="object" />
+                    <!-- <button name="action_show_template" type="object" icon="fa-list-ol" title="Template" width="0.1" options="{&quot;warn&quot;: true}"/> -->
+                </tree>
+            </field>
+        </record>
+
+        <record id="checklist_type_action" model="ir.actions.act_window">
+            <field name="name">Checklist Type</field>
+            <field name="res_model">checklist.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+
+        <record id="checklist_template_view_form" model="ir.ui.view">
+            <field name="name">checklist.template.view.form</field>
+            <field name="model">checklist.template</field>
+            <field name="arch" type="xml">
+                <form string="Checklist Template">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="type_id" />
+                        </group>
+                        <notebook>
+                            <page name="checklist_line" string="Line">
+                                <field name="line_ids">
+                                    <tree>
+                                        <field name="sequence" widget="handle" />
+                                        <field name="name" />
+                                        <field name="description" />
+                                    </tree>
+                                    <form string="Checklist">
+                                        <sheet>
+                                            <group>
+                                                <field name="name" />
+                                                <field name="description" />
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="checklist_template_view_tree" model="ir.ui.view">
+            <field name="name">checklist.template.view.tree</field>
+            <field name="model">checklist.template</field>
+            <field name="arch" type="xml">
+                <tree string="Checklist Template">
+                    <field name="name" />
+                    <field name="type_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="checklist_template_action" model="ir.actions.act_window">
+            <field name="name">Checklist Template</field>
+            <field name="res_model">checklist.template</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+
+        <record id="checklist_line_view_form" model="ir.ui.view">
+            <field name="name">checklist.line.view.form</field>
+            <field name="model">checklist.line</field>
+            <field name="arch" type="xml">
+                <form string="Checklist">
+                    <header>
+                        <button string="Complete" name="action_complete" type="object" class="oe_highlight" states="draft" />
+                        <button string="Next" name="action_next_checklist" type="object" class="oe_highlight" states="complete" />
+                        <button string="Cancel" name="action_cancel" type="object" states="draft" />
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="state" readonly="1" invisible="1" />
+                            <field name="name" readonly="1" />
+                            <field name="date" readonly="1" />
+                            <field name="result" attrs="{'readonly': [('state', '=', 'complete')]}" />
+                            <field name="description" readonly="1" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

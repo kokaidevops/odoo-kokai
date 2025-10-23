@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_safety_induction,access_safety_induction,model_safety_induction,base.group_user,1,1,1,1
+access_safety_induction_line,access_safety_induction_line,model_safety_induction_line,base.group_user,1,1,1,1
+access_induction_topic,access_induction_topic,model_induction_topic,base.group_user,1,1,1,1
+access_induction_announcement,access_induction_announcement,model_induction_announcement,base.group_user,1,1,1,1

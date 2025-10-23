@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+    
+        <record id="purchase_request_type_data_apd" model="purchase.request.type">
+            <field name="name">APD</field>
+        </record>
+        <record id="purchase_request_type_data_ict" model="purchase.request.type">
+            <field name="name">ICT</field>
+        </record>
+        <record id="purchase_request_type_data_material" model="purchase.request.type">
+            <field name="name">Material</field>
+        </record>
+        <record id="purchase_request_type_data_consumable" model="purchase.request.type">
+            <field name="name">Consumable</field>
+        </record>
+        <record id="purchase_request_type_data_maintenance_production" model="purchase.request.type">
+            <field name="name">Maintenance / Repair Produksi</field>
+        </record>
+        <record id="purchase_request_type_data_maintenance_non_production" model="purchase.request.type">
+            <field name="name">Maintenance / Repair Non Produksi</field>
+        </record>
+        <record id="purchase_request_type_data_ga" model="purchase.request.type">
+            <field name="name">GA (Kendaraan, Bangunan, ME, dan lain-lain)</field>
+        </record>
+        <record id="purchase_request_type_data_inventaris" model="purchase.request.type">
+            <field name="name">Inventaris</field>
+        </record>
+    
+    </data>
+</odoo>

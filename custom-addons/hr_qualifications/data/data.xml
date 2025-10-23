@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="hr_qualification_type_data_education" model="hr.qualification.type">
+            <field name="name">Education</field>
+        </record>
+        <record id="hr_qualification_type_data_experience" model="hr.qualification.type">
+            <field name="name">Experience</field>
+        </record>
+        <record id="hr_qualification_type_data_expertise_certificate" model="hr.qualification.type">
+            <field name="name">Expertise Certificate</field>
+        </record>
+
+    </data>
+</odoo>

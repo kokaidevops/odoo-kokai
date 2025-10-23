@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <menuitem
+            id="shift_menu_root"
+            name="Employee Shift"
+            parent="hr_attendance.menu_hr_attendance_root"
+            sequence="50"
+        />
+
+
+        <record id="resource_calendar_form_inherit_employee_shift" model="ir.ui.view">
+            <field name="name">resource.calendar.view.form.inherit</field>
+            <field name="model">resource.calendar</field>
+            <field name="inherit_id" ref="resource.resource_calendar_form"/>
+            <field name="arch" type="xml">
+                <field name="tz" position="after">
+                    <field name="employee_shift_ids" widget="many2many_tags" />
+                </field>
+            </field>
+        </record>
+
+
+        <record id="employee_shift_allocation_view_form" model="ir.ui.view">
+            <field name="name">employee.shift.allocation.view.form</field>
+            <field name="model">employee.shift.allocation</field>
+            <field name="arch" type="xml">
+                <form string="Employee Shift Allocation">
+                    <header>
+                        <button string="Request Change" name="request_shift_change" type="object" class="oe_highlight" states="done" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done" />
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" readonly="1" /></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="specific_readonly_field" invisible="1" />
+                                <field name="employee_id" attrs="{'readonly': ['|', ('state', '!=', 'draft'), ('specific_readonly_field', '=', True)]}" />
+                                <field name="department_id" attrs="{'readonly': ['|', ('state', '!=', 'draft'), ('specific_readonly_field', '=', True)]}" />
+                            </group>
+                            <group>
+                                <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="employee_shift_id" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="work_location_id" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="note" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="is_exchange" readonly="1" invisible="1" />
+                                <field name="parent_id" attrs="{'readonly': True, 'invisible': [('is_exchange', '=', False)]}" />
+                                <field name="shift_change_id" attrs="{'readonly': True, 'invisible': [('is_exchange', '=', False)]}" />
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="employee_shift_allocation_view_tree" model="ir.ui.view">
+            <field name="name">employee.shift.allocation.view.tree</field>
+            <field name="model">employee.shift.allocation</field>
+            <field name="arch" type="xml">
+                <tree string="Employee Shift Allocation">
+                    <field name="employee_id" />
+                    <field name="date" />
+                    <field name="employee_shift_id" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="employee_shift_allocation_view_search" model="ir.ui.view">
+            <field name="name">employee.shift.allocation.view.search</field>
+            <field name="model">employee.shift.allocation</field>
+            <field name="arch" type="xml">
+                <search string="Employee Shift Allocation">
+                    <filter string="My Allocations" name="myallocations" domain="[('employee_id.user_id', '=', uid)]"/>
+                    <separator/>
+                    <filter name="employee" string="Employee" domain="[('employee_id', 'ilike', self)]"/>
+                    <filter name="department" string="Department" domain="[('department_id', 'ilike', self)]"/>
+                    <group>
+                        <filter name="groupby_employee" string="Employee" context="{'group_by': 'employee_id'}" />
+                        <filter name="groupby_date" string="Date" context="{'group_by': 'date'}" />
+                        <filter name="groupby_shift" string="Shift" context="{'group_by': 'employee_shift_id'}" />
+                        <filter name="groupby_state" string="State" context="{'group_by': 'state'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="employee_shift_allocation_view_calendar" model="ir.ui.view">
+            <field name="name">employee.shift.allocation.view.calendar</field>
+            <field name="model">employee.shift.allocation</field>
+            <field name="arch" type="xml">
+                <calendar string="Employee Shift Allocation" date_start="date" color="color" mode="month" quick_add="False">
+                    <field name="employee_id" filters="1"/>
+                    <field name="date"/>
+                    <field name="employee_shift_id"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id="employee_shift_allocation_view_gantt" model="ir.ui.view">
+            <field name="name">employee.shift.allocation.view.gantt</field>
+            <field name="model">employee.shift.allocation</field>
+            <field name="arch" type="xml">
+                <gantt string="Employee Shift Allocation" color="color" date_start="date" date_stop="date" default_group_by='employee_id'>
+                    <field name="color" invisible="1"/>
+                    <field name="employee_id"/>
+                    <field name="name"/>
+                    <field name="date"/>
+                </gantt>
+            </field>
+        </record>
+
+        <record id="employee_shift_allocation_action" model="ir.actions.act_window">
+            <field name="name">Employee Shift Allocation</field>
+            <field name="res_model">employee.shift.allocation</field>
+            <field name="view_mode">gantt,tree,form,calendar</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_myallocations': 1}</field>
+        </record>
+
+        <menuitem
+            id="employee_shift_allocation_menu"
+            name="Employee Shift Allocation"
+            action="employee_shift_allocation_action"
+            parent="employee_attendance.shift_menu_root"
+            sequence="20"
+        />
+
+
+        <record id="shift_schedule_line_view_form" model="ir.ui.view">
+            <field name="name">shift.schedule.line.view.form</field>
+            <field name="model">shift.schedule.line</field>
+            <field name="arch" type="xml">
+                <form string="Schedule Line">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="state" invisible="1" />
+                                <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="employee_shift_id" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="work_location_id" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="note" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            </group>
+                            <group>
+                                <field name="department_id" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="employee_ids" widget="many2many_tags" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="employee_shift_schedule_view_form" model="ir.ui.view">
+            <field name="name">employee.shift.schedule.view.form</field>
+            <field name="model">employee.shift.schedule</field>
+            <field name="arch" type="xml">
+                <form string="Employee Shift Schedule">
+                    <header>
+                        <button string="Draft" name="action_draft" type="object" states="cancel"/>
+                        <button string="Done" name="action_done" type="object" class="oe_highlight" states="draft"/>
+                        <button string="Cancel" name="action_cancel" type="object" states="draft,done"/>
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" readonly="1" /></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="user_id" readonly="1" />
+                                <field name="department_id" groups="employee_attendance.group_employee_shift_allocation_administrator" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="line" string="Schedule">
+                                <field name="line_ids">
+                                    <tree>
+                                        <field name="date" />
+                                        <field name="employee_shift_id" />
+                                        <field name="note" />
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="allocation" string="Allocations">
+                                <field name="allocation_ids" readonly="1">
+                                    <tree>
+                                        <field name="employee_id" />
+                                        <field name="date" />
+                                        <field name="employee_shift_id" />
+                                        <field name="state" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="employee_shift_schedule_view_tree" model="ir.ui.view">
+            <field name="name">employee.shift.schedule.view.tree</field>
+            <field name="model">employee.shift.schedule</field>
+            <field name="arch" type="xml">
+                <tree string="Employee Shift Schedule">
+                    <field name="name" />
+                    <field name="user_id" />
+                    <field name="department_id" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="employee_shift_schedule_view_search" model="ir.ui.view">
+            <field name="name">employee.shift.schedule.view.search</field>
+            <field name="model">employee.shift.schedule</field>
+            <field name="arch" type="xml">
+                <search string="Employee Shift Schedule">
+                    <filter string="My Schedule" name="myschedule" domain="[('user_id', '=', uid)]"/>
+                    <separator/>
+                    <filter name="user" string="User" domain="[('user_id', 'ilike', self)]"/>
+                    <filter name="department" string="Department" domain="[('department_id', 'ilike', self)]"/>
+                    <group>
+                        <filter name="groupby_department" string="Department" context="{'group_by': 'department_id'}" />
+                        <filter name="groupby_user" string="User" context="{'group_by': 'user_id'}" />
+                        <filter name="groupby_state" string="State" context="{'group_by': 'state'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="employee_shift_schedule_action" model="ir.actions.act_window">
+            <field name="name">Employee Shift Schedule</field>
+            <field name="res_model">employee.shift.schedule</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="employee_shift_schedule_menu"
+            name="Employee Shift Schedule"
+            action="employee_shift_schedule_action"
+            groups="employee_attendance.group_employee_shift_allocation_manager"
+            parent="employee_attendance.shift_menu_root"
+            sequence="10"
+        />
+
+
+        <record id="employee_shift_change_view_form" model="ir.ui.view">
+            <field name="name">employee.shift.change.view.form</field>
+            <field name="model">employee.shift.change</field>
+            <field name="arch" type="xml">
+                <form string="Employee Shift Change">
+                    <header>
+                        <button string="draft" name="action_draft" type="object" states="cancel" />
+                        <button string="request" name="action_request" type="object" class="oe_highlight" states="draft" />
+                        <button string="cancel" name="action_cancel" type="object" states="draft,request" />
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_approval_request" type="object" class="oe_stat_button" icon="fa-list">
+                                <field name="approval_count" string="Approval" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1><field name="name" readonly="1" /></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="user_id" groups="employee_attendance.group_employee_shift_allocation_manager" attrs="{'readonly': [('state', 'not in', ['draft', 'rejected'])]}" />
+                                <field name="employee_id" readonly="1" attrs="{'readonly': [('state', 'not in', ['draft', 'rejected'])]}" />
+                                <field name="department_id" readonly="1" attrs="{'readonly': [('state', 'not in', ['draft', 'rejected'])]}" />
+                                <field name="shift_allocation_id" attrs="{'readonly': [('state', 'not in', ['draft', 'rejected'])]}" />
+                                <field name="init_date" attrs="{'readonly': [('state', 'not in', ['draft', 'rejected'])]}" />
+                                <field name="init_employee_shift_id" attrs="{'readonly': [('state', 'not in', ['draft', 'rejected'])]}" />
+                            </group>
+                            <group>
+                                <field name="type" attrs="{'readonly': [('state', 'not in', ['draft', 'rejected'])]}" />
+                                <field name="date" attrs="{'readonly': [('state', 'not in', ['draft', 'rejected'])]}" />
+                                <field name="employee_shift_id" attrs="{'readonly': [('state', 'not in', ['draft', 'rejected'])]}" />
+                                <field name="exchange_shift_allocation_id" attrs="{'readonly': [('state', 'not in', ['draft', 'rejected'])]}" />
+                                <field name="description" attrs="{'readonly': [('state', 'not in', ['draft', 'rejected'])]}" />
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="employee_shift_change_view_tree" model="ir.ui.view">
+            <field name="name">employee.shift.change.view.tree</field>
+            <field name="model">employee.shift.change</field>
+            <field name="arch" type="xml">
+                <tree string="Employee Shift Change">
+                    <field name="employee_id" />
+                    <field name="shift_allocation_id" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="employee_shift_change_view_search" model="ir.ui.view">
+            <field name="name">employee.shift.change.view.search</field>
+            <field name="model">employee.shift.change</field>
+            <field name="arch" type="xml">
+                <search string="Employee Shift Change">
+                    <filter string="My Request" name="myrequest" domain="[('user_id', '=', uid)]"/>
+                    <separator/>
+                    <filter name="user" string="User" domain="[('user_id', 'ilike', self)]"/>
+                    <filter name="department" string="Department" domain="[('department_id', 'ilike', self)]"/>
+                    <group>
+                        <filter name="groupby_department" string="Department" context="{'group_by': 'department_id'}" />
+                        <filter name="groupby_user" string="User" context="{'group_by': 'user_id'}" />
+                        <filter name="groupby_state" string="State" context="{'group_by': 'state'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="employee_shift_change_action" model="ir.actions.act_window">
+            <field name="name">Employee Shift Change</field>
+            <field name="res_model">employee.shift.change</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem
+            id="employee_shift_change_menu"
+            name="Employee Shift Change"
+            action="employee_shift_change_action"
+            parent="employee_attendance.shift_menu_root"
+            sequence="30"
+        />
+
+    </data>
+
+</odoo>

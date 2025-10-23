@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="hr_payslip_input_type_return_prev_month_tax_emp" model="hr.payslip.input.type">
+            <field name="name">Previous Month Tax (Employee)</field>
+            <field name="code">PM_TAX_EMP</field>
+        </record>
+        <record id="hr_payslip_input_type_return_prev_month_tax_comp" model="hr.payslip.input.type">
+            <field name="name">Previous Month Tax (Company)</field>
+            <field name="code">PM_TAX_COMP</field>
+        </record>
+
+        <record id="hr_payslip_input_type_return_pto_payout" model="hr.payslip.input.type">
+            <field name="name">PTO Payout</field>
+            <field name="code">PTO_PAYOUT</field>
+        </record>
+
+        <record id="hr_payslip_input_type_merge_payslip" model="hr.payslip.input.type">
+            <field name="name">Other Payslip</field>
+            <field name="code">OTHER_PAYSLIP</field>
+        </record>
+    
+        <record id="hr_salary_rule_category_data_basic_alw" model="hr.salary.rule.category">
+            <field name="name">Basic Allowance</field>
+            <field name="code">BASIC_ALW</field>
+        </record>
+        <record id="hr_salary_rule_category_data_ind" model="hr.salary.rule.category">
+            <field name="name">Induction</field>
+            <field name="code">IND</field>
+        </record>
+        <record id="hr_salary_rule_category_data_other_rule_emp" model="hr.salary.rule.category">
+            <field name="name">Other Rule (Employee)</field>
+            <field name="code">OTHER_RULE_EMP</field>
+        </record>
+        <record id="hr_salary_rule_category_data_other_rule_comp" model="hr.salary.rule.category">
+            <field name="name">Other Rule (Company)</field>
+            <field name="code">OTHER_RULE_COMP</field>
+        </record>
+        <record id="hr_salary_rule_category_data_tax_emp" model="hr.salary.rule.category">
+            <field name="name">Tax (Employee)</field>
+            <field name="code">TAX_EMP</field>
+        </record>
+        <record id="hr_salary_rule_category_data_tax_comp" model="hr.salary.rule.category">
+            <field name="name">Tax (Company)</field>
+            <field name="code">TAX_COMP</field>
+        </record>
+    
+    </data>
+
+</odoo>

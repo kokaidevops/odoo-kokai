@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_recruitment_test_type,access_recruitment_test_type,model_recruitment_test_type,base.group_user,1,1,1,1
+access_recruitment_test_value,access_recruitment_test_value,model_recruitment_test_value,base.group_user,1,1,1,1
+access_recruitment_test,access_recruitment_test,model_recruitment_test,base.group_user,1,1,1,1
