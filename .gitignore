@@ -1,0 +1,12 @@
+.vscode/
+addons/
+config/
+cybro-repo/
+DATA/
+enterprise-addons/
+external-addons/
+oca-repo/
+reference-addons/
+docker-compose.yaml
+*.txt
+*.pyc
