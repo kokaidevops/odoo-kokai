@@ -143,7 +143,8 @@ class HrLeave(models.Model):
                 'leave_id': self.id,
                 'request_owner_id': self.employee_id.user_id.id,
                 'category_id': category_pr.id,
-                'reason': f"Request Approval for {self.name} from {self.employee_id.name} \n {self.name}"
+                'reason': f"Request Approval for {self.name} from {self.employee_id.name} \n {self.name}",
+                'approver_id': self.env.user.id,
             }
             
             request = self.env['approval.request'].sudo().create(vals)

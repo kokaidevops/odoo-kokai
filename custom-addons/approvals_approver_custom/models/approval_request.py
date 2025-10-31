@@ -29,7 +29,7 @@ class ApprovalRequest(models.Model):
                     if not user:
                         raise ValidationError("PIC Dept not yet set. Please contact Administrator!")
                 if approver.category == 'approver':
-                    user = approver.approver_id
+                    user = self.approver_id
                 if approver.category == 'user':
                     user = approver.user_id
                 if not user:
