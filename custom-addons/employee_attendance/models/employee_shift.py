@@ -1,5 +1,6 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
+from datetime import timedelta
 
 
 class ResourceCalendarAttendance(models.Model):
@@ -49,12 +50,12 @@ class EmployeeShiftSchedule(models.Model):
     def action_cancel(self):
         self.write({ 'state': 'cancel' })
 
-    def _prepare_shift_allocation_data(self, line, employee_id, department_id):
+    def _prepare_shift_allocation_data(self, line, date, employee_id, department_id):
         return {
             'schedule_id': self.id,
             'schedule_line_id': line.id,
             'employee_id': employee_id,
-            'date': line.date,
+            'date': date,
             'employee_shift_id': line.employee_shift_id.id,
             'department_id': department_id,
             'work_location_id': line.work_location_id.id,
@@ -64,9 +65,13 @@ class EmployeeShiftSchedule(models.Model):
 
     def _generate_shift_allocation(self):
         for line in self.line_ids:
-            for employee in line.employee_ids:
-                data = self._prepare_shift_allocation_data(line, employee.id, employee.department_id.id)
-                self.env['employee.shift.allocation'].create(data)
+            current_date = line.date
+            end_date = line.end_date
+            while current_date <= end_date:
+                for employee in line.employee_ids:
+                    data = self._prepare_shift_allocation_data(line, current_date, employee.id, employee.department_id.id)
+                    self.env['employee.shift.allocation'].create(data)
+                current_date += timedelta(days=1)
 
 
 class ShiftScheduleLine(models.Model):
@@ -77,6 +82,7 @@ class ShiftScheduleLine(models.Model):
     name = fields.Char('Name', compute='_compute_name', store=True)
     schedule_id = fields.Many2one('employee.shift.schedule', string='Schedule', ondelete='cascade', required=True)
     date = fields.Date('Date', default=fields.Date.today(), required=True)
+    end_date = fields.Date('End Date', default=fields.Date.today(), required=True)
     employee_shift_id = fields.Many2one('hr.employee.shift', string='Shift', required=True)
     department_id = fields.Many2one('hr.department', string='Department', related='schedule_id.department_id')
     employee_ids = fields.Many2many('hr.employee', string='Employee', domain="[('department_id', '=', department_id)]", required=True)
@@ -87,6 +93,17 @@ class ShiftScheduleLine(models.Model):
         ('done', 'Done'),
         ('cancel', 'Cancel'),
     ], string='State', default='draft', required=True, copy=False, related='schedule_id.state', store=True)
+
+    @api.onchange('date')
+    def _onchange_date(self):
+        for record in self:
+            record.end_date = record.date
+
+    @api.onchange('end_date')
+    def _onchange_end_date(self):
+        for record in self:
+            if record.end_date < record.date:
+                raise ValidationError("End Date can't be less than Start Date")
 
     @api.depends('date', 'employee_shift_id')
     def _compute_name(self):

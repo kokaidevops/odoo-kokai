@@ -151,6 +151,11 @@ class PurchaseOrder(models.Model):
 
     batch_id = fields.Many2one('purchase.order.batch', string='Offering Batch')
     check_line = fields.Boolean('Check Order Line', default=True)
+    approver_id = fields.Many2one('res.users','Approver', copy=False, tracking=True, default=lambda self: self.env.company.director_id.id)
+    price_term = fields.Selection([
+        ('include', 'Include PPN'),
+        ('exclude', 'Exclude PPN'),
+    ], string='Price Term', default='include', tracking=True)
 
     @api.model_create_multi
     def create(self, vals):

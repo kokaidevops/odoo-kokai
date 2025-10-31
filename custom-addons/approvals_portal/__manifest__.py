@@ -5,7 +5,12 @@
     'author': 'github.com/zdni',
     'license': 'LGPL-3',
     'category': 'Customizations',
-    'depends': ['portal', 'approvals_evidence', 'web'],
+    'depends': [
+        'approvals_evidence',
+        'approvals_position', 
+        'portal', 
+        'web',
+    ],
     'data': [
         'views/portal_template.xml'
     ],

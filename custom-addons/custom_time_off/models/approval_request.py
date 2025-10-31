@@ -26,7 +26,7 @@ class ApprovalRequest(models.Model):
         for request in self:
             if request.category_id.id == self.env.company.approval_time_off_id.id:
                 if request.request_status == 'refused':
-                    request.leave_id.sudo().action_refuse() #self.refused_reason
+                    request.leave_id.sudo().action_refuse(self.refused_reason)
                 elif request.request_status == 'approved':
-                    request.leave_id.sudo().action_approve()
+                    request.leave_id.sudo().action_custom_validate()
         return res

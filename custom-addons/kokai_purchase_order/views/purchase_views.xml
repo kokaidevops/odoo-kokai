@@ -28,6 +28,9 @@
                 <xpath expr="//header" position="inside">
                     <button string="Offering Done" name="action_offering_done" type="object" class="oe_highlight" states="sent"/>
                 </xpath>
+                <field name="date_order" position="after">
+                    <field name="approver_id" />
+                </field>
                 <xpath expr="//field[@name='order_line']//tree" position="inside">
                     <field name="offer_state" readonly="1" />
                     <button name="confirm_accepted" type="object" icon="fa-check-circle-o" title="Accept" width="0.1" options="{&quot;warn&quot;: true}"/>
@@ -46,6 +49,9 @@
                 <xpath expr="//header" position="inside">
                     <button string="Confirm Order" name="action_check" context="{'callback_function': 'button_confirm'}" attrs="{'invisible': ['|', ('check_line', '=', False), ('state', 'not in', ['approved'])]}" type="object"/>
                 </xpath>
+                <field name="payment_term_id" position="before">
+                    <field name="price_term" />
+                </field>
             </field>
         </record>
 

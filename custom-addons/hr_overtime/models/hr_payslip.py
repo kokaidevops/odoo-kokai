@@ -17,7 +17,7 @@ class HrContractOvertime(models.Model):
     def _compute_overtime_wage(self):
         for record in self:
             if record.get_overtime:
-                record.over_hour = record.wage/168 if record.wage_type == 'monthly' else record.hourly_wage
+                record.over_hour = record.wage/173 if record.wage_type == 'monthly' else record.hourly_wage
                 record.over_day = record.wage/21 if record.wage_type == 'monthly' else record.hourly_wage*8
             else: 
                 record.over_hour = 0

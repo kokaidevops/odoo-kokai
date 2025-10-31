@@ -86,8 +86,6 @@ class HrExpenseSheet(models.Model):
         }
         self.sudo().write({ 'state': 'submit' })
         request = self.env['approval.request'].create(vals)
-        query = f"UPDATE approval_approver SET user_id={self.employee_id.parent_id.user_id.id} WHERE request_id={request.id} AND user_id=2"
-        self.env.cr.execute(query)
         request.action_confirm()
 
     def action_view_approval_request(self):

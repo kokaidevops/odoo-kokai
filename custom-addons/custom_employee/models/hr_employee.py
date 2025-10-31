@@ -7,6 +7,7 @@ class HrEmployee(models.Model):
     tin = fields.Char('Taxpayer Identification Number (TIN)')
     blood_type = fields.Char('Blood Type')
     family_card_no = fields.Char('Family Card Number')
+    emergency_address = fields.Char('Contact Address')
 
 
 class HrEmployeePublic(models.Model):

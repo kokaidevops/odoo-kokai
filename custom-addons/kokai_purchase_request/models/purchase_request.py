@@ -104,7 +104,7 @@ class PurchaseRequest(models.Model):
         return name
 
     def button_to_approve(self):
-        self.name = self._generate_name()
+        # self.name = self._generate_name()
         return super().button_to_approve()
 
 

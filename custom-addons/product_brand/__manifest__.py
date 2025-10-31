@@ -21,6 +21,8 @@
 
         'views/product_brand_views.xml',
         'views/res_config_settings_views.xml',
+
+        'wizards/purchase_request_line_make_purchase_order_views.xml',
     ],
     'auto_install': False,
     'application': False,

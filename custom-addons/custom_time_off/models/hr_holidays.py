@@ -147,11 +147,11 @@ class HrLeave(models.Model):
             }
             
             request = self.env['approval.request'].sudo().create(vals)
-            query = f"UPDATE approval_approver SET user_id={self.employee_id.user_id.department_id.manager_id.user_id.id} WHERE request_id={request.id} AND user_id=2 RETURNING id"
-            self.env.cr.execute(query)
-            updated_id = self.env.cr.fetchone()
-            query = "DELETE FROM approval_approver WHERE id!=%s AND user_id=%s AND request_id=%s" % (updated_id[0], self.employee_id.user_id.department_id.manager_id.user_id.id, request.id)
-            self.env.cr.execute(query)
+            # query = f"UPDATE approval_approver SET user_id={self.employee_id.user_id.department_id.manager_id.user_id.id} WHERE request_id={request.id} AND user_id=2 RETURNING id"
+            # self.env.cr.execute(query)
+            # updated_id = self.env.cr.fetchone()
+            # query = "DELETE FROM approval_approver WHERE id!=%s AND user_id=%s AND request_id=%s" % (updated_id[0], self.employee_id.user_id.department_id.manager_id.user_id.id, request.id)
+            # self.env.cr.execute(query)
             request.action_confirm()
         except Exception as e:
             raise ValidationError("Can't Request Approval. Please Contact Administrator. %s" % e)
@@ -179,7 +179,7 @@ class HrLeave(models.Model):
         if self.holiday_status_id.custom_approval:
             return
         return super().action_validate()
-    
+
     def action_draft(self):
         res = super().action_draft()
         for approval in self.approval_ids:
@@ -297,6 +297,28 @@ class HrLeave(models.Model):
                 })
         data = self._prepare_attendance_data()
         self.env['hr.attendance'].create(data)
+
+    def action_custom_validate(self):
+        self.write({ 'state': 'validate' })
+
+    def action_refuse(self, reason):
+        self.env['mail.activity'].create({
+            'res_model_id': self.env.ref('hr_holidays.model_hr_leave').id,
+            'res_id': self._origin.id,
+            'activity_type_id': self.env.ref('custom_activity.mail_act_revision').id,
+            'date_deadline': fields.Date.today(),
+            'user_id': self.user_id.id,
+            'summary': reason,
+            'batch': self.env['ir.sequence'].next_by_code('assignment.activity'),
+            'handle_by': 'all',
+        })
+        return super().action_refuse()
+
+    def _action_user_cancel(self, reason):
+        if self.holiday_status_id.custom_approval:
+            self._force_cancel(reason, 'mail.mt_note')
+            return
+        return super()._action_user_cancel(reason)
 
 
 class HrLeaveAllocation(models.Model):

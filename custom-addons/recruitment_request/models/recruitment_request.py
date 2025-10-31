@@ -8,7 +8,7 @@ class RecruitmentRequest(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     def name_get(self):
-        return [(record.id, f"{record.job_id.name} - {record.employee_type_id.name}") for record in self]
+        return [(record.id, f"[{record.name}] {record.job_id.name}-{record.employee_type_id.code}") for record in self]
 
     @api.model_create_multi
     def create(self, vals):
@@ -154,13 +154,13 @@ class RecruitmentRequest(models.Model):
 class HrApplicant(models.Model):
     _inherit = 'hr.applicant'
 
-    request_id = fields.Many2one('recruitment.request', string='Request')
+    request_id = fields.Many2one('recruitment.request', string='Request', domain=[('state', '=', 'on_progress')])
     job_id = fields.Many2one('hr.job', related='request_id.job_id', store=True, readonly=False)
 
     @api.onchange('request_id')
     def _onchange_request_id(self):
         for record in self:
-            if record.request_id.state not in ['approved', 'on_progress']:
+            if record.request_id and record.request_id.state not in ['approved', 'on_progress']:
                 raise ValidationError("Can't add applicant to Request Closed")
 
     @api.depends('stage_id')

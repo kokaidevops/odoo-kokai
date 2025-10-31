@@ -49,8 +49,6 @@ class PurchaseRequest(models.Model):
                 'reason': f"Request Approval for {self.name} from {self.requested_by.name} \n {self.description or ''}"
             }
             request = self.env['approval.request'].sudo().create(vals)
-            query = f"UPDATE approval_approver SET user_id={self.department_id.manager_id.user_id.id} WHERE request_id={request.id} AND user_id=2"
-            self.env.cr.execute(query)
             request.action_confirm()
         except Exception as e:
             raise ValidationError("Can't Request Approval. Please Contact Administrator. \n%s" % str(e))

@@ -192,6 +192,7 @@ class OvertimeBatchLine(models.Model):
     reason = fields.Char('Reason')
     overtime_type_id = fields.Many2one('overtime.type', string='Overtime Type', default=lambda self: self.env['overtime.type'].search([], limit=1, order='sequence ASC, id ASC').id)
     state = fields.Selection(OVERTIME_STATUS, string='Status', default='draft', tracking=True, required=True, compute='_compute_state', store=True)
+    # employee_shift_id = fields.Many2one('hr.employee.shift', string='Employee Shift')
 
     @api.depends('date', 'start_time', 'end_time')
     def _compute_name(self):
@@ -218,9 +219,10 @@ class OvertimeBatchLine(models.Model):
         self.write({ 'state':'refused' })
 
     def action_approved(self):
-        if self.state in ['refused', 'cancel']:
-            return
-        self.write({ 'state':'approved' })
+        for record in self:
+            if record.state in ['refused', 'cancel']:
+                return
+            record.write({ 'state':'approved' })
 
     def action_cancel(self):
         self.write({ 'state':'cancel' })

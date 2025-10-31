@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="approval_request_view_form_inherit_approver" model="ir.ui.view">
+            <field name="name">approval.request.view.form.inherit</field>
+            <field name="model">approval.request</field>
+            <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+            <field name="arch" type="xml">
+                <field name="category_id" position="after">
+                    <field name="approver_id" attrs="{'invisible': [('approver_id', '=', False)], 'readonly': True}" />
+                </field>
+            </field>
+        </record>
+    
+        <record id="approval_category_view_form_inherit_custom" model="ir.ui.view">
+            <field name="name">approval.category.view.form.inherit</field>
+            <field name="model">approval.category</field>
+            <field name="inherit_id" ref="approvals.approval_category_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='approver_ids']" position="before">
+                    <field name="custom_approver" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="approval_category_approver_view_tree_inherit_position" model="ir.ui.view">
+            <field name="name">approval.category.approver.view.form.inherit</field>
+            <field name="model">approval.category.approver</field>
+            <field name="inherit_id" ref="approvals.approval_category_approver_view_tree"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="before">
+                    <field name="category" />
+                </field>
+            </field>
+        </record>
+    
+    </data>
+
+</odoo>

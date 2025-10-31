@@ -33,24 +33,24 @@ class MailActivity(models.Model):
         planning = self.env['planning.slot'].sudo().create(data)
         planning.action_publish()
     
-    @api.model_create_multi
-    def create(self, vals):
-        res = super().create(vals)
-        for record in res:
-            record._generate_planning()
-        return res
+    # @api.model_create_multi
+    # def create(self, vals):
+    #     res = super().create(vals)
+    #     for record in res:
+    #         record._generate_planning()
+    #     return res
 
-    def unlink(self):
-        _logger.warning("activity unlink")
-        for record in self:
-            record.mapped('planning_ids').unlink()
-        res = super().unlink()
-        return res
+    # def unlink(self):
+    #     _logger.warning("activity unlink")
+    #     for record in self:
+    #         record.mapped('planning_ids').unlink()
+    #     res = super().unlink()
+        # return res
     
-    def action_feedback(self, feedback=False, attachment_ids=None):
-        self.mapped('planning_ids').action_done()
-        res = super().action_feedback(feedback, attachment_ids)
-        return res
+    # def action_feedback(self, feedback=False, attachment_ids=None):
+    #     self.mapped('planning_ids').action_done()
+    #     res = super().action_feedback(feedback, attachment_ids)
+    #     return res
 
 
 class PlanningSlot(models.Model):

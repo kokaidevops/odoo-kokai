@@ -42,12 +42,12 @@ class PurchaseOrder(models.Model):
             'purchase_order_id': self.id,
             'request_owner_id': self.env.user.id,
             'category_id': category_pr.id,
-            'reason': f"Request Approval for {self.name} from {self.user_id.name} \n {self.notes}"
+            'reason': f"Request Approval for {self.name} from {self.user_id.name} \n {self.notes}",
+            'approver_id': self.approver_id.id,
         }
         self.sudo().write({ 'state': 'to approve' })
         request = self.env['approval.request'].create(vals)
         request.action_confirm()
-        self._compute_qrcode_prepared_by()
     
     def _set_false_check_line(self):
         super()._set_false_check_line()

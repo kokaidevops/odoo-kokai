@@ -186,7 +186,7 @@ class HrAttendance(models.Model):
         }
 
     def _skip_generate_work_entry(self):
-        work_entries = self.env['hr.work.entry'].search([ '|', ('attendance_id', '=', self.id), '&', ('date', '=', self.date), ('employee_id', '=', self.employee_id.id) ])
+        work_entries = self.env['hr.work.entry'].search([ '|', ('attendance_id', '=', self.id), '&', '&', ('date', '=', self.date), ('employee_id', '=', self.employee_id.id), ('work_entry_type_id', '=', self.work_entry_type_id.id) ])
         if work_entries or (self._work_entry_source_attendance() and not self._attendance_to_work_entry(self.source)) or self.counted_unit == 'none':
             return True
         return False

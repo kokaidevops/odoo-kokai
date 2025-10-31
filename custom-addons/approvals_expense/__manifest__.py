@@ -6,8 +6,10 @@
     'license': 'LGPL-3',
     'category': 'Expense',
     'depends': [
-        'approvals_portal',
         'approvals',
+        'approvals_approver_custom',
+        'approvals_evidence',
+        'approvals_portal',
         'approvals_position',
         'approvals_refused_reason',
         'approvals_settings',
@@ -15,7 +17,6 @@
         'department_detail',
         'hr_expense',
         'hr_expense_sequence',
-        'approvals_evidence',
     ],
     'data': [
         'data/approval_category_data.xml',

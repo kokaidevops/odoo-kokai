@@ -7,11 +7,11 @@ class ProductTemplate(models.Model):
 
     is_pack = fields.Boolean('Is Product Pack?')
 
-    # @api.onchange('is_pack')
-    # def _onchange_is_pack(self):
-    #     for record in self:
-    #             if record.qty_available > 0:
-    #                 raise ValidationError("Can't change product that already has some qty!")
+    @api.onchange('is_pack')
+    def _onchange_is_pack(self):
+        for record in self:
+                if record.qty_available > 0:
+                    raise ValidationError("Can't change product that already has some qty!")
 
 
 class ProductPack(models.Model):

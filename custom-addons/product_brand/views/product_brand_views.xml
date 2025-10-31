@@ -64,8 +64,8 @@
             <field name="model">purchase.request</field>
             <field name="inherit_id" ref="purchase_request.view_purchase_request_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='line_ids']//tree" position="inside">
-                    <field name="brand_id" groups="product_brand.group_brand_per_so_line" optional="show" />
+                <xpath expr="//field[@name='line_ids']//tree//field[@name='name']" position="after">
+                    <field name="brand_id" groups="product_brand.group_brand_per_po_line" optional="show" />
                 </xpath>
             </field>
         </record>
@@ -76,8 +76,8 @@
             <field name="model">purchase.order</field>
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='order_line']//tree" position="inside">
-                    <field name="brand_id" groups="product_brand.group_brand_per_so_line" optional="show" />
+                <xpath expr="//field[@name='order_line']//tree//field[@name='name']" position="after">
+                    <field name="brand_id" groups="product_brand.group_brand_per_po_line" optional="show" />
                 </xpath>
             </field>
         </record>

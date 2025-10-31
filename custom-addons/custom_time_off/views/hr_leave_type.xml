@@ -118,6 +118,36 @@
                 </xpath>
             </field>
         </record>
+
+
+        <record id="hr_leave_view_tree_inherit_hide_button" model="ir.ui.view">
+            <field name="name">hr.leave.view.list.inherit</field>
+            <field name="model">hr.leave</field>
+            <field name="inherit_id" ref="hr_holidays.hr_leave_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_approve']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_validate']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_refuse']" position="attributes">
+                    <attribute name="invisible" value="1">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="hr_leave_view_form_inherit_admin_cancel" model="ir.ui.view">
+            <field name="name">hr.leave.view.form.inherit</field>
+            <field name="model">hr.leave</field>
+            <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_cancel']" position="replace">
+                    <button string="Cancel" name="action_cancel" type="object" groups="hr_holidays.group_hr_holidays_manager" />
+                </xpath>
+            </field>
+        </record>
     
     </data>
 

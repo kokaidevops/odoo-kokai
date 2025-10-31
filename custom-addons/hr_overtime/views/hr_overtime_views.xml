@@ -32,7 +32,8 @@
                                 <field name="batch_id" invisible="1" />
                                 <field name="name" />
                                 <field name="overtime_type_id" groups="hr_overtime.group_hr_overtime_administrator" />
-                                <field name="date" attrs="{'readonly': [('state', 'not in', ['draft', 'requested'])]}" />
+                                <!-- <field name="employee_shift_id" groups="hr_overtime.group_hr_overtime_administrator" /> -->
+                                <!-- <field name="date" attrs="{'readonly': [('state', 'not in', ['draft', 'requested'])]}" /> -->
                                 <field name="request_unit" attrs="{'readonly': [('state', 'not in', ['draft', 'requested'])]}" />
                                 <field name="request_date_from_period" attrs="{'invisible': [('request_unit', '!=', 'half')], 'readonly': [('state', 'not in', ['draft', 'requested'])]}" />
                             </group>
@@ -85,13 +86,13 @@
                                 <field name="department_id" />
                             </group>
                             <group>
-                                <field name="employee_ids" widget="many2many_tags" attrs="{'readonly': [('overtime_ids', '!=', [])]}" />
+                                <field name="employee_ids" widget="many2many_tags" attrs="{'readonly': ['|', ('overtime_ids', '!=', []), ('state', 'in', ['approved'])]}" />
                                 <field name="total_employee" />
                                 <field name="accept_employee" attrs="{'readonly': [('state', 'not in', ['requested'])]}" groups="hr_overtime.group_hr_overtime_administrator" />
                             </group>
                             <notebook>
                                 <page name="line" string="Schedule">
-                                    <field name="line_ids" context="{'default_batch_id': active_id}">
+                                    <field name="line_ids" context="{'default_batch_id': active_id}" attrs="{'readonly': [('state', 'in', ['approved'])]}">
                                         <tree>
                                             <field name="name" optional="hide" />
                                             <field name="batch_id" invisible="1" />

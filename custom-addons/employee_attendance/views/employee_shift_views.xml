@@ -146,6 +146,7 @@
                             <group>
                                 <field name="state" invisible="1" />
                                 <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="end_date" attrs="{'readonly': [('state', '!=', 'draft')]}" />
                                 <field name="employee_shift_id" attrs="{'readonly': [('state', '!=', 'draft')]}" />
                                 <field name="work_location_id" attrs="{'readonly': [('state', '!=', 'draft')]}" />
                                 <field name="note" attrs="{'readonly': [('state', '!=', 'draft')]}" />
@@ -187,6 +188,7 @@
                                 <field name="line_ids">
                                     <tree>
                                         <field name="date" />
+                                        <field name="end_date" />
                                         <field name="employee_shift_id" />
                                         <field name="note" />
                                     </tree>

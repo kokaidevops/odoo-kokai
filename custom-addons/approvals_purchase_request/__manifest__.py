@@ -9,6 +9,7 @@
     'license': 'LGPL-3',
     'category': 'Human Resources',
     'depends': [
+        'approvals_approver_custom',
         'approvals_evidence',
         'approvals_portal',
         'approvals_position',
